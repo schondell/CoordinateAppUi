@@ -1,0 +1,16 @@
+#control_wrapper {
+  max-width: 246px;
+  margin: 30px auto;
+  padding-top: 50px;
+}
+.control-section {
+  margin: 25px auto;
+}
+
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
+}

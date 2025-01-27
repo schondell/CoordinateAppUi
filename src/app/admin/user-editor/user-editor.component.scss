@@ -1,0 +1,20 @@
+@use 'breakpoints';
+
+.auto-width {
+  width: auto;
+}
+
+.send-confirm-email {
+  line-height: inherit;
+}
+
+.change-password-button {
+  margin-bottom: 22px;
+}
+
+.flex-nogrow50-gtsm {
+  @include breakpoints.breakpoint('gt-sm') {
+    flex: 0 1 calc(50% - 0.5em);
+    box-sizing: border-box;
+  }
+}

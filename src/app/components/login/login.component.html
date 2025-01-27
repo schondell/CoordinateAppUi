@@ -1,0 +1,46 @@
+<div class="page-content flex fill center-center">
+  <div class="card mat-elevation-z6">
+    <div class="card-header mat-mdc-card-title">
+      <span>{{'mainMenu.Login' | translate}}</span>
+    </div>
+    <div class="card-content">
+      <app-login-control [isModal]="false" (enterKeyPress)="loginControl.login()"></app-login-control>
+    </div>
+    <div class="card-actions">
+      <div class="flex">
+        <button mat-raised-button color="primary" [disabled]="loginControl.isLoading" (click)="loginControl.login()">
+          <mat-spinner *ngIf="loginControl.isLoading && !loginControl.isExternalLogin" [diameter]="20"></mat-spinner>{{'mainMenu.Login' | translate | uppercase}}
+        </button>
+        <div class="flex-auto"></div>
+        <a mat-button routerLink="/recoverpassword">FORGOT PASSWORD</a>
+        <mat-divider [vertical]="true"></mat-divider>
+        <a mat-button routerLink="/register">REGISTER</a>
+      </div>
+<!--      <div class="mat-typography social-logins-divider flex justify-around align-center">-->
+<!--        <span>or</span>-->
+<!--      </div>-->
+<!--      <div class="social-logins-buttons flex-col align-stretch">-->
+<!--        <button mat-raised-button color="google" [disabled]="loginControl.isLoading" (click)="loginControl.loginWithGoogle()">-->
+<!--          <mat-icon *ngIf="!(loginControl.isLoading && loginControl.isGoogleLogin)" svgIcon="google"></mat-icon>-->
+<!--          <mat-spinner *ngIf="loginControl.isLoading && loginControl.isGoogleLogin" [diameter]="20"></mat-spinner>-->
+<!--          <span class="text-content">Connect with Google</span>-->
+<!--        </button>-->
+<!--        <button mat-raised-button color="facebook" [disabled]="loginControl.isLoading" (click)="loginControl.loginWithFacebook()">-->
+<!--          <mat-icon *ngIf="!(loginControl.isLoading && loginControl.isFacebookLogin)" svgIcon="facebook"></mat-icon>-->
+<!--          <mat-spinner *ngIf="loginControl.isLoading && loginControl.isFacebookLogin" [diameter]="20"></mat-spinner>-->
+<!--          <span class="text-content">Connect with Facebook</span>-->
+<!--        </button>-->
+<!--        <button mat-raised-button color="twitter" [disabled]="loginControl.isLoading" (click)="loginControl.loginWithTwitter()">-->
+<!--          <mat-icon *ngIf="!(loginControl.isLoading && loginControl.isTwitterLogin)" svgIcon="twitter"></mat-icon>-->
+<!--          <mat-spinner *ngIf="loginControl.isLoading && loginControl.isTwitterLogin" [diameter]="20"></mat-spinner>-->
+<!--          <span class="text-content">Connect with Twitter</span>-->
+<!--        </button>-->
+<!--        <button mat-raised-button color="microsoft" [disabled]="loginControl.isLoading" (click)="loginControl.loginWithMicrosoft()">-->
+<!--          <mat-icon *ngIf="!(loginControl.isLoading && loginControl.isMicrosoftLogin)" svgIcon="microsoft"></mat-icon>-->
+<!--          <mat-spinner *ngIf="loginControl.isLoading && loginControl.isMicrosoftLogin" [diameter]="20"></mat-spinner>-->
+<!--          <span class="text-content">Connect with Microsoft</span>-->
+<!--        </button>-->
+<!--      </div>-->
+    </div>
+  </div>
+</div>

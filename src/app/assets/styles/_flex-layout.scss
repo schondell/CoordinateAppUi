@@ -1,0 +1,354 @@
+@use 'breakpoints';
+
+
+// Flex display
+
+.flex {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.inline-flex {
+  display: inline-flex;
+  box-sizing: border-box;
+}
+
+
+// Flex direction
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-col-xs,
+.flex-col-ltsm {
+  @include breakpoints.breakpoint('xs') {
+    flex-direction: column;
+  }
+}
+
+.flex-col-ltmd {
+  @include breakpoints.breakpoint('lt-md') {
+    flex-direction: column;
+  }
+}
+
+.flex-col-ltlg {
+  @include breakpoints.breakpoint('lt-lg') {
+    flex-direction: column;
+  }
+}
+
+.flex-row-xs,
+.flex-row-ltsm {
+  @include breakpoints.breakpoint('xs') {
+    flex-direction: row;
+  }
+}
+
+.flex-row-ltmd {
+  @include breakpoints.breakpoint('lt-md') {
+    flex-direction: row;
+  }
+}
+
+.flex-row-ltlg {
+  @include breakpoints.breakpoint('lt-lg') {
+    flex-direction: row;
+  }
+}
+
+
+// Shorthands
+
+.flex-initial {
+  flex: initial; // 0 1 auto;
+}
+
+.flex-auto {
+  flex: auto; // 1 1 auto;
+}
+
+//https://www.w3.org/TR/css-flexbox-1/images/rel-vs-abs-flex.svg
+.flex-1 {
+  flex: 1 //flex: 1 1 0 i.e. fxFlex
+}
+
+.flex-2 {
+  flex: 2 //flex: 2 1 0
+}
+
+.flex-3 {
+  flex: 3 //flex: 3 1 0
+}
+
+
+.flex-none {
+  flex: none; // 0 0 auto
+}
+
+.flex-nogrow {
+  flex: 0 1 auto;
+}
+
+.flex-noshrink {
+  flex: 1 0 auto
+}
+
+
+@mixin flex-grow-base {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+}
+
+.flex-grow {
+  @include flex-grow-base;
+  max-width: 100%;
+}
+
+.flex-grow25 {
+  @include flex-grow-base;
+  max-width: 25%;
+}
+
+.flex-grow40 {
+  @include flex-grow-base;
+  max-width: 40%;
+}
+
+.flex-grow50 {
+  @include flex-grow-base;
+  max-width: 50%;
+}
+
+.flex-grow60 {
+  @include flex-grow-base;
+  max-width: 60%;
+}
+
+.flex-grow75 {
+  @include flex-grow-base;
+  max-width: 75%;
+}
+
+
+.flex-50px {
+  flex: 1 1 50px;
+  box-sizing: border-box;
+  max-width: 50px;
+  min-width: 50px;
+}
+
+.flex-100px {
+  flex: 1 1 100px;
+  box-sizing: border-box;
+  max-width: 100px;
+  min-width: 100px;
+}
+
+
+//Justify-Content
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+
+//Align-Content
+
+.content-start {
+  align-content: flex-start;
+}
+
+.content-end {
+  align-content: flex-end;
+}
+
+.content-center {
+  align-content: center
+}
+
+.content-stretch {
+  align-content: stretch
+}
+
+.content-between {
+  align-content: space-between;
+}
+
+.content-around {
+  align-content: space-around;
+}
+
+.content-evenly {
+  align-content: space-evenly;
+}
+
+
+//Align-Items
+
+.align-start {
+  align-items: flex-start;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-center {
+  align-items: center
+}
+
+.align-stretch {
+  align-items: stretch
+}
+
+.align-baseline {
+  align-items: baseline;
+}
+
+
+.start-start {
+  justify-content: start;
+  align-items: start;
+}
+
+.center-center {
+  justify-content: center;
+  align-items: center;
+}
+
+
+//Align-Self
+
+.item-start {
+  align-self: flex-start;
+}
+
+.item-end {
+  align-self: flex-end;
+}
+
+.item-center {
+  align-self: center
+}
+
+.item-stretch {
+  align-self: stretch
+}
+
+.item-baseline {
+  align-self: baseline;
+}
+
+
+// Gap
+
+.gap-1em {
+  gap: 1em;
+}
+
+.gap-row-1em {
+  row-gap: 1em;
+}
+
+.gap-col-1em {
+  column-gap: 1em;
+}
+
+.gap-4 {
+  gap: 4px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+
+//Item Utilities
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fill {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.hide {
+  display: none !important;
+}
+
+.hide-xs {
+  @include breakpoints.breakpoint('xs') {
+    display: none;
+  }
+}
+
+.hide-gt-xs {
+  @include breakpoints.breakpoint('gt-xs') {
+    display: none;
+  }
+}
+
+.hide-sm {
+  @include breakpoints.breakpoint('lt-md') {
+    display: none;
+  }
+}
+
+.hide-gt-sm {
+  @include breakpoints.breakpoint('gt-sm') {
+    display: none;
+  }
+}

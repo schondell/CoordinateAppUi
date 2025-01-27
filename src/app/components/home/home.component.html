@@ -1,0 +1,40 @@
+<ejs-tab (selected)="selectTab($event)">
+  <e-tabitems>
+    <e-tabitem [header]="{'text': 'overview.MapOverview' | translate}" [routerLink]="['/map-overview']">
+      <ng-template #content>
+        <router-outlet></router-outlet>
+      </ng-template>
+    </e-tabitem>
+    <e-tabitem [header]="{'text': 'overview.RoutePlanning' | translate}" [routerLink]="['/route-planning']">
+      <ng-template #content>
+        <router-outlet></router-outlet>
+      </ng-template>
+    </e-tabitem>
+    <e-tabitem [header]="{'text': 'overview.AllWorkitems' | translate}" [routerLink]="['/all-workitems']">
+      <ng-template #content>
+        <router-outlet></router-outlet>
+      </ng-template>
+    </e-tabitem>
+  </e-tabitems>
+</ejs-tab>
+
+<!--<mat-tab-group dynamicHeight [@.disabled]="true" (selectedIndexChange)="selectTab($event)">-->
+<!--  <mat-tab label="{{'overview.MapOverview' | translate}}">-->
+<!--    <ng-template matTabContent>-->
+<!--      <app-routeview  *ngIf="selectedTab === 0"></app-routeview>-->
+<!--    </ng-template>-->
+<!--  </mat-tab>-->
+<!--  <mat-tab label="{{'overview.RoutePlanning' | translate}}">-->
+<!--    <ng-template matTabContent>-->
+<!--      <app-customerwithworkitem-table  *ngIf="selectedTab === 1"></app-customerwithworkitem-table>-->
+<!--      <div class="button-row">-->
+<!--        <button mat-raised-button #btnOptimizeRoute (click)="onRouteOptimize()" color="primary">{{'overview.OptimizeRouteBtn' | translate}}></button>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--  </mat-tab>-->
+<!--  <mat-tab label="{{'overview.AllWorkitems' | translate}}">-->
+<!--    <ng-template matTabContent>-->
+<!--      <app-workitem-table *ngIf="selectedTab === 2"></app-workitem-table>-->
+<!--    </ng-template>-->
+<!--</mat-tab>-->
+<!--</mat-tab-group>-->

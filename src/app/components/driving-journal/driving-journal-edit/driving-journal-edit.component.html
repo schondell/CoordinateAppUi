@@ -1,0 +1,16 @@
+<form #editForm="ngForm">
+  <div>
+    <label for="odometerStart">Odometer Start:</label>
+    <input type="number" id="odometerStart" [(ngModel)]="vehicleJournalDto.odometerStart" name="odometerStart">
+  </div>
+  <div>
+    <label for="odometerEnd">Odometer End:</label>
+    <input type="number" id="odometerEnd" [(ngModel)]="vehicleJournalDto.odometerEnd" name="odometerEnd">
+  </div>
+  <div>
+    <label for="distance">Distance:</label>
+    <input type="number" id="distance" [(ngModel)]="vehicleJournalDto.distance" name="distance">
+  </div>
+  <!-- Add more fields as needed -->
+  <button type="button" (click)="onSave()">Save</button>
+</form>

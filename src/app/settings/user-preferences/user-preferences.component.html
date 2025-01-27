@@ -1,0 +1,45 @@
+<div class="flex">
+  <div class="flex-col flex-1 flex-grow50-gtsm gap-1em">
+
+    <ejs-dropdownlist id='language' [dataSource]='mappedLanguages' [(ngModel)]='configurations.language' placeholder='{{"preferences.Language" | translate}}'>
+      <ng-template #itemTemplate let-data>
+        <span class="vertical-center">{{'preferences.' + data.text | translate}}<i *ngIf="data.isDefault" style="font-size: 0.75em;"> ({{'preferences.Default' | translate}})</i></span>
+      </ng-template>
+      <ng-template #valueTemplate let-data>
+        <span class="vertical-center">{{'preferences.' + data.text | translate}}</span>
+      </ng-template>
+    </ejs-dropdownlist>
+    <ejs-tooltip content="{{'preferences.LanguageHint' | translate}}" target="#language"></ejs-tooltip>
+
+    <ejs-dropdownlist id='homePage' [dataSource]='mappedHomePages' [(ngModel)]='configurations.homeUrl' placeholder='{{"preferences.HomePage" | translate}}'>
+      <ng-template #itemTemplate let-data>
+        <span class="vertical-center"><ejs-icon></ejs-icon>{{'preferences.' + data.text | translate}}<i *ngIf="data.isDefault" style="font-size: 0.75em;"> ({{'preferences.Default' | translate}})</i></span>
+      </ng-template>
+      <ng-template #valueTemplate let-data>
+        <span class="vertical-center"><ejs-icon></ejs-icon>{{'preferences.' + data.text | translate}}</span>
+      </ng-template>
+    </ejs-dropdownlist>
+    <ejs-tooltip content="{{'preferences.HomePageHint' | translate}}" target="#homePage"></ejs-tooltip>
+
+    <div class="flex-col start-start gap-1em">
+
+      <label for="dashboardStatistics">{{"preferences.DashboardStatistics" | translate}}</label>
+      <ejs-switch id='dashboardStatistics' [(ngModel)]='configurations.showDashboardStatistics'></ejs-switch>
+      <ejs-tooltip content="{{'preferences.DashboardStatisticsHint' | translate}}" target="#dashboardStatistics"></ejs-tooltip>
+
+      <label for="dashboardNotifications">{{"preferences.DashboardNotifications" | translate}}</label>
+      <ejs-switch id='dashboardNotifications' [(ngModel)]='configurations.showDashboardNotifications'></ejs-switch>
+      <ejs-tooltip content="{{'preferences.DashboardNotificationsHint' | translate}}" target="#dashboardNotifications"></ejs-tooltip>
+
+      <label for="dashboardTodo">{{"preferences.DashboardTodo" | translate}}</label>
+      <ejs-switch id='dashboardTodo' [(ngModel)]='configurations.showDashboardTodo'></ejs-switch>
+      <ejs-tooltip content="{{'preferences.DashboardStatisticsHint' | translate}}" target="#dashboardTodo"></ejs-tooltip>
+
+      <label for="dashboardBanner">{{"preferences.DashboardBanner" | translate}}</label>
+      <ejs-switch id='dashboardBanner' [(ngModel)]='configurations.showDashboardBanner'></ejs-switch>
+      <ejs-tooltip content="{{'preferences.DashboardBannerHint' | translate}}" target="#dashboardBanner"></ejs-tooltip>
+
+    </div>
+
+  </div>
+</div>

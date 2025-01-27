@@ -1,0 +1,36 @@
+<app-page-header title="{{'History' | translate}}" icon="person"></app-page-header>
+<app-date-vehicle-selector (dateChange)="onDateChange($event)" (vehicleChange)="onVehicleChange($event)" (findClick)="onFindClick()"></app-date-vehicle-selector>
+
+<div *ngIf="allValuesOk">
+  <div *ngIf="tripHistoryModel">
+    <ejs-accordion *ngIf="tripHistoryModel?.month">
+      <e-accordionitems>
+        <e-accordionitem [header]="tripHistoryModel?.month?.groupName" [expanded]="true">
+          <ng-template #content>
+            {{'history.thisMonth.Description' | translate}}
+            <div *ngIf="tripHistoryModel?.month?.tripHistoryEntries">
+              <div *ngFor="let tripHistoryEntry of tripHistoryModel.month.tripHistoryEntries">
+                <ejs-accordion *ngIf="tripHistoryEntry">
+                  <e-accordionitems>
+                    <e-accordionitem [header]="formatHeader(tripHistoryEntry)" [expanded]="false">
+                      <ng-template #content>
+                        {{ toKilometers(tripHistoryEntry?.totalDistance) | number:'1.1-1' }} km
+                        <div *ngIf="tripHistoryEntry?.vehicleTripLogFullDtos">
+                            <app-trip *ngFor="let trip of tripHistoryEntry.vehicleTripLogFullDtos; let i = index"
+                                      [trip]="trip"
+                                      [trips]="tripHistoryEntry.vehicleTripLogFullDtos"
+                                      [currentIndex]="i">
+                            </app-trip>
+                        </div>
+                      </ng-template>
+                    </e-accordionitem>
+                  </e-accordionitems>
+                </ejs-accordion>
+              </div>
+            </div>
+          </ng-template>
+        </e-accordionitem>
+      </e-accordionitems>
+    </ejs-accordion>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="page-content">
+  <app-date-vehicle-selector
+    (dateChange)="onDateChange($event)"
+    (vehicleChange)="onVehicleChange($event)"
+    (findClick)="onFindClick()">
+  </app-date-vehicle-selector>
+  <div *ngIf="selectedVehicleId">
+    <div class="clearfix"></div>
+    <app-driving-journal-table *ngIf="isTableVisible" [parentVehicleId]="selectedVehicleId" [parentStartYear]="selectedYear" [parentEndMonth]="selectedMonth"></app-driving-journal-table>
+  </div>
+</div>
+

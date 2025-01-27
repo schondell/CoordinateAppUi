@@ -1,0 +1,31 @@
+@use 'sass:map';
+
+/* flex layout, https://github.com/angular/flex-layout/issues/1426 */
+$xs: 599px;
+$sm: 959px;
+$md: 1279px;
+$lg: 1919px;
+$xl: 5000px;
+
+// Empty comments at ends is to prevent VS from Collapsing maps onto a single line
+$fx-media-queries: ( //
+'xs': "screen and (max-width: #{$xs})", //
+'sm': "screen and (min-width: #{$xs + 1}) and (max-width: #{$sm})", //
+"md": "screen and (min-width: #{$sm + 1}) and (max-width: #{$md})", //
+"lg": 'screen and (min-width: #{$md + 1}) and (max-width: #{$lg})', //
+"xl": 'screen and (min-width: #{$lg + 1}) and (max-width: #{$xl})', //
+"lt-sm": 'screen and (max-width: #{$xs})', //
+"lt-md": 'screen and (max-width: #{$sm})', //
+"lt-lg": 'screen and (max-width: #{$md})', //
+"lt-xl": 'screen and (max-width: #{$lg})', //
+"gt-xs": 'screen and (min-width: #{$xs + 1})', //
+"gt-sm": 'screen and (min-width: #{$sm + 1})', //
+"gt-md": 'screen and (min-width: #{$md + 1})', //
+"gt-lg": 'screen and (min-width: #{$lg + 1})', //
+);
+
+@mixin breakpoint($bp) {
+  @media #{map.get($fx-media-queries, $bp)} {
+    @content;
+  }
+}

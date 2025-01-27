@@ -1,0 +1,32 @@
+<div class="driving-journal-table-container">
+  <div class="driving-journal-table-container">
+    <ejs-grid  #grid id='driving-journal-table-grid'
+               [dataSource]='vehicleJournalDtos'
+               allowResizing= 'true'
+               [locale]='dateFormat'
+               [allowPdfExport]='true'
+               [allowExcelExport]='true'
+               [toolbar]='toolbarOptions'
+               rowHeight='30'
+               (toolbarClick)='toolbarClick($event)'
+               (recordDoubleClick)='onRowDblClick($event)'
+               height='100%' width='100%'>
+      <e-columns>
+        <e-column field='started' [headerText]="'Started' | translate" format='yMd' textAlign='Left' width=70 type='date'></e-column>
+        <e-column field='distance' [headerText]="'Distance (km)' | translate" textAlign='Right' width=50>
+          <ng-template #template let-data>
+    <span [title]="(data.distance / 10).toFixed(1)">
+      {{ data.odometerEnd - data.odometerStart }}
+    </span>
+          </ng-template>
+        </e-column>
+        <e-column [headerText]="'Odometer'  | translate" [columns]="[  { field: 'odometerStart', headerText: ('OdometerStart' | translate), textAlign: 'Right', width: 60 },   { field: 'odometerEnd', headerText: ('OdometerEnd' | translate), textAlign: 'Right', width: 60 } ]"></e-column>
+        <e-column field='startAddressName' [headerText]="'StartAddressName' | translate" textAlign='Left' width=140></e-column>
+        <e-column field='purposeOfTrip' [headerText]="'PurposeOfTrip' | translate" textAlign='Left' width=130></e-column>
+        <e-column field='endAddressName' [headerText]="'EndAddressName' | translate" textAlign='Left' width=140></e-column>
+        <e-column field='driver' [headerText]="'Driver' | translate"   textAlign='Right' width=80></e-column>
+        <e-column field='note' [headerText]="'Notes' | translate"  textAlign='Left' width=140></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+</div>

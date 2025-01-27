@@ -1,0 +1,64 @@
+<app-page-header title="Roles" icon="assignment_ind"></app-page-header>
+<div [@fadeInOut] class="page-content">
+
+  <div class="search-box">
+    <mat-form-field>
+      <mat-label>{{'roles.management.Search' | translate}}</mat-label>
+      <input matInput (keyup)="applyFilter($event.target.value)">
+    </mat-form-field>
+  </div>
+
+  <div class="example-container mat-elevation-z8">
+    <mat-progress-bar *ngIf="loadingIndicator" mode="query"></mat-progress-bar>
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell class="flex-grow40" *matHeaderCellDef mat-sort-header> {{'roles.management.Name' | translate}} </mat-header-cell>
+        <mat-cell class="flex-grow40" *matCellDef="let role"> {{role.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'roles.management.Description' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let role"> {{role.description}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="usersCount">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="flex-70px"> {{'roles.management.Users' | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let role" class="flex-70px"> {{role.usersCount}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef class="flex-170px justify-center">
+          <button *ngIf="canManageRoles" mat-button color="primary" matTooltip="{{'roles.management.NewRole' | translate}}" (click)="editRole()">
+            <mat-icon>add</mat-icon>{{'roles.management.NewRole' | translate}}
+          </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let role" class="flex-170px justify-center">
+          <button *ngIf="!canManageRoles" mat-icon-button matTooltip="{{'roles.management.Details' | translate}}" (click)="editRole(role)">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <button *ngIf="canManageRoles" mat-icon-button matTooltip="{{'roles.management.Edit' | translate}}" (click)="editRole(role)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button *ngIf="canManageRoles" mat-icon-button matTooltip="{{'roles.management.Delete' | translate}}" (click)="confirmDelete(role)">
+            <mat-icon color="warn">delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+
+
+
+</div>
+
+
+
+
+

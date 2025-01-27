@@ -1,0 +1,38 @@
+.card-content {
+  margin-bottom: 18px;
+}
+
+.mat-google:not(:disabled) {
+  background-color: #dd4b39;
+  color: white;
+}
+
+.mat-facebook:not(:disabled) {
+  background-color: #4267B2;
+  color: white;
+}
+
+.mat-twitter:not(:disabled) {
+  background-color: #38A1F3;
+  color: white;
+}
+
+.mat-microsoft:not(:disabled) {
+  background-color: #007ab4;
+  color: white;
+}
+
+.social-logins-divider {
+  margin: 14px 0;
+  font-style: italic;
+}
+
+.social-logins-buttons button {
+  margin: 5px 0;
+  line-height: normal;
+
+  span.text-content {
+    min-width: 12.5em;
+    display: inline-block;
+  }
+}

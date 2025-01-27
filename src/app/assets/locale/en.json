@@ -1,0 +1,328 @@
+{
+  "PurposeOfTrip": "Purpose of Trip",
+  "Notes": "Notes",
+  "Started": "Started",
+  "Ended": "Ended",
+  "Distance": "Distance",
+  "OdometerStart": "Start",
+  "OdometerEnd": "End",
+  "Duration": "Duration",
+  "StartAddressName": "Start Address",
+  "EndAddressName": "End Address",
+  "Driver": "Driver",
+  "User": "User",
+  "app": {
+    "New": "New",
+    "Notifications": "Notifications",
+    "Welcome": "Welcome"
+  },
+  "commands": {
+    "Cancel": "Cancel",
+    "Edit": "Edit",
+    "Reload": "Reload",
+    "Reset": "Reset",
+    "Save": "Save"
+  },
+  "form": {
+    "ErrorCaption": "Missing Information",
+    "ErrorMessage": "You have entered invalid or incomplete information. Please correct any errors and try again."
+  },
+  "history": {
+    "day": {
+      "Description": "Select any date, if it has some data",
+      "Title": "Specific date"
+    },
+    "display": {
+      "Title": "Show trip on map"
+    },
+    "select": {
+      "Title": "Select a vehicle"
+    },
+    "month": {
+      "Title": "Select month"
+    },
+    "thisMonth": {
+      "Description": "Select to view this month's trips.",
+      "Title": "This Month"
+    },
+    "thisWeek": {
+      "Description": "Select to view this week's trips.",
+      "Title": "This Week"
+    },
+    "today": {
+      "Description": "Select to view this today's trips.",
+      "Title": "Today"
+    }
+  },
+  "drivingJournal": {
+    "ShowJournal": "Show Journal"
+  },
+  "vehicle-card": {
+    "STATUS": "Status",
+    "SPEED": "Speed",
+    "SINCE": "Since"
+  },
+  "home": {
+    "NoWidgets1": "You have no widgets displayed. Goto",
+    "NoWidgets2": "to configure available widgets",
+    "StatisticsTitle": "Some important figures"
+  },
+  "mainMenu": {
+    "DrivingJournal": "Driving Journal",
+    "DataManagement": "Data Management",
+    "GpsTrackers": "Gps Trackers",
+    "About": "About",
+    "Address": "Address",
+    "GeoCooordinate": "Geo Coordinates",
+    "WorkItem": "Work Item",
+    "WorkItemBaseStatus": "Work Item Base Status",
+    "WorkItemStatus": "Work Item Status",
+    "WorkItemComment": "Work Item Comment",
+    "WorkItemPriority": "Work Item Priority",
+    "Image": "Image",
+    "User": "User",
+    "WorkItemType": "Work Item Type",
+    "Account": "Account",
+    "AccountGroup": "Account Group",
+    "Country": "Country",
+    "CustomerAccount": "Customer Account",
+    "CustomerGroup": "Customer Group",
+    "CustomerProperty": "Customer Property",
+    "CustomerType": "Customer Type",
+    "DeviceEvent": "Device Event",
+    "DeviceEventType": "Device Event Type",
+    "Admin": "Admin",
+    "Appointments": "Appointments",
+    "Customer": "Customer",
+    "Customers": "Customers",
+    "GpsTracker": "Gps-Trackers",
+    "History": "History",
+    "Home": "Home",
+    "Invitations": "Invitations",
+    "Journal": "Driving journal",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Misc": "Metadata",
+    "Orders": "Orders",
+    "OverView": "Overview",
+    "Products": "Products",
+    "Profile": "Profile",
+    "Resources": "Resources",
+    "Settings": "Settings",
+    "SimCard": "Sim Card",
+    "Simcards": "Sim Cards",
+    "Theme": "Select a theme",
+    "Trackers": "Trackers",
+    "UserAccount": "User Account",
+    "Users": "Users",
+    "Vehicle": "Vehicles",
+    "Vehicles": "Vehicles",
+    "WorkItems": "Work Items"
+  },
+  "notFound": {
+    "404": "404",
+    "backToHome": "Back to home",
+    "pageNotFound": "The page you are looking for does not exist"
+  },
+  "notifications": {
+    "Date": "Date",
+    "Delete": "Delete notification",
+    "Notification": "Notification",
+    "Pin": "Pin notification"
+  },
+  "overview": {
+    "AllWorkitems": "All Workitems",
+    "MapOverview": "Map overview",
+    "OptimizeRouteBtn": "Optimize route",
+    "RoutePlanning": "Route Planning"
+  },
+  "pageHeader": {
+    "About": "About",
+    "Customers": "Customers",
+    "Dashboard": "Dashboard",
+    "History": "History",
+    "DrivingJournal": "Driving journal",
+    "NotFound": "Not Found",
+    "Orders": "Orders",
+    "Products": "Products",
+    "Roles": "Role Management",
+    "Settings": "Settings",
+    "Users": "User Management",
+    "customer": "Customers",
+    "gpsTracker": "Gps-Trackers",
+    "simCard": "SIM Cards",
+    "user": "Users",
+    "vehicle": "Vehicles",
+    "workItem": "Work items"
+  },
+  "preferences": {
+    "About": "About",
+    "Arabic": "Arabic",
+    "BlackColor": "",
+    "Customers": "Customers",
+    "Dashboard": "Dashboard",
+    "DashboardBanner": "",
+    "DashboardBannerHint": "",
+    "DashboardNotifications": "Dashboard Notifications",
+    "DashboardNotificationsHint": "Show application notifications on the dashboard",
+    "DashboardStatistics": "Dashboard Statistics",
+    "DashboardStatisticsHint": "Show demo graph widget on the dashboard",
+    "DashboardTodo": "Dashboard Todo",
+    "DashboardTodoHint": "Shows demo todo widget on the dashboard",
+    "Default": "Default",
+    "DefaultColor": "",
+    "English": "English",
+    "French": "French",
+    "German": "German",
+    "GrayColor": "",
+    "GreenColor": "",
+    "HomePage": "Home Page",
+    "HomePageHint": "Select the default page to navigate to on login",
+    "Korean": "Korean",
+    "Language": "Language",
+    "LanguageHint": "Select the preferred language for your account",
+    "OrangeColor": "",
+    "Orders": "Orders",
+    "Portuguese": "Portuguese",
+    "Products": "Products",
+    "RedColor": "",
+    "ReloadPreferences": "Reload preferences?",
+    "ReloadPreferencesHint": "Load saved preferences (local changes are discarded)",
+    "ResetDefault": "",
+    "ResetPreferences": "Reset default preferences?",
+    "ResetPreferencesHint": "Reset preferences to application defaults (local only)",
+    "SavePreferences": "Save preferences?",
+    "SavePreferencesHint": "Save preferences to the cloud (synchronized between devices)",
+    "SetDefault": "",
+    "Settings": "Settings",
+    "Swedish": "Swedish",
+    "Theme": "",
+    "ThemeHint": "",
+    "UnassignedWorkItems": "Show unassiged Work Items",
+    "UnassignedWorkItemsHint": "Show unassiged Work Items widget on the dashboard"
+  },
+  "roles": {
+    "editor": {
+      "Cancel": "Cancel",
+      "Close": "Close",
+      "Description": "Description:",
+      "Name": "Name:",
+      "RoleNameRequired": "Role name is required (minimum of 2 and maximum of 200 characters)",
+      "Save": "Save",
+      "Saving": "Saving...",
+      "SelectAll": "Select all",
+      "SelectNone": "Select none"
+    },
+    "management": {
+      "Delete": "Delete",
+      "Description": "Description",
+      "Details": "Details",
+      "Edit": "Edit",
+      "EditRole": "Edit Role \"{{name}}\"",
+      "Name": "Name",
+      "NewRole": "New Role",
+      "RoleDetails": "Role Details \"{{name}}\"",
+      "Search": "Search for role...",
+      "Users": "Users"
+    }
+  },
+  "settings": {
+    "description": {
+      "RolesManagement": "Manage user roles",
+      "UserDepartments": "User Departments",
+      "UserPreferences": "Edit your preferences",
+      "UserProfile": "Edit your profile",
+      "UsersManagement": "Manage all users",
+      "UsersManagements": ""
+    },
+    "tab": {
+      "Preferences": "Preferences",
+      "Profile": "Profile",
+      "Roles": "Roles",
+      "Users": "Users"
+    }
+  },
+  "todoDemo": {
+    "editor": {
+      "AddTask": "Add Task",
+      "Description": "Description",
+      "Important": "Mark as important",
+      "Name": "Name",
+      "NewTask": "New Task",
+      "TaskNameRequired": "Task name is required"
+    },
+    "management": {
+      "AddTask": "Add Task",
+      "Delete": "Delete task",
+      "Description": "Description",
+      "HideCompleted": "Hide Completed",
+      "Important": "Mark as important",
+      "Search": "Search for task...",
+      "ShowCompleted": "Show Completed",
+      "Task": "Task"
+    }
+  },
+  "tripDialog": {
+    "fastestRoute": {
+      "Description": "Fastest route, suggestion (Map layer)",
+      "Title": "Fastest route"
+    },
+    "startStop": {
+      "Description": "Start and stop pins (Map layer)",
+      "Title": "Start/Stop"
+    },
+    "trip": {
+      "Description": "Current trip (Map layer)",
+      "Title": "Trip"
+    }
+  },
+  "users": {
+    "editor": {
+      "Cancel": "Cancel",
+      "ChangePassword": "Change Password",
+      "Close": "Close",
+      "ConfirmPassword": "Confirm Password",
+      "ConfirmationPasswordRequired": "Confirmation password is required",
+      "CurrentPassword": "Current Password",
+      "CurrentPasswordRequired": "Current password is required",
+      "Edit": "Edit",
+      "Email": "Email",
+      "EmailRequired": "Email address is required (maximum of 200 characters)",
+      "Enabled": "Enabled",
+      "FullName": " Full Name",
+      "InvalidEmail": "Specified email is not valid",
+      "JobTitle": "Job Title",
+      "NewPassword": "New Password",
+      "NewPasswordRequired": "New password is required",
+      "NewPasswordRules": "The new password must contain at least: one uppercase letter, one lowercase letter, one digit, and any special character",
+      "Password": "Password",
+      "PasswordHint": "Your password is required when changing user name",
+      "PasswordMismatch": "New password and confirmation password do not match",
+      "PhoneNumber": "Phone Number",
+      "RoleRequired": " Role is required",
+      "Roles": "Roles",
+      "Save": "Save",
+      "Saving": "Saving...",
+      "SendVerificationEmail": "Resend verification email",
+      "Unblock": "Unblock",
+      "UserName": "User Name",
+      "UserNameRequired": "User name is required (minimum of 2 and maximum of 200 characters)"
+    },
+    "management": {
+      "Delete": "Delete User",
+      "Edit": "Edit User",
+      "EditUser": "Edit User \"{{name}}\"",
+      "Email": "Email",
+      "FullName": "Full Name",
+      "NewUser": "New User",
+      "PhoneNumber": "Phone Number",
+      "Roles": "Roles",
+      "Search": "Search for user",
+      "Title": "Title",
+      "UserName": "User Name"
+    },
+    "pageHeader": {
+      "address": "Addresses"
+    }
+  }
+}

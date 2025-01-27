@@ -1,0 +1,11 @@
+//.container {
+//  display: flex;
+//  align-items: center; /* if you want to vertically align the items */
+//}
+
+.container {
+  display: flex;
+  align-items: center; /* if you want to vertically align the items */
+  justify-content: space-between; /* distribute items evenly */
+  gap: 10px; /* add a gap between the items */
+}

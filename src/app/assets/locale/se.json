@@ -1,0 +1,278 @@
+{
+	"app": {
+		"New": "Ny",
+		"Notifications": "Meddelanden",
+		"Welcome": "Välkommen"
+	},
+	"commands": {
+		"Cancel": "Annullera",
+		"Edit": "Redigera",
+		"Reload": "Ladda om",
+		"Reset": "Återställa",
+		"Save": "Spara"
+	},
+	"form": {
+		"ErrorCaption": "Missing Information",
+		"ErrorMessage": "You have entered invalid or incomplete information. Please correct any errors and try again."
+	},
+	"history": {
+		"day": {
+			"Description": "Välj vilket datum som helst om det har några data",
+			"Title": "Specifikt datum"
+		},
+		"display": {
+			"Title": "Visa resan på kartan"
+		},
+		"select": {
+			"Title": "Välj ett fordon"
+		},
+		"thisMonth": {
+			"Description": "Välj för att se månadens resor.",
+			"Title": ""
+		},
+		"thisWeek": {
+			"Description": "",
+			"Title": ""
+		},
+		"today": {
+			"Description": "",
+			"Title": ""
+		}
+	},
+	"home": {
+		"NoWidgets1": "You have no widgets displayed. Goto",
+		"NoWidgets2": "to configure available widgets",
+		"StatisticsTitle": "Some Important Stuff"
+	},
+	"mainMenu": {
+		"About": "Om",
+		"Account": "Konto",
+		"Admin": "Administration",
+		"Appointments": "Möten",
+		"Customers": "Kunder",
+		"GpsTracker": "Gps-spårare",
+		"History": "Historia",
+		"Home": "Hem",
+		"Invitations": "Inbjudningar",
+		"Journal": "Journal",
+		"Login": "Logga in",
+		"Logout": "Logga ut",
+		"Misc": "Metadata",
+		"Orders": "Orders",
+		"OverView": "Översikt",
+		"Products": "Producter",
+		"Profile": "Profil",
+		"Resources": "Resurser",
+		"Settings": "Inställningar",
+		"SimCard": "SIM-kort",
+		"Simcards": "SIM-kort",
+		"Theme": "Välj ett tema",
+		"Trackers": "Spårare",
+		"UserAccount": "Användarkonto",
+		"Users": "Användare",
+		"Vehicle": "Fordon",
+		"Vehicles": "Fordon",
+		"WorkItems": "Arbetsföremål"
+	},
+	"notFound": {
+		"404": "404",
+		"backToHome": "Tillbaka",
+		"pageNotFound": "Sidan finns inte"
+	},
+	"notifications": {
+		"Date": "Datum",
+		"Delete": "Ta bort notering",
+		"Notification": "Notering",
+		"Pin": "Fäst avisering"
+	},
+	"overview": {
+		"AllWorkitems": "Alla arbetsartiklar",
+		"MapOverview": "Kartöversikt",
+		"OptimizeRouteBtn": "Optimera rutten",
+		"RoutePlanning": "Ruttplanering"
+	},
+	"pageHeader": {
+		"About": "Om",
+		"Customers": "Kunder",
+		"Dashboard": "Översikt",
+		"NotFound": "Hittades inte",
+		"Orders": "Order",
+		"Products": "Prodkter",
+		"Roles": "Rollhantering",
+		"Settings": "Inställningar",
+		"Users": "Användarhantering",
+		"customer": "",
+		"gpsTracker": "",
+		"simCard": "SIM-kort",
+		"user": "Användare",
+		"vehicle": "Fordon",
+		"workItem": "Arbetsföremål"
+	},
+	"preferences": {
+		"About": "About",
+		"Arabic": "Arabic",
+		"BlackColor": "",
+		"Customers": "Customers",
+		"Dashboard": "Dashboard",
+		"DashboardBanner": "",
+		"DashboardBannerHint": "",
+		"DashboardNotifications": "Dashboard Notifications",
+		"DashboardNotificationsHint": "Show application notifications on the dashboard",
+		"DashboardStatistics": "Dashboard Statistics",
+		"DashboardStatisticsHint": "Show demo graph widget on the dashboard",
+		"DashboardTodo": "Dashboard Todo",
+		"DashboardTodoHint": "Shows demo todo widget on the dashboard",
+		"Default": "",
+		"DefaultColor": "",
+		"English": "English",
+		"French": "French",
+		"German": "German",
+		"GrayColor": "",
+		"GreenColor": "",
+		"HomePage": "Home Page",
+		"HomePageHint": "Select the default page to navigate to on login",
+		"Korean": "Korean",
+		"Language": "Language",
+		"LanguageHint": "Select the preferred language for your account",
+		"OrangeColor": "",
+		"Orders": "Orders",
+		"Portuguese": "Portuguese",
+		"Products": "Products",
+		"RedColor": "",
+		"ReloadPreferences": "Reload preferences?",
+		"ReloadPreferencesHint": "Load saved preferences (local changes are discarded)",
+		"ResetDefault": "",
+		"ResetPreferences": "Reset default preferences?",
+		"ResetPreferencesHint": "Reset preferences to application defaults (local only)",
+		"SavePreferences": "Save preferences?",
+		"SavePreferencesHint": "Save preferences to the cloud (synchronized between devices)",
+		"SetDefault": "",
+		"Settings": "Settings",
+		"Swedish": "",
+		"Theme": "",
+		"ThemeHint": "",
+		"UnassignedWorkItems": "Arbetsorders som saknar ansvarig",
+		"UnassignedWorkItemsHint": "Visa sektion: Arbetsorders som saknar ansvarig"
+	},
+	"roles": {
+		"editor": {
+			"Cancel": "Cancel",
+			"Close": "Close",
+			"Description": "Description:",
+			"Name": "Name:",
+			"RoleNameRequired": "Role name is required (minimum of 2 and maximum of 200 characters)",
+			"Save": "Save",
+			"Saving": "Saving...",
+			"SelectAll": "Select all",
+			"SelectNone": "Select none"
+		},
+		"management": {
+			"Delete": "Delete",
+			"Description": "Description",
+			"Details": "Details",
+			"Edit": "Edit",
+			"EditRole": "Edit Role \"{{name}}\"",
+			"Name": "Name",
+			"NewRole": "New Role",
+			"RoleDetails": "Role Details \"{{name}}\"",
+			"Search": "Search for role...",
+			"Users": "Users"
+		}
+	},
+	"settings": {
+		"description": {
+			"RolesManagement": "Manage user roles",
+			"UserDepartments": "User Departments",
+			"UserPreferences": "Edit your preferences",
+			"UserProfile": "Edit your profile",
+			"UsersManagement": "Manage all users",
+			"UsersManagements": ""
+		},
+		"tab": {
+			"Preferences": "Preferences",
+			"Profile": "Profile",
+			"Roles": "Roles",
+			"Users": "Users"
+		}
+	},
+	"todoDemo": {
+		"editor": {
+			"AddTask": "Add Task",
+			"Description": "Description",
+			"Important": "Mark as important",
+			"Name": "Name",
+			"NewTask": "New Task",
+			"TaskNameRequired": "Task name is required"
+		},
+		"management": {
+			"AddTask": "Add Task",
+			"Delete": "Delete task",
+			"Description": "Description",
+			"HideCompleted": "Hide Completed",
+			"Important": "Mark as important",
+			"Search": "Search for task...",
+			"ShowCompleted": "Show Completed",
+			"Task": "Task"
+		}
+	},
+	"tripDialog": {
+		"fastestRoute": {
+			"Description": "",
+			"Title": ""
+		},
+		"startStop": {
+			"Description": "Start- och stoppnålar (kartlager)",
+			"Title": "Starta/Stoppa"
+		},
+		"trip": {
+			"Description": "Aktuell resa (Kartlager)",
+			"Title": "Resa"
+		}
+	},
+	"users": {
+		"editor": {
+			"Cancel": "Avbryt",
+			"ChangePassword": "Ändra lösenord",
+			"Close": "Nära",
+			"ConfirmPassword": "Bekräfta lösenord",
+			"ConfirmationPasswordRequired": "Bekräftelselösenord krävs",
+			"CurrentPassword": "Nuvarande lösenord",
+			"CurrentPasswordRequired": "Nuvarande lösenord krävs",
+			"Edit": "Redigera",
+			"Email": "E-post",
+			"EmailRequired": "E-postadress krävs (max 200 tecken)",
+			"Enabled": "Aktiverat",
+			"FullName": " Fullständigt namn",
+			"InvalidEmail": "Angiven e-postadress är inte giltig",
+			"JobTitle": "Befattning",
+			"NewPassword": "Nytt lösenord",
+			"NewPasswordRequired": "Nytt lösenord krävs",
+			"NewPasswordRules": "The new password must contain at least: one uppercase letter, one lowercase letter, one digit, and any special character",
+			"Password": "Password",
+			"PasswordHint": "Your password is required when changing user name",
+			"PasswordMismatch": "New password and confirmation password do not match",
+			"PhoneNumber": "Phone Number",
+			"RoleRequired": " Role is required",
+			"Roles": "Roles",
+			"Save": "Save",
+			"Saving": "Saving...",
+			"SendVerificationEmail": "",
+			"Unblock": "Unblock",
+			"UserName": "User Name",
+			"UserNameRequired": "User name is required (minimum of 2 and maximum of 200 characters)"
+		},
+		"management": {
+			"Delete": "Delete User",
+			"Edit": "Edit User",
+			"EditUser": "Edit User \"{{name}}\"",
+			"Email": "Email",
+			"FullName": "Full Name",
+			"NewUser": "New User",
+			"PhoneNumber": "Phone Number",
+			"Roles": "Roles",
+			"Search": "Search for user",
+			"Title": "Title",
+			"UserName": "User Name"
+		}
+	}
+}

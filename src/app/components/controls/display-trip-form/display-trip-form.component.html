@@ -1,0 +1,46 @@
+<google-map
+        (mapInitialized)="onMapReady($event)"
+        height="600px"
+        width="100%"
+        [zoom]="zoom"
+        [center]="center"
+        [options]="options">
+    <map-polyline [path]="suggestedRoute" [options]="polylineOptionsBlue"></map-polyline>
+    <map-polyline [path]="actualRoute" [options]="polylineOptionsRed"></map-polyline>
+    <map-polyline [path]="correctedRoute" [options]="polylineOptionsOrange"></map-polyline>
+    <map-marker [position]="actualRoute[0]"></map-marker>
+    <map-marker [position]="actualRoute[actualRoute.length - 1]"></map-marker>
+</google-map>
+
+<div data-layout="column" fxLayout.gt-sm="row wrap" class="p-2">
+    <div data-flex="73.3" class="p-2">
+        <table style="width: 100%">
+            <tbody>
+            <tr>
+                <td>Distance:</td>
+                <td id="drivenDistance">{{ toKilometers(vehicleTripLogFullDto?.distance) | number:'1.1-1' }} km</td>
+                <td>Started:</td>
+                <td id="Started">{{vehicleTripLogFullDto?.started | date:'HH:mm'}}</td>
+                <td>Ended:</td>
+                <td id="ended">{{vehicleTripLogFullDto?.ended | date:'HH:mm'}}</td>
+                <td>Duration:</td>
+                <td id="duration">{{vehicleTripLogFullDto?.durationInMinutes | number:'1.1-1'}} minutes</td>
+            </tr>
+            <tr>
+                <td>Fastest distance:</td>
+                <td id="fastestDistance">
+                    <p *ngIf="refRoute">
+                        {{ toKilometers(refRoute.distance) | number:'1.1-1' }} km
+                    </p>
+                </td>
+                <td>Fastest duration:</td>
+                <td id="fastestDuration">
+                    <p *ngIf="refRoute">
+                        {{toMinutes(refRoute.duration) | number:'1.1-1'}} minutes
+                    </p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

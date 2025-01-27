@@ -1,0 +1,278 @@
+{
+	"app": {
+		"New": "Nouveau",
+		"Notifications": "Notifications",
+		"Welcome": "Bienvenue"
+	},
+	"commands": {
+		"Cancel": "Annuler",
+		"Edit": "Modifier",
+		"Reload": "Recharger",
+		"Reset": "Réinitialiser",
+		"Save": "Sauvegarder"
+	},
+	"form": {
+		"ErrorCaption": "",
+		"ErrorMessage": ""
+	},
+	"history": {
+		"day": {
+			"Description": "Sélectionnez n'importe quelle date, si elle contient des données",
+			"Title": "Date spécifique"
+		},
+		"display": {
+			"Title": "Afficher le trajet sur la carte"
+		},
+		"select": {
+			"Title": "Sélectionnez un véhicule"
+		},
+		"thisMonth": {
+			"Description": "Sélectionnez pour afficher les voyages de ce mois.",
+			"Title": ""
+		},
+		"thisWeek": {
+			"Description": "",
+			"Title": ""
+		},
+		"today": {
+			"Description": "",
+			"Title": ""
+		}
+	},
+	"home": {
+		"NoWidgets1": "Vous n'avez pas de widgets affichés. Aller à",
+		"NoWidgets2": "Configurer les widgets disponibles",
+		"StatisticsTitle": "Quelques trucs importants"
+	},
+	"mainMenu": {
+		"About": "À Propos",
+		"Account": "Compte",
+		"Admin": "Admin",
+		"Appointments": "Rendez-vous",
+		"Customers": "Les clients",
+		"GpsTracker": "Gps-Trackers",
+		"History": "L'histoire",
+		"Home": "Accueil",
+		"Invitations": "Invitations",
+		"Journal": "",
+		"Login": "",
+		"Logout": "Se Déconnecter",
+		"Misc": "Métadonnées",
+		"Orders": "Les ordres",
+		"OverView": "Vue d'ensemble",
+		"Products": "Les produits",
+		"Profile": "Profil",
+		"Resources": "Ressources",
+		"Settings": "Réglages",
+		"SimCard": "Cartes Sim",
+		"Simcards": "Cartes Sim",
+		"Theme": "Sélectionnez un thème",
+		"Trackers": "Traqueurs",
+		"UserAccount": "Compte d'utilisateur",
+		"Users": "Utilisateurs",
+		"Vehicle": "Véhicules",
+		"Vehicles": "Véhicules",
+		"WorkItems": "Objets de travail"
+	},
+	"notFound": {
+		"404": "404",
+		"backToHome": "De retour à la page d'accueil",
+		"pageNotFound": "La page que vous recherchez n'existe pas"
+	},
+	"notifications": {
+		"Date": "Date",
+		"Delete": "Supprimer notification",
+		"Notification": "Notification",
+		"Pin": "Épingler notification"
+	},
+	"overview": {
+		"AllWorkitems": "Tous les éléments de travail",
+		"MapOverview": "Aperçu de la carte",
+		"OptimizeRouteBtn": "Optimiser l'itinéraire",
+		"RoutePlanning": "Planification d’itinéraire"
+	},
+	"pageHeader": {
+		"About": "À Propos",
+		"Customers": "Les clients",
+		"Dashboard": "Tableau de bord",
+		"NotFound": "Pas trouvé",
+		"Orders": "Les ordres",
+		"Products": "Les produits",
+		"Roles": "",
+		"Settings": "Paramètres",
+		"Users": "Gestion des utilisateurs",
+		"customer": "",
+		"gpsTracker": "",
+		"simCard": "Cartes Sim",
+		"user": "Utilisateurs",
+		"vehicle": "Véhicules",
+		"workItem": "Objets de travail"
+	},
+	"preferences": {
+		"About": "À propos",
+		"Arabic": "Arabe",
+		"BlackColor": "<span class='black-theme-option'>Noir</span>",
+		"Customers": "Les clients",
+		"Dashboard": "Tableau de bord",
+		"DashboardBanner": "Bannière de Tableau de Bord:",
+		"DashboardBannerHint": "Afficher le widget de bannière d'information de démonstration sur le tableau de bord",
+		"DashboardNotifications": "Notifications du tableau de bord:",
+		"DashboardNotificationsHint": "Afficher les notifications d'application sur le tableau de bord",
+		"DashboardStatistics": "Statistiques du tableau de bord:",
+		"DashboardStatisticsHint": "Afficher le widget de graphique de démonstration sur le tableau de bord",
+		"DashboardTodo": "Tableau de bord à faire:",
+		"DashboardTodoHint": "Afficher le widget de démon tout sur le tableau de bord",
+		"Default": "Défaut",
+		"DefaultColor": "<span class='default-theme-option'>Défaut</span>",
+		"English": "Anglais",
+		"French": "Français",
+		"German": "Allemand",
+		"GrayColor": "<span class='gray-theme-option'>Gris</span>",
+		"GreenColor": "<span class='green-theme-option'>Vert</span>",
+		"HomePage": "Page d'accueil:",
+		"HomePageHint": "Sélectionnez la page par défaut pour naviguer jusqu'à la connexion",
+		"Korean": "Coréen",
+		"Language": "La langue:",
+		"LanguageHint": "Sélectionnez la langue préférée pour votre compte",
+		"OrangeColor": "<span class='orange-theme-option'>Orange</span>",
+		"Orders": "Les ordres",
+		"Portuguese": "Portugais",
+		"Products": "Les produits",
+		"RedColor": "<span class='red-theme-option'>Rouge</span>",
+		"ReloadPreferences": "Recharger les préférences:",
+		"ReloadPreferencesHint": "Charger les préférences par défaut (les modifications locales sont rejetées)",
+		"ResetDefault": "Réinitialiser par défaut",
+		"ResetPreferences": "",
+		"ResetPreferencesHint": "",
+		"SavePreferences": "",
+		"SavePreferencesHint": "",
+		"SetDefault": "Définir par défaut",
+		"Settings": "Paramètres",
+		"Swedish": "",
+		"Theme": "Thème:",
+		"ThemeHint": "Sélectionnez le thème de couleur par défaut pour votre compte",
+		"UnassignedWorkItems": "",
+		"UnassignedWorkItemsHint": ""
+	},
+	"roles": {
+		"editor": {
+			"Cancel": "Annuler",
+			"Close": "Fermer",
+			"Description": "La description:",
+			"Name": "Nom:",
+			"RoleNameRequired": "Le nom du rôle est requis (minimum de 2 et maximum de 200 caractères)",
+			"Save": "Enregistrer",
+			"Saving": "En cours d'enregistrement...",
+			"SelectAll": "Tout sélectionner",
+			"SelectNone": "Ne rien sélectionner"
+		},
+		"management": {
+			"Delete": "Effacer",
+			"Description": "La description",
+			"Details": "Détails",
+			"Edit": "Modifier",
+			"EditRole": "Modifier Rôle \"{{name}}\"",
+			"Name": "Nom",
+			"NewRole": "Nouveau rôle",
+			"RoleDetails": "Détails des rôles \"{{name}}\"",
+			"Search": "Recherche rôle...",
+			"Users": "Utilisateurs"
+		}
+	},
+	"settings": {
+		"description": {
+			"RolesManagement": "Gestion des rôles",
+			"UserDepartments": "Départements d'utilisateurs",
+			"UserPreferences": "Préférences de l'utilisateur",
+			"UserProfile": "Profil de l'utilisateur",
+			"UsersManagement": "",
+			"UsersManagements": "Gestion des utilisateurs"
+		},
+		"tab": {
+			"Preferences": "Préférences",
+			"Profile": "Profil",
+			"Roles": "Rôles",
+			"Users": "Utilisateurs"
+		}
+	},
+	"todoDemo": {
+		"editor": {
+			"AddTask": "Ajouter une tâche",
+			"Description": "Description",
+			"Important": "Marquer comme important",
+			"Name": "Nom",
+			"NewTask": "Nouvelle tâche",
+			"TaskNameRequired": "Le nom de la tâche est requis"
+		},
+		"management": {
+			"AddTask": "Ajouter une tâche",
+			"Delete": "Supprimer la tâche",
+			"Description": "Description",
+			"HideCompleted": "Masquer complété",
+			"Important": "Marquer comme important",
+			"Search": "Rechercher une tâche...",
+			"ShowCompleted": "",
+			"Task": "Tâche"
+		}
+	},
+	"tripDialog": {
+		"fastestRoute": {
+			"Description": "",
+			"Title": ""
+		},
+		"startStop": {
+			"Description": "Démarrer et arrêter les épingles (couche de carte)",
+			"Title": "Démarrer/Arrêter"
+		},
+		"trip": {
+			"Description": "Trajet en cours (Couche de carte)",
+			"Title": "Voyage"
+		}
+	},
+	"users": {
+		"editor": {
+			"Cancel": "Annuler",
+			"ChangePassword": "Changer le mot de passe",
+			"Close": "Proche",
+			"ConfirmPassword": "Confirmer le mot de passe",
+			"ConfirmationPasswordRequired": "Mot de passe de confirmation est requis",
+			"CurrentPassword": "Mot de passe actuel",
+			"CurrentPasswordRequired": "Le mot de passe actuel est requis",
+			"Edit": "Modifier",
+			"Email": "Email",
+			"EmailRequired": "L'adresse e-mail est obligatoire (200 caractères maximum)",
+			"Enabled": "Active",
+			"FullName": " Nom complet",
+			"InvalidEmail": "L’adresse e-mail spécifiée n’est pas valide",
+			"JobTitle": "Titre du poste",
+			"NewPassword": "Nouveau mot de passe",
+			"NewPasswordRequired": "Un nouveau mot de passe est requis",
+			"NewPasswordRules": "",
+			"Password": "Mot de passe:",
+			"PasswordHint": "Votre mot de passe est nécessaire lors de la modification du nom d'utilisateur",
+			"PasswordMismatch": "Le nouveau mot de passe et le mot de passe de confirmation ne correspondent pas",
+			"PhoneNumber": "Téléphone #:",
+			"RoleRequired": "Rôle requis ",
+			"Roles": "Les rôles:",
+			"Save": "Enregistrer",
+			"Saving": "En cours d'enregistrement...",
+			"SendVerificationEmail": "",
+			"Unblock": "Débloquer",
+			"UserName": "Nom d'utilisateur:",
+			"UserNameRequired": "Le nom d'utilisateur est requis (minimum de 2 et maximum de 200 caractères)"
+		},
+		"management": {
+			"Delete": "Supp.",
+			"Edit": "Modif.",
+			"EditUser": "Modifier Utilisateur \"{{name}}\"",
+			"Email": "Adresse électronique",
+			"FullName": "Nom Complet",
+			"NewUser": "Nouvel utilisateur",
+			"PhoneNumber": "Numéro de téléphone",
+			"Roles": "Les rôles",
+			"Search": "Rechercher un utilisateur...",
+			"Title": "Titre",
+			"UserName": "Nom d'utilisateur"
+		}
+	}
+}

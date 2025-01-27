@@ -1,0 +1,23 @@
+<ejs-accordion>
+    <e-accordionitems>
+        <e-accordionitem [header]="formatHeader(trip)">
+            <ng-template #content>
+                {{ toKilometers(trip.distance) | number:'1.1-1' }} km <br />
+                {{ trip.addressStart.name }}<br />
+                {{ trip.addressEnd.name }}
+                <button (click)="displayTrip(trip)" class="e-control e-btn" ejs-button ejs-tooltip="'history.display.Title' | translate">
+                    <ejs-icons>e-map</ejs-icons>
+                </button>
+                <ejs-dialog id="dialog_204604871_1" #tripDialog [width]="'60%'" [showCloseIcon]='true' [visible]='false' class="centered-dialog" style="left: 50%">
+                    <ng-template #content>
+                        <app-display-trip-form [trip]="trip"></app-display-trip-form>
+                        <div class="dialog-buttons">
+                            <button (click)="previousTrip()" class="e-control e-btn">Previous</button>
+                            <button (click)="nextTrip()" class="e-control e-btn">Next</button>
+                        </div>
+                    </ng-template>
+                </ejs-dialog>
+            </ng-template>
+        </e-accordionitem>
+    </e-accordionitems>
+</ejs-accordion>

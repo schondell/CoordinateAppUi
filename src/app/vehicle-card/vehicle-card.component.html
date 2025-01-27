@@ -1,0 +1,64 @@
+<div class="control-section card-control-section reveal_card_layout">
+  <div class='row'>
+    <div class="card-header">
+      <strong>{{ vehicle.name }} ({{ vehicle.description }})</strong>
+    </div>
+    <div class="row card-layout">
+      <div class="col-md-12">
+        <div class="e-card">
+          <div class="map-container " >
+            <google-map [center]="center" [zoom]="zoom" [options]="mapOptions" height="180px"  width="100%">
+              <map-marker *ngIf="markerOptions && markerOptions.position" [options]="markerOptions" class="custom-map"></map-marker>
+              <map-polyline [path]="vertices"></map-polyline>
+            </google-map>
+          </div>
+          <div id="card_revealed">
+            <div class="e-card-content">
+              <table>
+                <thead>
+                <tr>
+                  <th>{{ 'vehicle-card.STATUS' | translate }}</th>
+                  <th>{{ 'vehicle-card.SPEED' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td id="Status_1035">{{ status }}</td>
+                  <td id="Speed_1035">{{ vehicle.speed }}</td>
+                </tr>
+                <tr>
+                  <td colspan="2">{{ 'vehicle-card.SINCE' | translate }}: {{ getFormattedTimestamp() }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<div class="main-map">-->
+<!--            <google-map [center]="center" [zoom]="zoom" [options]="mapOptions">-->
+<!--              <map-marker *ngIf="markerOptions && markerOptions.position" [options]="markerOptions"></map-marker>-->
+<!--              <map-polyline [path]="vertices"/>-->
+<!--            </google-map>-->
+<!--</div>-->
+<!--<div class="card-content">-->
+<!--  <table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th>Status</th>-->
+<!--      <th>Speed</th>-->
+<!--      <th>Since</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr>-->
+<!--      <td id="Status_1035">Idling</td>-->
+<!--      <td id="Speed_1035">35</td>-->
+<!--      <td id="Since_1035">20.05.2024 18:45</td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</div>-->

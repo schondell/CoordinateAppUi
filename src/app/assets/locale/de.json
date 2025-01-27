@@ -1,0 +1,278 @@
+{
+	"app": {
+		"New": "Neu",
+		"Notifications": "Benachrichtigungen",
+		"Welcome": "Willkommen"
+	},
+	"commands": {
+		"Cancel": "Stornieren",
+		"Edit": "Bearbeiten",
+		"Reload": "Neu laden",
+		"Reset": "Zurücksetzen",
+		"Save": "Sparen"
+	},
+	"form": {
+		"ErrorCaption": "",
+		"ErrorMessage": ""
+	},
+	"history": {
+		"day": {
+			"Description": "Wählen Sie ein beliebiges Datum aus, wenn es einige Daten enthält",
+			"Title": "Bestimmtes Datum"
+		},
+		"display": {
+			"Title": "Fahrt auf Karte anzeigen"
+		},
+		"select": {
+			"Title": "Wählen Sie ein Fahrzeug aus"
+		},
+		"thisMonth": {
+			"Description": "Wählen Sie diese Option, um die Reisen dieses Monats anzuzeigen.",
+			"Title": ""
+		},
+		"thisWeek": {
+			"Description": "",
+			"Title": ""
+		},
+		"today": {
+			"Description": "",
+			"Title": ""
+		}
+	},
+	"home": {
+		"NoWidgets1": "Keine Elemente zur Anzeige vorhanden. Gehe zu",
+		"NoWidgets2": "um die Anzeige zu konfigurieren",
+		"StatisticsTitle": "Irgendwas ganz Wichtiges"
+	},
+	"mainMenu": {
+		"About": "Über",
+		"Account": "Konto",
+		"Admin": "Administrator",
+		"Appointments": "Termine",
+		"Customers": "Kunden",
+		"GpsTracker": "GPS-Tracker",
+		"History": "Geschichte",
+		"Home": "Zuhause",
+		"Invitations": "Einladungen",
+		"Journal": "",
+		"Login": "",
+		"Logout": "Abmelden",
+		"Misc": "Metadaten",
+		"Orders": "Bestellungen",
+		"OverView": "Überblick",
+		"Products": "Produkte",
+		"Profile": "Profil",
+		"Resources": "Ressourcen",
+		"Settings": "Die Einstellungen",
+		"SimCard": "SIM-Karten",
+		"Simcards": "SIM-Karten",
+		"Theme": "Wähle ein Thema",
+		"Trackers": "Tracker",
+		"UserAccount": "Benutzerkonto",
+		"Users": "Benutzer",
+		"Vehicle": "Fahrzeuge",
+		"Vehicles": "Fahrzeuge",
+		"WorkItems": "Arbeitsgegenstände"
+	},
+	"notFound": {
+		"404": "404",
+		"backToHome": "Zurück zur Startseite",
+		"pageNotFound": "Die angeforderte Seite wurde nicht gefunden"
+	},
+	"notifications": {
+		"Date": "Datum",
+		"Delete": "Benachrichtigung löschen",
+		"Notification": "Benachrichtigung",
+		"Pin": "Benachrichtigung anheften"
+	},
+	"overview": {
+		"AllWorkitems": "Alle Workitems",
+		"MapOverview": "Kartenübersicht",
+		"OptimizeRouteBtn": "Route optimieren",
+		"RoutePlanning": "Routenplanung"
+	},
+	"pageHeader": {
+		"About": "Über",
+		"Customers": "Kunden",
+		"Dashboard": "Übersicht",
+		"NotFound": "Nicht gefunden",
+		"Orders": "Bestellungen",
+		"Products": "Produkte",
+		"Roles": "",
+		"Settings": "Einstellungen",
+		"Users": "Benutzerverwaltung",
+		"customer": "",
+		"gpsTracker": "",
+		"simCard": "SIM-Karten",
+		"user": "Benutzer",
+		"vehicle": "Fahrzeuge",
+		"workItem": "Arbeitsgegenstände"
+	},
+	"preferences": {
+		"About": "Über",
+		"Arabic": "Arabisch",
+		"BlackColor": "<span class='black-theme-option'>Schwarz</span>",
+		"Customers": "Kunden",
+		"Dashboard": "Dashboard",
+		"DashboardBanner": "Dashboard Banner:",
+		"DashboardBannerHint": "Zeigt das Info-Banner Element auf dem Dashboard",
+		"DashboardNotifications": "Dashboard Benachrichtigungen:",
+		"DashboardNotificationsHint": "Zeige Anwendungsbenachrichtigungen auf dem Dashboard",
+		"DashboardStatistics": "Dashboard Statistiken:",
+		"DashboardStatisticsHint": "Zeigt das Demo-Statistik Element auf dem Dashboard",
+		"DashboardTodo": "Dashboard Beispielaufgaben:",
+		"DashboardTodoHint": "Zeigt das Beispielaufgaben Element auf dem Dashboard",
+		"Default": "Standard",
+		"DefaultColor": "<span class='default-theme-option'>Standard</span>",
+		"English": "English",
+		"French": "Französisch",
+		"German": "Deutsch",
+		"GrayColor": "<span class='gray-theme-option'>Grau</span>",
+		"GreenColor": "<span class='green-theme-option'>Grün</span>",
+		"HomePage": "Startseite:",
+		"HomePageHint": "Die Standardseite zur Anzeige nach der Anmeldung wählen",
+		"Korean": "Koreanisch",
+		"Language": "Sprache:",
+		"LanguageHint": "Die bevorzugte Anzeigesprache auswählen",
+		"OrangeColor": "<span class='orange-theme-option'>Orange</span>",
+		"Orders": "Bestellungen",
+		"Portuguese": "Portugiesisch",
+		"Products": "Produkte",
+		"RedColor": "<span class='red-theme-option'>Rot</span>",
+		"ReloadPreferences": "Einstellungen aktualisieren:",
+		"ReloadPreferencesHint": "Vorgabeeinstellungen laden (lokale Einstellungen überschreiben)",
+		"ResetDefault": "Vorgabeeinstellungen",
+		"ResetPreferences": "",
+		"ResetPreferencesHint": "",
+		"SavePreferences": "",
+		"SavePreferencesHint": "",
+		"SetDefault": "Als Standard setzen",
+		"Settings": "Einstellungen",
+		"Swedish": "",
+		"Theme": "Farbschema:",
+		"ThemeHint": "Das bevorzugte Farbschema wählen",
+		"UnassignedWorkItems": "",
+		"UnassignedWorkItemsHint": ""
+	},
+	"roles": {
+		"editor": {
+			"Cancel": "Abbrechen",
+			"Close": "Schliessen",
+			"Description": "Beschreibung:",
+			"Name": "Name:",
+			"RoleNameRequired": "Ein Rollenname ist erforderlich (mindestens 2, maximal 200 Zeichen)",
+			"Save": "Speichern",
+			"Saving": "Speichere...",
+			"SelectAll": "Alle auswählen",
+			"SelectNone": "Auswahl aufheben"
+		},
+		"management": {
+			"Delete": "Entf.",
+			"Description": "Beschreibung",
+			"Details": "Details",
+			"Edit": "Bearb.",
+			"EditRole": "Rolle \"{{name}}\" bearbeiten",
+			"Name": "Name",
+			"NewRole": "Neue Rolle",
+			"RoleDetails": "Rollen Details \"{{name}}\"",
+			"Search": "Suche nach Rollen...",
+			"Users": "Benutzer"
+		}
+	},
+	"settings": {
+		"description": {
+			"RolesManagement": "Rollenverwaltung",
+			"UserDepartments": "Benutzerabteilungen",
+			"UserPreferences": "Benutzereinstellungen",
+			"UserProfile": "Benutzerprofil",
+			"UsersManagement": "",
+			"UsersManagements": "Benutzerverwaltung"
+		},
+		"tab": {
+			"Preferences": "Einstellungen",
+			"Profile": "Profil",
+			"Roles": "Rollen",
+			"Users": "Benutzer"
+		}
+	},
+	"todoDemo": {
+		"editor": {
+			"AddTask": "Aufgabe hinzufügen",
+			"Description": "Beschreibung",
+			"Important": "Als wichtig markieren",
+			"Name": "Name",
+			"NewTask": "Neue Aufgabe",
+			"TaskNameRequired": "Aufgabenname ist erforderlich"
+		},
+		"management": {
+			"AddTask": "Aufgabe hinzufügen",
+			"Delete": "Aufgabe löschen",
+			"Description": "Beschreibung",
+			"HideCompleted": "Abgeschlossene ausblenden",
+			"Important": "Als wichtig markieren",
+			"Search": "Suche nach Aufgaben...",
+			"ShowCompleted": "",
+			"Task": "Aufgabe"
+		}
+	},
+	"tripDialog": {
+		"fastestRoute": {
+			"Description": "",
+			"Title": ""
+		},
+		"startStop": {
+			"Description": "Start- und Stopp-Pins (Karten-Layer)",
+			"Title": "Start/Stopp"
+		},
+		"trip": {
+			"Description": "Aktuelle Reise (Kartenebene)",
+			"Title": "Ausflug"
+		}
+	},
+	"users": {
+		"editor": {
+			"Cancel": "Abbrechen",
+			"ChangePassword": "Passwort ändern",
+			"Close": "Schließen",
+			"ConfirmPassword": "Passwort bestätigen",
+			"ConfirmationPasswordRequired": "Bestätigungskennwort ist erforderlich",
+			"CurrentPassword": "Derzeitiges Passwort",
+			"CurrentPasswordRequired": "Aktuelles Passwort ist erforderlich",
+			"Edit": "Bearbeiten",
+			"Email": "Email",
+			"EmailRequired": "E-Mail-Adresse erforderlich (maximal 200 Zeichen)",
+			"Enabled": "Aktiviert",
+			"FullName": " Vollständiger Name",
+			"InvalidEmail": "Angegebene E-Mail-Adresse ist ungültig",
+			"JobTitle": "Job-Titel",
+			"NewPassword": "Neues Passwort",
+			"NewPasswordRequired": "Neues Passwort erforderlich",
+			"NewPasswordRules": "",
+			"Password": "Passwort:",
+			"PasswordHint": "Passworteingabe ist erforderlich, wenn der Benutzername geändert werden soll",
+			"PasswordMismatch": "Die angegebenen Passwörter stimmen nicht überein",
+			"PhoneNumber": "Telefon #:",
+			"RoleRequired": " Rolle ist erforderlich",
+			"Roles": "Rollen:",
+			"Save": "Speichern",
+			"Saving": "Speichere...",
+			"SendVerificationEmail": "",
+			"Unblock": "Entsperren",
+			"UserName": "Benutzername:",
+			"UserNameRequired": "Ein Benutzername ist erforderlich (mindestens 2, maximal 200 Zeichen)"
+		},
+		"management": {
+			"Delete": "Entf.",
+			"Edit": "Bearb.",
+			"EditUser": "Benutzer \"{{name}}\" bearbeiten",
+			"Email": "Email",
+			"FullName": "Vor- und Nachname",
+			"NewUser": "Neuer Benutzer",
+			"PhoneNumber": "Telefon",
+			"Roles": "Rollen",
+			"Search": "Benutzer suchen...",
+			"Title": "Titel",
+			"UserName": "Benutzername"
+		}
+	}
+}

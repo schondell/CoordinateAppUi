@@ -1,0 +1,63 @@
+<button mat-icon-button class="close" aria-label="Close" title="Close" style="float: right;" (click)="onClose()">
+  <mat-icon>close</mat-icon>
+</button>
+<google-map
+  (mapInitialized)="onMapReady($event)"
+  height="600px"
+  width="100%"
+  [zoom]="zoom"
+  [center]="center"
+  [options]="options">
+  <ng-container *ngIf="isTripsLoaded">
+    <ng-container *ngFor="let trip of allTrips">
+    <map-polyline [path]="trip.suggestedRouteArray"  [options]="polylineOptionsBlue"></map-polyline>
+    <map-polyline [path]="trip.actualRouteArray"  [options]="polylineOptionsRed"></map-polyline>
+    <map-marker [position]="trip.suggestedRouteArray[0]"></map-marker>
+    <map-marker [position]="trip.suggestedRouteArray[trip.suggestedRouteArray.length -1]"></map-marker>
+    <map-marker [position]="trip.actualRouteArray[0]"></map-marker>
+    <map-marker [position]="trip.actualRouteArray[trip.actualRouteArray.length - 1]"></map-marker>
+    </ng-container>
+  </ng-container>
+</google-map>
+
+<p>
+  <button *ngIf="canManageRoles" mat-raised-button (click)="cancel()" color="warn">Cancel</button>
+  <button *ngIf="!canManageRoles" mat-raised-button (click)="cancel()">Close</button>
+</p>
+
+<div data-layout="column" fxLayout.gt-sm="row wrap" class="p-2">
+  <div data-flex="73.3" class="p-2">
+    <div *ngIf="tripHistoryEntry.vehicleTripLogFullDtos">
+      <app-trip *ngFor="let trip of tripHistoryEntry.vehicleTripLogFullDtos" [trip]="trip"></app-trip>
+    </div>
+<!--        <table style="width: 100%">-->
+<!--          <tbody>-->
+<!--            <tr>-->
+<!--              <td>Distance:</td>-->
+<!--              <td id="drivenDistance">{{ toKilometers(tripHistoryEntry.totalDistance) | number:'1.1-1' }} km</td>-->
+<!--              &lt;!&ndash; <td>Started: </td>-->
+<!--              <td id="Started">{{tripHistoryEntry.started |  date:'HH:mm'}}</td>-->
+<!--              <td>Ended:</td>-->
+<!--              <td id="ended">{{tripHistoryEntry.ended |  date:'HH:mm'}}</td>-->
+<!--              <td>Duration:</td>-->
+<!--              <td id="duration">{{tripHistoryEntry.duration | number}} min</td> &ndash;&gt;-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>Fastest distance:</td>-->
+<!--              <td id="fastestDistance">-->
+<!--                  <p *ngIf="refRoute">-->
+<!--                      {{ toKilometers(refRoute.distance) | number:'1.1-1' }} km-->
+<!--                    </p>-->
+<!--              </td>-->
+<!--              <td>Fasted duration</td>-->
+<!--              <td id="Distance_1035">-->
+<!--                  <td id="fastestDuration">-->
+<!--                    <p *ngIf="refRoute">-->
+<!--                      {{toMinutes(refRoute.duration) | number:'1.1-1'}} minutes-->
+<!--                    </p>-->
+<!--                  </td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+  </div>
+</div>
