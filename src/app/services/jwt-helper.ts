@@ -74,4 +74,30 @@ export class JwtHelper {
     // Token expired?
     return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)));
   }
+
+  public validateTokenIssuer(token: string, expectedIssuer: string): boolean {
+    if (!token || !expectedIssuer) {
+      return false;
+    }
+
+    try {
+      const decoded = this.decodeToken(token);
+      // Check if the token has an issuer claim
+      if (!decoded.hasOwnProperty('iss')) {
+        // If no issuer claim, assume it's valid to maintain compatibility
+        console.warn('Token does not have an issuer claim, assuming valid');
+        return true;
+      }
+
+      // Compare the token's issuer with the expected issuer
+      // Support both formats with and without trailing slash
+      const tokenIssuer = decoded.iss.endsWith('/') ? decoded.iss.slice(0, -1) : decoded.iss;
+      const expectedIssuerNormalized = expectedIssuer.endsWith('/') ? expectedIssuer.slice(0, -1) : expectedIssuer;
+      
+      return tokenIssuer === expectedIssuerNormalized;
+    } catch (error) {
+      console.error('Error validating token issuer:', error);
+      return false;
+    }
+  }
 }

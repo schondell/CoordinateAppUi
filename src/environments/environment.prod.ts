@@ -4,6 +4,6 @@ export const environment = {
   loginUrl: '/login',
   googleClientId: null,
   facebookClientId: null,
-  tokenUrl: 'https://coordinatewebapp.azurewebsites.net/connect/token',
+  tokenUrl: 'https://coordinatewebapp.azurewebsites.net', // Base URL without /connect/token - this is added in the endpoint factory
   microsoftClientId: null
 };

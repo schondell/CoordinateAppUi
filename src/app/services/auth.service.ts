@@ -185,7 +185,24 @@ export class AuthService {
     tokenExpiryDate.setSeconds(tokenExpiryDate.getSeconds() + expiresIn);
     const accessTokenExpiry = tokenExpiryDate;
     const jwtHelper = new JwtHelper();
+    
+    // Validate the token's issuer - important for OpenIddict validation
+    // Backend expects the issuer to match the server's base URL
+    const expectedIssuer = this.configurations.baseUrl;
     const decodedAccessToken = jwtHelper.decodeToken(accessToken) as AccessToken;
+    
+    // Check if the token has an issuer and validate it
+    if (decodedAccessToken.iss) {
+      const isIssuerValid = jwtHelper.validateTokenIssuer(accessToken, expectedIssuer);
+      // Log issuer info for debugging
+      console.debug('Token issuer:', decodedAccessToken.iss);
+      console.debug('Expected issuer:', expectedIssuer);
+      
+      if (!isIssuerValid) {
+        console.warn('Token issuer validation failed - this may cause ID2052 errors');
+        // We don't throw an error here to maintain backward compatibility
+      }
+    }
 
     const permissions: PermissionValues[] = Array.isArray(decodedAccessToken.permission) ? decodedAccessToken.permission : [decodedAccessToken.permission];
 

@@ -1,7 +1,8 @@
 import { NgModule, ErrorHandler , InjectionToken} from '@angular/core';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps'
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthScopeInterceptor } from './services/auth-scope-interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { ToastaModule } from 'ngx-toasta';
@@ -162,6 +163,7 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     { provide: ErrorHandler, useClass: AppErrorHandler },
     { provide: OAuthStorage, useClass: OidcTempStorage },
     { provide: SOURCE_FILES, useValue: { files: [] } },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthScopeInterceptor, multi: true },
     AlertService,
     ConfigurationService,
     AppTitleService,
