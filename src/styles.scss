@@ -1,12 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles for Coordinate App */
 @use 'flex-layout';
 
+/* Bootstrap (optional - could be removed if fully on Syncfusion) */
 @import 'node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import 'app/app-theme';
+
+/* Toasta Notification Styles */
 @import '../node_modules/ngx-toasta/styles/style-material.css';
 
-//@include mat.core();
-
+/* Syncfusion Theme Imports */
 @import '../node_modules/@syncfusion/ej2-base/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-angular-navigations/styles/material.css';
@@ -25,182 +26,56 @@
 @import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-icons/styles/material.css';
 
+/* Root Element Styles */
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  margin-bottom: 100px !important; /* Height of the footer */
-  padding: 0;
-}
-
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px; /* Set the fixed height of the footer here */
-}
-
-/* Override Bootstrap Styling */
-
-.btn-primary {
-  background-color: #025fce !important;
-}
-
-//$primary: mat.define-palette(mat.$indigo-palette);
-//$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-//
-//$theme: mat.define-light-theme(( color: (primary: $primary, accent: $accent), density: 0 ));
-
-//@include mat.all-component-typographies();
-//@include mat.all-component-themes($theme);
-//@include quickapp-pro-app-theme($theme);
-
-body {
-  font-family: "Roboto","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.page-content {
-  padding: 0 2em;
-}
-
-$container-radius: 4px;
-
+/* Layout Containers */
 .container {
-  border-radius: $container-radius;
   padding: 16px;
-
+  border-radius: 4px;
+  
   & > :first-child {
     margin-top: 0;
   }
-
+  
   & > :last-child {
     margin-bottom: 0;
   }
 }
 
-.container-radius {
-  border-radius: $container-radius;
-}
-
+/* Card Component styles */
 .card {
-  padding: 16px 16px 8px 16px;
-  border-radius: $container-radius;
-  max-width: 500px;
-
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
   .card-header {
     font-size: 18px;
     margin-bottom: 12px;
+    font-weight: 500;
   }
-
+  
   .card-content {
     margin-bottom: 16px;
   }
-
+  
   .card-actions {
-    .mdc-button {
-      margin-left: 8px;
-      margin-right: 8px;
-    }
-
-    .mdc-button:first-child {
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .mdc-button:last-child {
-      margin-right: 0;
-    }
-  }
-
-  mat-error {
-    line-height: 1;
-  }
-
-  mat-spinner {
-    display: inline-block;
-    margin-right: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
   }
 }
 
-.mat-mdc-card-content,
-.mat-mdc-card-header .mat-mdc-card-title,
-.mat-expansion-panel-content {
-  font-size: 16px;
-}
-
-.app-sidenav-nav {
-  .mat-expansion-panel-body {
-    padding: 0;
-
-    .mat-mdc-list-item {
-      padding-left: 32px !important;
-    }
-  }
-}
-
-.mat-panel-title {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.mat-mdc-form-field.app-validate.ng-valid {
-  $valid-color: #42A948;
-
-  .mat-mdc-floating-label {
-    color: $valid-color;
-  }
-
-  .mdc-line-ripple::before {
-    border-bottom-color: $valid-color;
-  }
-}
-
-.text-field--unfilled .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-  background-color: inherit;
-}
-
-.mat-dialog-sm {
-  min-width: 40vw;
-
-  @media screen and (max-width: 959px) {
-    min-width: 90vw;
-  }
-}
-
-.mat-dialog-md {
-  min-width: 50vw;
-
-  @media screen and (max-width: 959px) {
-    min-width: 90vw;
-  }
-}
-
-.mat-dialog-lg {
-  min-width: 80vw;
-
-  @media screen and (max-width: 959px) {
-    min-width: 90vw;
-  }
-}
-
-.mat-button-icon {
-  margin-right: 16px;
-}
-
-.mat-icon.mat-icon-lg {
-  width: 48px;
-  height: 48px;
-  font-size: 48px;
-}
-
-.vertical-center {
-  display: inline-block;
-  vertical-align: middle;
-}
-
+/* Toast notification positioning override */
 #toasta.toasta-position-top-right {
   top: 80px;
   right: 20px;
@@ -213,21 +88,66 @@ $container-radius: 4px;
   overflow: auto;
 }
 
-/* Provide sufficient contrast against white background */
+/* Link Styles */
 a {
   color: #0366d6;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-code {
-  color: #e01a76;
-}
-
+/* Button Override */
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Common utility classes */
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Vertical center helper */
+.vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+/* Syncfusion Dialog Sizes */
+.e-dialog.dialog-sm {
+  min-width: 40vw;
+  @media screen and (max-width: 959px) {
+    min-width: 90vw;
+  }
+}
+
+.e-dialog.dialog-md {
+  min-width: 50vw;
+  @media screen and (max-width: 959px) {
+    min-width: 90vw;
+  }
+}
+
+.e-dialog.dialog-lg {
+  min-width: 80vw;
+  @media screen and (max-width: 959px) {
+    min-width: 90vw;
+  }
+}
+
+/* Syncfusion Grid Customizations */
+.e-grid .e-row:hover {
+  background-color: #f5f5f5;
+}
+
+/* Syncfusion Form Customizations */
+.e-input-group.e-success .e-input {
+  color: #22c55e;
 }

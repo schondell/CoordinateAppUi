@@ -1,42 +1,119 @@
 import { NgModule } from '@angular/core';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TranslateModule } from '@ngx-translate/core';
+
+// Syncfusion modules
+import { SidebarModule, MenuModule, ToolbarModule, TabModule } from '@syncfusion/ej2-angular-navigations';
+import { ButtonModule, SwitchModule, RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { DropDownButtonModule, SplitButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
+import { TooltipModule, DialogModule } from '@syncfusion/ej2-angular-popups';
+import { DropDownListModule, ComboBoxModule, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
+import { DatePickerModule, DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { GridModule } from '@syncfusion/ej2-angular-grids';
+
+// We'll keep Material module for backward compatibility until all components are migrated
 import { CoordinateMaterialModule } from '../modules/material.module';
+
+// Components and Pipes
 import { PageHeaderComponent } from './page-header/page-header.component';
-import { UserEditorComponent } from '../admin/user-editor/user-editor.component';
 import { AppDialogComponent } from './app-dialog/app-dialog.component';
 import { GroupByPipe } from '../pipes/group-by.pipe';
+import { ThemePickerComponent } from './theme-picker/theme-picker.component';
+import { ThemeManager } from './theme-picker/theme-manager';
+import { DateVehicleSelectorComponent } from './date-vehicle-selector/date-vehicle-selector.component';
+import { FooterModule } from './footer/footer.component';
 
 @NgModule({
   imports: [
+    CommonModule,
     DragDropModule,
-    FormsModule, ReactiveFormsModule,
-    BrowserModule, BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    
+    // Syncfusion modules
+    SidebarModule,
+    MenuModule,
+    ToolbarModule,
+    ButtonModule,
+    SwitchModule,
+    RadioButtonModule,
+    DropDownButtonModule,
+    SplitButtonModule,
+    TooltipModule,
+    DialogModule,
+    DropDownListModule,
+    ComboBoxModule,
+    MultiSelectModule,
+    DatePickerModule,
+    DateRangePickerModule,
+    TextBoxModule,
+    NumericTextBoxModule,
+    GridModule,
+    TabModule,
+    
+    // Legacy Material module - will be phased out gradually
     CoordinateMaterialModule,
-    TranslateModule
+    
+    // External feature modules
+    FooterModule
   ],
   exports: [
+    CommonModule,
     DragDropModule,
-    FormsModule, ReactiveFormsModule,
-    BrowserModule, BrowserAnimationsModule,
-    CoordinateMaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
     TranslateModule,
+    
+    // Syncfusion modules
+    SidebarModule,
+    MenuModule,
+    ToolbarModule,
+    ButtonModule,
+    SwitchModule,
+    RadioButtonModule,
+    DropDownButtonModule,
+    SplitButtonModule,
+    TooltipModule,
+    DialogModule,
+    DropDownListModule,
+    ComboBoxModule,
+    MultiSelectModule,
+    DatePickerModule,
+    DateRangePickerModule,
+    TextBoxModule,
+    NumericTextBoxModule,
+    GridModule,
+    TabModule,
+    
+    // Legacy Material module - will be phased out gradually
+    CoordinateMaterialModule,
+    
+    // Components and Pipes
     PageHeaderComponent,
     GroupByPipe,
-    UserEditorComponent,
-    PageHeaderComponent,
-    AppDialogComponent
+    AppDialogComponent,
+    DateVehicleSelectorComponent,
+    
+    // External feature modules
+    FooterModule,
+    ThemePickerComponent
   ],
   declarations: [
     PageHeaderComponent,
     GroupByPipe,
-    UserEditorComponent,
-    AppDialogComponent
+    AppDialogComponent,
+    DateVehicleSelectorComponent,
+    ThemePickerComponent
+  ],
+  providers: [
+    ThemeManager
+  ],
+  providers: [
+    ThemeManager
   ]
 })
-export class SharedModule {
-
-}
+export class SharedModule { }

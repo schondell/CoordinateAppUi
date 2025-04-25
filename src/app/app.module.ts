@@ -13,8 +13,6 @@ import { AppErrorHandler } from './app-error.handler';
 import { SharedModule } from './shared/shared.module';
 import { AdminModule } from './admin/admin.module';
 import { SettingsModule } from './settings/settings.module';
-import { FooterModule } from './shared/footer/footer.component';
-import { ThemePickerModule } from './shared/theme-picker/theme-picker.component';
 import { AppTitleService } from './services/app-title.service';
 import { AppTranslationService, TranslateLanguageLoader } from './services/app-translation.service';
 import { ConfigurationService } from './services/configuration.service';
@@ -70,7 +68,7 @@ import {
     ToolbarModule,
     TreeViewModule
 } from "@syncfusion/ej2-angular-navigations";
-import {DropDownButtonModule, SplitButtonModule} from '@syncfusion/ej2-angular-splitbuttons';
+import { DropDownButtonModule, SplitButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
 import { TabModule } from '@syncfusion/ej2-angular-navigations';
 import {GridModule, PagerModule, PageService, SortService ,ToolbarService, PdfExportService, ExcelExportService} from '@syncfusion/ej2-angular-grids';
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
@@ -111,17 +109,15 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     // GpsTrackerComponent,
     // GpsTrackerTableComponent,
     DrivingJournalComponent,
-    //DrivingJournalTableComponent,
+    // DrivingJournalTableComponent is a standalone component - not declared here
     VehicleCardComponent,
     // CustomerWithWorkItemTableComponent,
     // WorkItemTableComponent,
-    DateVehicleSelectorComponent,
+    // DateVehicleSelectorComponent is already declared in SharedModule
   ],
   imports: [
     GoogleMapsModule,
     SharedModule,
-    FooterModule,
-    ThemePickerModule,
     HttpClientModule,
     AdminModule,
     SettingsModule,
@@ -155,9 +151,9 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     PagerModule,
     CircularGaugeModule,
     MenuModule,
-    DrivingJournalTableComponent,
     ButtonModule,
     SplitButtonModule,
+    DrivingJournalTableComponent, // Import the standalone component
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },

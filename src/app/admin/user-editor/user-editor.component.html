@@ -1,4 +1,4 @@
-<form #form="ngForm" [formGroup]="userProfileForm" novalidate (ngSubmit)="save()" [class.text-field--unfilled]="!isEditMode" class="flex-col" autocomplete="off">
+<form #form [formGroup]="userProfileForm" novalidate (ngSubmit)="save()" [class.text-field--unfilled]="!isEditMode" class="flex-col" autocomplete="off">
 
   <div class="flex-row flex-col-ltmd gap-col-1em">
     <mat-form-field [floatLabel]="floatLabels" class="flex-1">
