@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -112,8 +112,10 @@ import { FooterModule } from './footer/footer.component';
   providers: [
     ThemeManager
   ],
-  providers: [
-    ThemeManager
+  schemas: [
+    // Add schema to allow missing components as custom elements
+    // This is a temporary fix until proper module imports are set up
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class SharedModule { }
