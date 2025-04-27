@@ -19,7 +19,7 @@
           "options": {
             "progress": false,
             "outputPath": "dist",
-            "browser": "src/simple-main.ts",
+            "browser": "src/minimal-main.ts",
             "index": "src/index.html",
             "polyfills": [
               "zone.js"
