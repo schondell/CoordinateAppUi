@@ -15,12 +15,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "progress": false,
             "outputPath": "dist",
+            "browser": "src/simple-main.ts",
             "index": "src/index.html",
-            "main": "src/simple-main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -30,9 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              {
-                "input": "src/styles.scss"
-              },
+              "src/styles.scss",
               {
                 "input": "src/app/assets/themes/deeppurple-amber.scss",
                 "inject": false
@@ -78,12 +76,8 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -120,9 +114,7 @@
               "src/assets"
             ],
             "styles": [
-              {
-                "input": "src/styles.scss"
-              },
+              "src/styles.scss",
               {
                 "input": "src/app/assets/themes/deeppurple-amber.scss",
                 "inject": false
