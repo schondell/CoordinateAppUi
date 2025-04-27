@@ -10,13 +10,14 @@
   "homepage": "https://www.ebenmonney.com/quickapp-pro",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port=44450 --o --disable-host-check --configuration=development",
+    "start": "node start-standalone.js",
     "start:windows": "ng serve --port 44450 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
     "start:default": "ng serve --port 44450 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
     "start:basic": "ng serve --port=44450 --disable-host-check --poll=2000",
     "start:no-https": "ng serve --port=44450 --disable-host-check --configuration=development",
     "start:minimal": "node start-without-https.js",
     "build": "ng build",
+    "build:minimal": "node build-minimal.js",
     "watch": "ng build --watch --configuration development",
     "build-prod": "ng build --configuration production",
     "test": "ng test"
