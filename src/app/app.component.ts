@@ -1,31 +1,41 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import {
   MenuItemModel,
   SidebarComponent,
   TreeViewComponent,
-  ClickEventArgs
-
+  ClickEventArgs,
+  ToolbarModule,
+  SidebarModule,
+  MenuModule,
+  TreeViewModule
 } from '@syncfusion/ej2-angular-navigations';
-import { TranslateService } from '@ngx-translate/core';
+
+import { SplitButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
+
 import { AppTranslationService } from './services/app-translation.service';
 import { AuthService } from './services/auth.service';
 import { ItemModel } from '@syncfusion/ej2-angular-splitbuttons';
-import {Router} from '@angular/router';
-import {DomSanitizer} from "@angular/platform-browser";
-import {VehicleSummary} from "./models/vehicle-summary";
-import {SignalrService} from "./signalr.service";
-import {MediaMatcher} from "@angular/cdk/layout";
-import {LocalStoreManager} from "./services/local-store-manager.service";
-import {ToastaConfig, ToastaService, ToastData, ToastOptions} from "ngx-toasta";
-import {AppTitleService} from "./services/app-title.service";
-import {AlertCommand, AlertService, MessageSeverity} from "./services/alert.service";
-import {Permission} from "./models/permission.model";
-import {AccountService} from "./services/account.service";
-import {AppDialogComponent} from "./shared/app-dialog/app-dialog.component";
-import {LoginDialogComponent} from "./components/login/login-dialog.component";
-import {NotificationService} from "./services/notification.service";
+import { Router } from '@angular/router';
+import { DomSanitizer } from "@angular/platform-browser";
+import { VehicleSummary } from "./models/vehicle-summary";
+import { SignalrService } from "./signalr.service";
+import { MediaMatcher } from "@angular/cdk/layout";
+import { LocalStoreManager } from "./services/local-store-manager.service";
+import { ToastaConfig, ToastaService, ToastData, ToastOptions } from "ngx-toasta";
+import { AppTitleService } from "./services/app-title.service";
+import { AlertCommand, AlertService, MessageSeverity } from "./services/alert.service";
+import { Permission } from "./models/permission.model";
+import { AccountService } from "./services/account.service";
+import { AppDialogComponent } from "./shared/app-dialog/app-dialog.component";
+import { LoginDialogComponent } from "./components/login/login-dialog.component";
+import { NotificationService } from "./services/notification.service";
 import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { FooterComponent } from './shared/footer/footer.component';
 
 interface NodeItem {
   nodeId: string;
@@ -38,7 +48,21 @@ interface NodeItem {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    ToolbarModule,
+    SidebarModule,
+    MenuModule,
+    TreeViewModule,
+    SplitButtonModule,
+    DialogModule,
+    AppDialogComponent,
+    FooterComponent
+  ]
 })
 
 export class AppComponent implements OnInit, OnDestroy {

@@ -1,5 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 import { AlertDialog, DialogType, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
@@ -7,7 +11,9 @@ import { AppTranslationService } from '../../services/app-translation.service';
 @Component({
   selector: 'app-dialog',
   templateUrl: './app-dialog.component.html',
-  styleUrls: ['./app-dialog.component.scss']
+  styleUrls: ['./app-dialog.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ButtonModule, DialogModule]
 })
 export class AppDialogComponent implements OnInit {
   @ViewChild('ejDialog', { static: false }) ejDialog: DialogComponent;
