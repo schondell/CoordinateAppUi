@@ -11,13 +11,16 @@
   ],
   "include": [
     "src/app/minimal-app.component.ts",
+    "src/app/minimal-dashboard.component.ts",
     "src/environments/environment.ts",
     "src/environments/environment.prod.ts"
   ],
   "exclude": [
     "src/app/**/*.spec.ts",
     "src/app/**/*.module.ts",
-    "src/app/admin/user-editor/**/*.ts",
-    "src/app/admin/**/*.ts"
+    "src/app/admin/**/*.ts",
+    "!src/app/admin/user-editor/user-editor.component.standalone.ts",
+    "!src/app/admin/role-editor/role-editor.component.standalone.ts",
+    "!src/app/admin/user-list/user-list.component.standalone.ts"
   ]
 }

@@ -217,6 +217,27 @@ export class AppComponent implements OnInit, OnDestroy {
       ]
     },
     {
+      text: 'Settings',
+      iconCss: 'icon-cog icon',
+      url: '/settings'
+    },
+    {
+      text: 'Admin',
+      iconCss: 'icon-users icon',
+      items: [
+        {
+          text: 'Users',
+          iconCss: 'icon-circle-thin icon',
+          url: '/admin/users'
+        },
+        {
+          text: 'Roles',
+          iconCss: 'icon-circle-thin icon',
+          url: '/admin/roles'
+        }
+      ]
+    },
+    {
       text: 'mainMenu.About',
       iconCss: 'icon-info icon',
       url: '/about'

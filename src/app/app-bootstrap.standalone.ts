@@ -1,16 +1,18 @@
 /**
  * Standalone bootstrap module for Angular 19
- * This file is designed to bootstrap only our converted standalone components,
- * avoiding the need to load components that are still using NgModule-based architecture.
+ * This version completely replaces the traditional app with a standalone-only version.
  */
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FooterComponent } from './shared/footer/footer.component';
 import { SettingsStandaloneComponent } from './settings/settings.component.standalone';
+import { UserEditorStandaloneComponent } from './admin/user-editor/user-editor.component.standalone';
+import { RoleEditorStandaloneComponent } from './admin/role-editor/role-editor.component.standalone';
+import { UserListStandaloneComponent } from './admin/user-list/user-list.component.standalone';
 
 /**
- * A simple shell component that uses only our converted standalone components
+ * This component is the new root component for our standalone-only application
  */
 @Component({
   selector: 'app-root',
@@ -18,36 +20,18 @@ import { SettingsStandaloneComponent } from './settings/settings.component.stand
     <div class="app-container">
       <header>
         <h1>Coordinate App</h1>
-        <p>Angular 19 Migration</p>
+        <p>Angular 19 Migration - Standalone Only</p>
         <nav>
-          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-          <a routerLink="/settings" routerLinkActive="active">Settings</a>
+          <a [class.active]="isActive('/')" (click)="navigate('/')">Home</a>
+          <a [class.active]="isActive('/settings')" (click)="navigate('/settings')">Settings</a>
+          <a [class.active]="isActive('/admin/users')" (click)="navigate('/admin/users')">Users</a>
+          <a [class.active]="isActive('/admin/roles/editor')" (click)="navigate('/admin/roles/editor')">Roles</a>
+          <a [class.active]="isActive('/about')" (click)="navigate('/about')">About</a>
         </nav>
       </header>
       
       <main>
-        <div class="content">
-          <h2>Standalone Components Migration</h2>
-          <p>We've migrated these components to standalone:</p>
-          <ul>
-            <li>AppComponent</li>
-            <li>FooterComponent</li>
-            <li>AppDialogComponent</li>
-            <li>UserPreferencesComponent</li>
-            <li>SettingsComponent</li>
-          </ul>
-          
-          <div class="info-box">
-            <h3>Migration Status</h3>
-            <p>Partial migration to Angular 19 completed successfully</p>
-            <p>Working on converting remaining components...</p>
-          </div>
-          
-          <div class="navigation-box">
-            <h3>Navigation</h3>
-            <p>You can navigate to the <a routerLink="/settings">Settings</a> page to see the migrated components in action.</p>
-          </div>
-        </div>
+        <router-outlet></router-outlet>
       </main>
       
       <app-footer></app-footer>
@@ -91,6 +75,8 @@ import { SettingsStandaloneComponent } from './settings/settings.component.stand
       padding: 5px 15px;
       border-radius: 4px;
       transition: background-color 0.2s;
+      cursor: pointer;
+      display: inline-block;
     }
     
     nav a:hover {
@@ -157,6 +143,25 @@ import { SettingsStandaloneComponent } from './settings/settings.component.stand
   `],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, RouterModule, FooterComponent]
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    FooterComponent
+  ]
 })
-export class StandaloneAppComponent {}
+export class StandaloneAppComponent {
+  constructor(private router: Router) {}
+  
+  navigate(path: string): void {
+    console.log('Navigating to:', path);
+    this.router.navigateByUrl(path).then(
+      success => console.log('Navigation success:', success),
+      error => console.error('Navigation error:', error)
+    );
+  }
+  
+  isActive(path: string): boolean {
+    return this.router.url === path || 
+           (path !== '/' && this.router.url.startsWith(path));
+  }
+}

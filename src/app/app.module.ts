@@ -82,6 +82,12 @@ import { CircularGaugeModule} from "@syncfusion/ej2-angular-circulargauge";
 import { DateVehicleSelectorComponent} from "./shared/date-vehicle-selector/date-vehicle-selector.component";
 import {ButtonModule} from "@syncfusion/ej2-angular-buttons";
 
+// Import standalone components that need to be integrated into the traditional module architecture
+import { SettingsStandaloneComponent } from './settings/settings.component.standalone';
+import { UserEditorStandaloneComponent } from './admin/user-editor/user-editor.component.standalone';
+import { RoleEditorStandaloneComponent } from './admin/role-editor/role-editor.component.standalone'; 
+import { UserListStandaloneComponent } from './admin/user-list/user-list.component.standalone';
+import { AboutStandaloneComponent } from './components/about/about.component.standalone';
 
 export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
 @NgModule({
@@ -157,7 +163,14 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     MenuModule,
     ButtonModule,
     SplitButtonModule,
-    DrivingJournalTableComponent, // Import the standalone component
+    
+    // Import standalone components
+    DrivingJournalTableComponent,
+    SettingsStandaloneComponent,
+    UserEditorStandaloneComponent,
+    RoleEditorStandaloneComponent,
+    UserListStandaloneComponent,
+    AboutStandaloneComponent
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
