@@ -1,16 +1,17 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 // Syncfusion imports
 import { AccordionModule } from '@syncfusion/ej2-angular-navigations';
-import { TabModule } from '@syncfusion/ej2-angular-navigations';
+import { TabModule, TabComponent } from '@syncfusion/ej2-angular-navigations';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TooltipModule } from '@syncfusion/ej2-angular-popups';
 
 // Components and services
-import { UserEditorComponent } from '../admin/user-editor/user-editor.component';
+// Import UserEditorComponent once it's converted to standalone
+// import { UserEditorComponent } from '../admin/user-editor/user-editor.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { AppTranslationService } from '../services/app-translation.service';
 import { Permission } from '../models/permission.model';
@@ -24,9 +25,10 @@ import { Utilities } from '../services/utilities';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.standalone.html',
-  styleUrls: ['./settings.component.scss'],
+  styleUrls: ['./settings.component.standalone.scss'],
   animations: [fadeInOut],
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     TranslateModule,
@@ -42,7 +44,9 @@ import { Utilities } from '../services/utilities';
 export class SettingsStandaloneComponent implements OnInit, OnDestroy, AfterViewInit {
   fragmentSubscription: any;
   activeTabIndex = 0;
-
+  
+  @ViewChild('settingsTabs') tabInstance: TabComponent;
+  
   // Properties for Syncfusion Tabs
   public headerText: Object[] = [
     { text: 'Profile' },

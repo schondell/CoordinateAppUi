@@ -3,7 +3,7 @@
  * This file is designed to bootstrap only our converted standalone components,
  * avoiding the need to load components that are still using NgModule-based architecture.
  */
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -156,6 +156,7 @@ import { SettingsStandaloneComponent } from './settings/settings.component.stand
     }
   `],
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent, SettingsStandaloneComponent]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [CommonModule, RouterModule, FooterComponent]
 })
 export class StandaloneAppComponent {}

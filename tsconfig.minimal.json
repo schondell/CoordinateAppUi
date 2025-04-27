@@ -16,6 +16,8 @@
   ],
   "exclude": [
     "src/app/**/*.spec.ts",
-    "src/app/**/*.module.ts"
+    "src/app/**/*.module.ts",
+    "src/app/admin/user-editor/**/*.ts",
+    "src/app/admin/**/*.ts"
   ]
 }

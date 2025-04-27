@@ -6,7 +6,7 @@
 
   <!-- Main content with tabs -->
   <div class="settings-content" [@fadeInOut]>
-    <ejs-tab id="settingsTabs" [selectedIndex]="activeTabIndex" (selected)="tabSelected($event)">
+    <ejs-tab #settingsTabs [selected]="0" (selected)="tabSelected($event)">
       <!-- Profile Tab -->
       <e-tabitem>
         <ng-template #headerText>
