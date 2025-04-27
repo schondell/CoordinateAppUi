@@ -1,6 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { SettingsComponent } from './settings.component';
+// Import UserPreferencesComponent as standalone
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { TooltipModule } from "@syncfusion/ej2-angular-popups";
 import { SwitchModule } from "@syncfusion/ej2-angular-buttons";
@@ -13,14 +14,15 @@ import { AdminModule } from '../admin/admin.module';
     TooltipModule,
     SwitchModule,
     DropDownListModule,
-    AdminModule
+    AdminModule,
+    UserPreferencesComponent // Import standalone component
   ],
   exports: [
     SettingsComponent
   ],
   declarations: [
-    SettingsComponent,
-    UserPreferencesComponent
+    SettingsComponent
+    // UserPreferencesComponent is now a standalone component imported above
   ],
   schemas: [
     // Add schema to allow missing components as custom elements

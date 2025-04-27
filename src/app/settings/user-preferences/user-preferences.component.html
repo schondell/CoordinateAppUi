@@ -41,5 +41,24 @@
 
     </div>
 
+    <div class="actions-container">
+      <button ejs-button cssClass="e-primary" (click)="save()">{{ 'preferences.Save' | translate }}</button>
+      <button ejs-button cssClass="e-info" (click)="reload()">{{ 'preferences.Reload' | translate }}</button>
+      <button ejs-button cssClass="e-warning" (click)="reset()">{{ 'preferences.Reset' | translate }}</button>
+    </div>
   </div>
+
+  <!-- Confirmation Dialog -->
+  <ejs-dialog #confirmDialog [visible]="showConfirmDialog" [header]="dialogTitle" 
+              [showCloseIcon]="true" [width]="300" 
+              [isModal]="true" [closeOnEscape]="true"
+              (close)="handleDialogClose()">
+    <ng-template #content>
+      <p>{{ dialogContent }}</p>
+    </ng-template>
+    <ng-template #footerTemplate>
+      <button ejs-button cssClass="e-primary" (click)="handleConfirm()">{{ 'preferences.Confirm' | translate }}</button>
+      <button ejs-button (click)="handleDialogClose()">{{ 'preferences.Cancel' | translate }}</button>
+    </ng-template>
+  </ejs-dialog>
 </div>
