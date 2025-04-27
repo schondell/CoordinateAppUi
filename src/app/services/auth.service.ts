@@ -206,43 +206,35 @@ export class AuthService {
     
     console.log('Access token received, expires in:', expiresIn, 'seconds');
     
-    try {
-      // Create a minimal user from the token without decoding it
-      // This is a temporary solution to bypass JWT validation errors
-      // The token is still stored and used for authentication
-      
-      // Create a temporary user with minimal information
-      const user = new User(
-        'user', // sub
-        'User',  // name
-        'User',  // fullname
-        '',      // email
-        '',      // jobtitle
-        '',      // phone
-        ['User'] // roles
-      );
-      user.isEnabled = true;
+    // Skip token validation completely and create a user with default permissions
+    // Create a temporary user with minimal information
+    const user = new User(
+      'user', // sub
+      'User',  // name
+      'User',  // fullname
+      '',      // email
+      '',      // jobtitle
+      '',      // phone
+      ['User'] // roles
+    );
+    user.isEnabled = true;
 
-      console.log('Created temporary user object');
-      
-      // Use minimal permissions
-      const permissions: PermissionValues[] = [
-        Permission.viewUsersPermission,
-        Permission.viewRolesPermission,
-        Permission.viewHistoryPermission
-      ];
-      
-      this.saveUserDetails(user, permissions, accessToken, refreshToken, accessTokenExpiry, rememberMe);
-      console.log('User details saved to storage');
+    console.log('Created temporary user object');
+    
+    // Use minimal permissions
+    const permissions: PermissionValues[] = [
+      Permission.viewUsersPermission,
+      Permission.viewRolesPermission,
+      Permission.viewHistoryPermission
+    ];
+    
+    this.saveUserDetails(user, permissions, accessToken, refreshToken, accessTokenExpiry, rememberMe);
+    console.log('User details saved to storage');
 
-      this.reevaluateLoginStatus(user);
-      console.log('Login status updated');
+    this.reevaluateLoginStatus(user);
+    console.log('Login status updated');
 
-      return user;
-    } catch (error) {
-      console.error('Error processing login response:', error);
-      throw error;
-    }
+    return user;
   }
 
   private saveUserDetails(user: User, permissions: PermissionValues[], accessToken: string, refreshToken: string, expiresIn: Date, rememberMe: boolean) {

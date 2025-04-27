@@ -20,7 +20,7 @@
             "progress": false,
             "outputPath": "dist",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "main": "src/simple-main.ts",
             "polyfills": [
               "zone.js"
             ],

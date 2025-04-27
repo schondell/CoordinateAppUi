@@ -14,6 +14,7 @@
     "start": "ng serve --port=44450 --o --proxy-config proxy.config.json",
     "start:windows": "ng serve --port 44450 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
     "start:default": "ng serve --port 44450 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
+    "start:basic": "ng serve --port=44450 --disable-host-check --poll=2000",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "build-prod": "ng build --configuration production",

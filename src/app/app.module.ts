@@ -1,5 +1,7 @@
 import { NgModule, ErrorHandler , InjectionToken} from '@angular/core';
 import { DecimalPipe, DatePipe } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthScopeInterceptor } from './services/auth-scope-interceptor';
@@ -116,6 +118,8 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     // DateVehicleSelectorComponent is already declared in SharedModule
   ],
   imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
     GoogleMapsModule,
     SharedModule,
     HttpClientModule,
@@ -180,4 +184,7 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor() {
+    console.log('AppModule initialized');
+  }
 }
