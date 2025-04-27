@@ -30,23 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              {
-                "input": "src/app/assets/themes/deeppurple-amber.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/indigo-pink.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/pink-bluegrey.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/purple-green.scss",
-                "inject": false
-              }
+              "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [ "src/app/assets/styles" ]
@@ -114,23 +98,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              {
-                "input": "src/app/assets/themes/deeppurple-amber.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/indigo-pink.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/pink-bluegrey.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/purple-green.scss",
-                "inject": false
-              }
+              "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [ "src/app/assets/styles" ]

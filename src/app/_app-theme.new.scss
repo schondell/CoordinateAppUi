@@ -1,0 +1,52 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use './shared/footer/footer.component-theme.scss' as footer;
+@use './admin/role-editor/role-editor.component-theme.scss' as role-editor;
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+@mixin quickapp-pro-app-theme($theme) {
+  $primary: map.get($theme, color, primary);
+  $accent: map.get($theme, color, accent);
+  $warn: map.get($theme, color, warn);
+  $background: map.get($theme, color, background);
+  $foreground: map.get($theme, color, foreground);
+
+  mat-nav-list .mat-mdc-list-item.active {
+    $color: mat.get-color-from-palette($primary);
+
+    background-color: mat.get-color-from-palette($primary, 50);
+    color: $color;
+
+    .mdc-list-item__primary-text {
+      color: $color;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: mat.get-color-from-palette($primary, 400);
+  }
+
+  .container,
+  .card {
+    background: mat.get-color-from-palette($background, 'card');
+  }
+
+  .clearfix {
+    @include clearfix();
+  }
+
+  @include footer.footer-theme($theme);
+  @include role-editor.role-editor-theme($theme);
+}

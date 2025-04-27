@@ -9,7 +9,8 @@
   },
   "files": [
     "src/main.ts",
-    "src/simple-main.ts"
+    "src/simple-main.ts",
+    "src/minimal-main.ts"
   ],
   "include": [
     "src/**/*.d.ts"
