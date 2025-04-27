@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": [
+      "node"
+    ]
+  },
+  "files": [
+    "src/minimal-main.ts"
+  ],
+  "include": [
+    "src/app/minimal-app.component.ts",
+    "src/environments/environment.ts",
+    "src/environments/environment.prod.ts"
+  ],
+  "exclude": [
+    "src/app/**/*.spec.ts",
+    "src/app/**/*.module.ts"
+  ]
+}

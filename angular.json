@@ -20,11 +20,11 @@
             "progress": false,
             "outputPath": "dist",
             "browser": "src/minimal-main.ts",
-            "index": "src/index.html",
+            "index": "src/minimal-index.html",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "tsconfig.minimal.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets"
