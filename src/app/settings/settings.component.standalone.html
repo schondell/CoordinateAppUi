@@ -1,0 +1,72 @@
+<div class="settings-container">
+  <header class="settings-header">
+    <h1>{{ 'settings.title' | translate }}</h1>
+    <p class="subtitle">{{ 'settings.subtitle' | translate }}</p>
+  </header>
+
+  <!-- Main content with tabs -->
+  <div class="settings-content" [@fadeInOut]>
+    <ejs-tab id="settingsTabs" [selectedIndex]="activeTabIndex" (selected)="tabSelected($event)">
+      <!-- Profile Tab -->
+      <e-tabitem>
+        <ng-template #headerText>
+          <div class="tab-header-item">
+            <span class="e-tab-icon e-icons e-user"></span>
+            <span class="e-tab-text">{{ 'settings.tab.Profile' | translate }}</span>
+          </div>
+        </ng-template>
+        <ng-template #content>
+          <div class="tab-content profile-content">
+            <h2>{{ 'settings.profile.title' | translate }}</h2>
+            
+            <!-- Profile info will go here once UserEditorComponent is converted -->
+            <div class="profile-placeholder">
+              <p>{{ 'settings.profile.loading' | translate }}</p>
+            </div>
+            
+            <!-- Actions -->
+            <div class="action-buttons">
+              <button ejs-button cssClass="e-primary">{{ 'commands.Edit' | translate }}</button>
+              <button ejs-button cssClass="e-primary">{{ 'commands.Save' | translate }}</button>
+              <button ejs-button cssClass="e-warning">{{ 'commands.Cancel' | translate }}</button>
+            </div>
+          </div>
+        </ng-template>
+      </e-tabitem>
+
+      <!-- Preferences Tab -->
+      <e-tabitem>
+        <ng-template #headerText>
+          <div class="tab-header-item">
+            <span class="e-tab-icon e-icons e-settings"></span>
+            <span class="e-tab-text">{{ 'settings.tab.Preferences' | translate }}</span>
+          </div>
+        </ng-template>
+        <ng-template #content>
+          <div class="tab-content preferences-content">
+            <h2>{{ 'settings.preferences.title' | translate }}</h2>
+            
+            <!-- User Preferences Component -->
+            <app-user-preferences></app-user-preferences>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <button ejs-button cssClass="e-warning" (click)="resetPreferences()" 
+                      ejs-tooltip content="{{ 'preferences.ResetPreferencesHint' | translate }}">
+                {{ 'commands.Reset' | translate }}
+              </button>
+              <button ejs-button cssClass="e-primary" (click)="savePreferences()"
+                      ejs-tooltip content="{{ 'preferences.SavePreferencesHint' | translate }}">
+                {{ 'commands.Save' | translate }}
+              </button>
+              <button ejs-button cssClass="e-info" (click)="reloadPreferences()"
+                      ejs-tooltip content="{{ 'preferences.ReloadPreferencesHint' | translate }}">
+                {{ 'commands.Reload' | translate }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </e-tabitem>
+    </ejs-tab>
+  </div>
+</div>
