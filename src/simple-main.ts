@@ -1,34 +1,43 @@
 /**
- * Simple bootstrap file for debugging Angular startup issues
+ * Extremely simplified main.ts for Angular 19
  */
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter, Routes } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { MinimalAppComponent } from './app/minimal-app.component';
+import { MinimalDashboardComponent } from './app/minimal-dashboard.component';
 
-console.log('Starting basic bootstrap without extras');
-
-if (environment.production) {
-  enableProdMode();
+// Extremely simple home component
+class HomeComponent {
+  static ngComponentDef = {
+    type: HomeComponent,
+    selectors: [['app-home']],
+    factory: () => new HomeComponent(),
+    template: (rf, ctx) => {
+      if (rf) {
+        // Create elements
+      }
+      // Bind elements
+    }
+  };
 }
 
-// Simple bootstrap without providers
-platformBrowserDynamic().bootstrapModule(AppModule, {
-  // Preserve whitespaces to prevent layout issues
-  preserveWhitespaces: true
-})
-.then(success => {
-  console.log('Application bootstrapped successfully');
-})
-.catch(err => {
-  console.error('Bootstrap error:', err);
-  
-  // Try to provide more details about the error
-  if (err.message && err.message.includes('BrowserModule')) {
-    console.error('Missing BrowserModule. Make sure it is imported in AppModule.');
-  } else if (err.message && err.message.includes('zone')) {
-    console.error('Zone.js issue. Check if polyfills are loading correctly.');
-  }
-  
+// Simple routes
+const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: MinimalDashboardComponent },
+  { path: 'journal', loadComponent: () => import('./app/components/driving-journal/driving-journal-simple.component').then(m => m.DrivingJournalSimpleComponent) }
+];
+
+console.log('Starting minimal bootstrap');
+
+// Minimal bootstrap with only essential providers
+bootstrapApplication(MinimalAppComponent, {
+  providers: [
+    provideHttpClient(),
+    provideRouter(routes)
+  ]
+}).catch(err => {
+  console.error('Error during bootstrap:', err);
   console.error('Error stack:', err.stack);
 });

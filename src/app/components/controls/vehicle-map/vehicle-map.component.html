@@ -1,47 +1,32 @@
-<div data-flex="33.3" class="p-2">
-  <mat-card class="custom-card">
-    <mat-card-header class="bg-primary p-1" fxLayoutAlign="space-between center">
-      <mat-card-title class="m-0">
-        <h3>Primary Card</h3>
-      </mat-card-title>
-      <button mat-icon-button>
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </mat-card-header>
-    <img mat-card-image src="../../../assets/images/demo/map.png" alt="5">
-    <mat-card-content>
+<div class="vehicle-map-container">
+  <div class="map-card">
+    <div class="map-header">
+      <h3 class="map-title">{{ name }}</h3>
+    </div>
+    
+    <!-- Google Map Container -->
+    <div class="map-container" #mapContainer>
+      <google-map [options]="mapOptions" height="300px" width="100%"></google-map>
+    </div>
+    
+    <!-- Vehicle Info Panel -->
+    <div class="vehicle-info-panel">
       <table style="width: 100%">
         <tbody>
           <tr>
-            <td id="Status_1035">Idling</td>
-            <td>Speed:</td>
-            <td id="Speed_1035">0</td>
-            <td>Since:</td>
-            <td id="Since_1035">00:00</td>
+            <td><strong>Status:</strong></td>
+            <td id="Status">{{ status || 'Unknown' }}</td>
+            <td><strong>Speed:</strong></td>
+            <td id="Speed">{{ speed || '0' }} km/h</td>
           </tr>
           <tr>
-            <td>Total Driving:</td>
-            <td id="TotalDriving_1035">0</td>
-            <td>Distance:</td>
-            <td id="Distance_1035">0</td>
-          </tr>
-          <tr>
-            <td>Total Idle:</td>
-            <td id="TotalIdle_1035">00:00</td>
-            <td>Last Seen:</td>
-            <td id="LastSeen_1035">00:00</td>
+            <td><strong>Distance:</strong></td>
+            <td id="Distance">{{ distance || '0' }} km</td>
+            <td><strong>Last Seen:</strong></td>
+            <td id="LastSeen">{{ timeStamp || 'N/A' }}</td>
           </tr>
         </tbody>
       </table>
-    </mat-card-content>
-    <mat-divider></mat-divider>
-<!--    <mat-card-actions fxLayoutAlign="end center" class="secondary-text-color">-->
-<!--      <button mat-icon-button>-->
-<!--        <mat-icon>favorite</mat-icon>-->
-<!--      </button>-->
-<!--      <button mat-icon-button>-->
-<!--        <mat-icon>share</mat-icon>-->
-<!--      </button>-->
-<!--    </mat-card-actions>-->
-  </mat-card>
+    </div>
+  </div>
 </div>

@@ -19,7 +19,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { Utilities } from './services/utilities';
 import { HistoryComponent } from "./components/history/history.component";
 import {WorkItemComponent} from "./components/workitem/workitem.component";
-import {DrivingJournalComponent} from "./components/driving-journal/driving-journal/driving-journal.component";
+import { DrivingJournalComponent } from "./components/driving-journal/driving-journal/driving-journal.component";
 import {LogoutComponent} from "./components/logout/logout.component";
 import {RouteviewComponent} from "./components/routeview/routeview.component";
 import {

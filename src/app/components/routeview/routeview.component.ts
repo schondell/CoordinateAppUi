@@ -1,4 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChildren, QueryList, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { VehicleSummaryRepositoryService } from '../../services/repository/vehicle-summary-repository.service';
 import { SignalrService } from '../../signalr.service';
 import { VehicleSummary } from '../../models/vehicle-summary';
@@ -9,7 +11,14 @@ import { shareReplay } from 'rxjs/operators';
 @Component({
   selector: 'app-routeview',
   templateUrl: './routeview.component.html',
-  styleUrls: ['./routeview.component.scss']
+  styleUrls: ['./routeview.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    GoogleMapsModule,
+    VehicleCardComponent
+  ]
 })
 export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   zoom = 12;

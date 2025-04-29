@@ -1,6 +1,9 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { Component, OnInit, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { RouterModule } from '@angular/router';
 import { WorkitemDataSource } from './workitem-datasource';
 import { ResourceCoordinateRepository } from '../../services/resource-coordinate-end-point.service';
 import { tap } from 'rxjs/operators';
@@ -8,7 +11,16 @@ import { tap } from 'rxjs/operators';
 @Component({
   selector: 'app-workitem',
   templateUrl: './workitem.component.html',
-  styleUrls: ['./workitem.component.css']
+  styleUrls: ['./workitem.component.css'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
+  ]
 })
 
 export class WorkItemComponent implements AfterViewInit, OnInit {

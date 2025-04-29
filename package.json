@@ -1,4 +1,3 @@
-
 {
   "name": "resource_coordinate",
   "version": "7.1.0",
@@ -11,18 +10,15 @@
   "homepage": "https://www.ebenmonney.com/quickapp-pro",
   "scripts": {
     "ng": "ng",
-    "prestart": "node pre-start-hook.js",
-    "start": "node start-without-https.js",
-    "start:regular": "node start-regular.js",
-    "start:windows": "ng serve --port 44450 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
-    "start:default": "ng serve --port 44450 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
-    "start:basic": "ng serve --port=44450 --disable-host-check --poll=2000",
-    "start:original": "ng serve quickapp-pro --port=44450 --disable-host-check --configuration=development",
-    "build": "ng build",
-    "build:minimal": "./ng-build-minimal.sh",
-    "watch": "ng build --watch --configuration development",
-    "build-prod": "ng build --configuration production",
-    "test": "ng test"
+    "start": "node bootstrap.js",
+    "serve": "ng serve quickapp-pro",
+    "build": "ng build quickapp-pro",
+    "watch": "ng build quickapp-pro --watch",
+    "build:prod": "ng build quickapp-pro --configuration production",
+    "test": "ng test",
+    "clean": "rm -rf .angular/cache",
+    "start:maps": "node start-with-maps.js",
+    "test:app": "node test-app.js"
   },
   "private": true,
   "dependencies": {
@@ -111,6 +107,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "serve": "^14.2.4",
     "typescript": "~5.5.3"
   },
   "engines": {

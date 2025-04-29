@@ -1,13 +1,26 @@
-import {Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CalendarView } from "@syncfusion/ej2-angular-calendars";
 import { AppTranslationService } from '../../../services/app-translation.service';
 import { Location } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { DateVehicleSelectorComponent } from '../../../shared/date-vehicle-selector/date-vehicle-selector.component';
+import { DrivingJournalTableComponent } from '../driving-journal-table/driving-journal-table.component';
 
 @Component({
   selector: 'app-driving-journal',
   templateUrl: './driving-journal.component.html',
   styleUrls: ['./driving-journal.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    DateVehicleSelectorComponent,
+    DrivingJournalTableComponent
+  ],
   providers: [
     { provide: 'sourceFiles', useValue: { files: ['month-picker.css'] } }
   ]
@@ -102,19 +115,4 @@ export class DrivingJournalComponent implements OnInit {
       console.error('onFindClick - One or more parameters are NaN');
     }
   }
-
-
-  // onFindClick($event: { vehicleId: number; date: Date }) {
-  //   const { vehicleId, date } = $event;
-  //   const year = date.getFullYear();
-  //   const month = date.getMonth() + 1; // getMonth() is zero-based
-  //
-  //   if (!isNaN(year) && !isNaN(month) && !isNaN(vehicleId)) {
-  //     console.log(`Navigating to /journal/year/${year}/month/${month}/vehicleId/${vehicleId}`);
-  //     const url = encodeURI(`/journal/year/${year}/month/${month}/vehicleId/${vehicleId}`);
-  //     this.location.replaceState(url);
-  //   } else {
-  //     console.error('One or more parameters are NaN');
-  //   }
-  // }
 }

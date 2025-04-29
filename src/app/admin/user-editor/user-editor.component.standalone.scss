@@ -1,0 +1,141 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: var(--app-card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--app-divider-color);
+
+  .heading {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--app-primary-text);
+  }
+}
+
+.form-body {
+  padding: 24px;
+}
+
+.form-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--app-divider-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--app-secondary-text);
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  
+  .error-block {
+    color: var(--app-error-color);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+}
+
+.account-status {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.locked-status {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  
+  .lock-icon {
+    color: var(--app-warning-color);
+    margin-right: 8px;
+  }
+  
+  .lock-text {
+    color: var(--app-warning-color);
+    font-weight: 500;
+  }
+}
+
+.password-section-title {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--app-primary-text);
+  border-bottom: 1px solid var(--app-divider-color);
+  padding-bottom: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.dialog-content {
+  padding: 16px;
+  min-width: 300px;
+}
+
+.dialog-footer {
+  padding: 8px 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Syncfusion specific customizations */
+:host ::ng-deep {
+  .e-multiselect {
+    width: 100%;
+  }
+  
+  .e-textbox {
+    width: 100%;
+  }
+  
+  .e-checkbox-wrapper {
+    margin: 0;
+  }
+  
+  .e-btn {
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .e-btn.e-outline {
+    border: 1px solid var(--app-primary-color);
+    color: var(--app-primary-color);
+  }
+  
+  .e-btn.e-primary {
+    background-color: var(--app-primary-color);
+    color: white;
+  }
+  
+  .e-btn.e-small {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+}

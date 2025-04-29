@@ -151,3 +151,57 @@ a {
 .e-input-group.e-success .e-input {
   color: #22c55e;
 }
+
+/* Custom Icon Classes for Sidebar */
+.e-icons.e-home::before {
+  content: '\e902';
+}
+
+.e-icons.e-dashboard::before {
+  content: '\e871';
+}
+
+.e-icons.e-history::before {
+  content: '\e912';
+}
+
+.e-icons.e-book::before {
+  content: '\e865';
+}
+
+.e-icons.e-work::before {
+  content: '\e7fe';
+}
+
+.e-icons.e-admin::before {
+  content: '\e923';
+}
+
+.e-icons.e-settings::before {
+  content: '\e910';
+}
+
+.e-icons.e-info::before {
+  content: '\e903';
+}
+
+.e-icons.e-logout::before {
+  content: '\e815';
+}
+
+.e-icons.e-menu::before {
+  content: '\e919';
+}
+
+.e-icons.e-user::before {
+  content: '\e713';
+}
+
+/* Layout adjustments for sidebar + content */
+body {
+  overflow: hidden;
+}
+
+.main-content {
+  height: calc(100vh - 64px - 40px); /* Subtract header and footer heights */
+}

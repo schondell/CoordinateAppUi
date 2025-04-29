@@ -11,22 +11,13 @@ import { RouterModule } from '@angular/router';
         <nav>
           <ul>
             <li><a routerLink="/">Home</a></li>
+            <li><a routerLink="/journal">Journal</a></li>
           </ul>
         </nav>
       </header>
       
       <main>
-        <section class="content">
-          <h2>Angular 19 Migration</h2>
-          <p>Successfully bootstrapped using standalone components</p>
-          <p>The application is now running in minimal mode while the full migration to Angular 19 is in progress.</p>
-          
-          <div class="info-box">
-            <h3>Migration Status</h3>
-            <p>The original application has module structure incompatible with Angular 19.</p>
-            <p>This minimal version allows development to continue while components are migrated.</p>
-          </div>
-        </section>
+        <router-outlet></router-outlet>
       </main>
       
       <footer>

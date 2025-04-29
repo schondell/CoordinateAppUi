@@ -1,13 +1,28 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { VehicleRepository } from 'src/app/services/generated/vehicle-repository';
-import { FormControl } from "@angular/forms";
+import { Component, OnInit, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormControl } from "@angular/forms";
 import { CalendarView } from "@syncfusion/ej2-angular-calendars";
 import { IDropDownItemWithDate } from "../../models/DropDownItemWithDate";
+import { VehicleRepository } from 'src/app/services/generated/vehicle-repository';
+import { TranslateModule } from '@ngx-translate/core';
+import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 
 @Component({
   selector: 'app-date-vehicle-selector',
   templateUrl: './date-vehicle-selector.component.html',
-  styleUrls: ['./date-vehicle-selector.component.scss']
+  styleUrls: ['./date-vehicle-selector.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    DatePickerModule,
+    DropDownListModule,
+    ButtonModule
+  ]
 })
 export class DateVehicleSelectorComponent implements OnInit {
   public start: CalendarView = 'Year';
@@ -22,7 +37,7 @@ export class DateVehicleSelectorComponent implements OnInit {
 
   @Output() dateChange = new EventEmitter<Date>();
   @Output() vehicleChange = new EventEmitter<number>();
-  @Output() findClick = new EventEmitter<{ vehicleId: number, date: Date }>();
+  @Output() findClick = new EventEmitter<void>();
 
   constructor(private vehicleRepository: VehicleRepository) {
     const now = new Date();

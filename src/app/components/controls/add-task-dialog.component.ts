@@ -1,9 +1,16 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TranslateModule } from '@ngx-translate/core';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
 import { ToDoTask } from './todo-demo.component';
+
 interface TaskForm {
   taskName: FormControl<string>;
   description: FormControl<string>;
@@ -13,7 +20,20 @@ interface TaskForm {
 @Component({
   selector: 'app-add-task-dialog',
   templateUrl: 'add-task-dialog.component.html',
-  styleUrls: ['add-task-dialog.component.scss']
+  styleUrls: ['add-task-dialog.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    TranslateModule
+  ]
 })
 export class AddTaskDialogComponent {
   taskForm: FormGroup<TaskForm>;

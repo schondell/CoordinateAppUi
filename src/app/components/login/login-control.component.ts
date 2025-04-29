@@ -1,5 +1,14 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { RouterModule } from '@angular/router';
+
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
 import { ConfigurationService } from '../../services/configuration.service';
@@ -14,7 +23,21 @@ interface LoginForm {
 @Component({
   selector: 'app-login-control',
   templateUrl: './login-control.component.html',
-  styleUrls: ['./login-control.component.scss']
+  styleUrls: ['./login-control.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatDividerModule,
+    RouterModule
+  ]
 })
 export class LoginControlComponent implements OnInit, OnDestroy {
   isLoading = false;

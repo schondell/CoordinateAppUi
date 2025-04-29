@@ -1,18 +1,26 @@
-import { ChangeDetectorRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {formatDate, formatNumber} from '@angular/common';
+import { ChangeDetectorRef, Input, OnDestroy, OnInit, ViewChild, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { CommonModule, formatDate, formatNumber } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { GoogleMap } from '@angular/google-maps';
+import { GoogleMap, GoogleMapsModule, MapMarker, MapPolyline } from '@angular/google-maps';
 import { Subscription } from "rxjs";
 import { filter } from "rxjs/operators";
 import { VehicleSummary } from "../models/vehicle-summary";
 import { SignalrService } from "../signalr.service";
 import { AppTranslationService } from '../services/app-translation.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-vehicle-card',
   templateUrl: './vehicle-card.component.html',
   styleUrls: ['./vehicle-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    GoogleMapsModule,
+    TranslateModule
+  ]
 })
 export class VehicleCardComponent implements OnInit, OnDestroy  {
   constructor(

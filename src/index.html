@@ -13,18 +13,8 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Roboto+Mono:300" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
   <link href="//cdn.syncfusion.com/ej2/21.1.35/material.css" rel="stylesheet" />
-  <!-- Fix Google Maps API key format -->
-  <!-- <script src="https://maps.googleapis.com/maps/api/js?k&libraries=geometry"></script> -->
-  <script>
-    // Add dummy Maps API to prevent bootstrap errors
-    window.google = window.google || {};
-    window.google.maps = window.google.maps || {
-      Map: function() { return {}; },
-      Marker: function() { return {}; },
-      LatLng: function(lat, lng) { return { lat: lat, lng: lng }; },
-      event: { addListener: function() {} }
-    };
-  </script>
+  <!-- Google Maps API with proper key format and libraries -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_TzLQC-bGE3mqO77nkE7LjiFkzrhGkPE&libraries=geometry,places"></script>
 </head>
 
 <body>

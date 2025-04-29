@@ -3,78 +3,6 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "minimal": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "progress": false,
-            "outputPath": "dist/minimal",
-            "browser": "src/minimal-main.ts",
-            "index": "src/minimal-index.html",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "tsconfig.minimal.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss",
-              "src/styles-standalone.css"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [ "src/app/assets/styles" ]
-            },
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "10mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "8kb",
-                  "maximumError": "32kb"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "minimal:build:production"
-            },
-            "development": {
-              "buildTarget": "minimal:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        }
-      }
-    },
     "quickapp-pro": {
       "projectType": "application",
       "schematics": {
@@ -87,23 +15,28 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "progress": false,
             "outputPath": "dist",
-            "browser": "src/minimal-main.ts",
-            "index": "src/minimal-index.html",
-            "polyfills": [
-              "zone.js"
-            ],
-            "tsConfig": "tsconfig.minimal.json",
+            "main": "src/main.ts",
+            "index": "src/index.html",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets"
             ],
             "styles": [
               "src/styles.scss",
-              "src/styles-standalone.css"
+              "src/styles-standalone.css",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-grids/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-calendars/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [ "src/app/assets/styles" ]
@@ -146,7 +79,6 @@
               "buildTarget": "quickapp-pro:build:production"
             },
             "development": {
-              "proxyConfig": "proxy.conf.js",
               "buildTarget": "quickapp-pro:build:development"
             }
           },
@@ -172,7 +104,14 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/styles-standalone.css"
+              "src/styles-standalone.css",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-grids/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-calendars/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [ "src/app/assets/styles" ]

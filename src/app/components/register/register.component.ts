@@ -1,12 +1,14 @@
 
-
-
-//
-
-
-
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, NgForm, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AlertService, MessageSeverity, DialogType } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
@@ -15,7 +17,6 @@ import { ConfigurationService } from '../../services/configuration.service';
 import { Utilities } from '../../services/utilities';
 import { UserEdit } from '../../models/user-edit.model';
 import { EqualValidator } from '../../shared/validators/equal.validator';
-
 
 interface RegisterForm {
   userName: FormControl<string>;
@@ -26,11 +27,24 @@ interface RegisterForm {
   }>;
 }
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDividerModule,
+    TranslateModule
+  ]
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   isLoading = false;

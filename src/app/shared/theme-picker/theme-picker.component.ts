@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
@@ -15,7 +15,15 @@ import { ConfigurationService } from '../../services/configuration.service';
   templateUrl: 'theme-picker.component.html',
   styleUrls: ['theme-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    DropDownButtonModule,
+    TooltipModule
+  ]
 })
 export class ThemePickerComponent implements OnInit, OnDestroy {
   @Input() tooltip = 'Theme';
@@ -85,5 +93,3 @@ export class ThemePickerComponent implements OnInit, OnDestroy {
     }
   }
 }
-
-// Module definition moved to shared.module.ts
