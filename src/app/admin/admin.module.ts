@@ -7,11 +7,33 @@ import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.com
 import { RoleEditorComponent } from './role-editor/role-editor.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import { UserEditorComponent } from './user-editor/user-editor.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+
+// Angular Material Modules
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TranslateModule,
     SharedModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule
   ],
   declarations: [
     AdminComponent,
@@ -19,7 +41,8 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
     EditRoleDialogComponent,
     RoleEditorComponent,
     UserListComponent,
-    EditUserDialogComponent
+    EditUserDialogComponent,
+    UserEditorComponent
   ]
 })
 export class AdminModule { }

@@ -1,90 +1,115 @@
-
-
-
-
-
 import { Injectable } from '@angular/core';
-
+import { BehaviorSubject } from 'rxjs';
+import { LocalStoreManager } from '../../services/local-store-manager.service';
 import { AppTheme } from '../../models/AppTheme';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ThemeManager {
+  // Available themes
   themes: Array<AppTheme> = [
     {
       id: 1,
-      name: 'Indigo/Pink',
+      name: 'Material',
       primary: '#3F51B5',
       accent: '#E91E63',
-      href: 'indigo-pink.css',
+      cssClass: 'e-material-theme',
       isDark: false,
       isDefault: true,
     },
     {
       id: 2,
-      name: 'Purple/Amber',
+      name: 'Material Dark',
       primary: '#673AB7',
       accent: '#FFC107',
-      href: 'deeppurple-amber.css',
-      isDark: false,
-    },
-    {
-      id: 3,
-      name: 'Pink/Blue',
-      primary: '#E91E63',
-      accent: '#607D8B',
-      href: 'pink-bluegrey.css',
+      cssClass: 'e-material-dark-theme',
       isDark: true,
     },
     {
+      id: 3,
+      name: 'Bootstrap 5',
+      primary: '#0d6efd',
+      accent: '#fd7e14',
+      cssClass: 'e-bootstrap5-theme',
+      isDark: false,
+    },
+    {
       id: 4,
-      name: 'Purple/Green',
-      primary: '#9C27B0',
-      accent: '#4CAF50',
-      href: 'purple-green.css',
+      name: 'Bootstrap 5 Dark',
+      primary: '#0d6efd',
+      accent: '#fd7e14',
+      cssClass: 'e-bootstrap5-dark-theme',
       isDark: true,
     },
   ];
 
-  public installTheme(theme: AppTheme) {
-    if (theme == null || theme.isDefault) {
-      this.removeStyle('theme');
+  // Keys for local storage
+  private readonly themeKey = 'app_theme';
+
+  // Current theme
+  private currentThemeSubject = new BehaviorSubject<AppTheme>(this.themes[0]);
+  currentTheme$ = this.currentThemeSubject.asObservable();
+
+  constructor(private localStorage: LocalStoreManager) {
+    this.initializeTheme();
+  }
+
+  private initializeTheme(): void {
+    const savedThemeId = this.localStorage.getDataObject<number>(this.themeKey);
+    if (savedThemeId) {
+      const theme = this.getThemeByID(savedThemeId);
+      if (theme) {
+        this.installTheme(theme);
+      }
     } else {
-      this.setStyle('theme', theme.href);
+      // Use default theme
+      const defaultTheme = this.themes.find(t => t.isDefault);
+      if (defaultTheme) {
+        this.installTheme(defaultTheme);
+      }
     }
   }
 
-  public getThemeByID(id: number): AppTheme {
-    return this.themes.find(theme => theme.id === id);
-  }
+  public installTheme(theme: AppTheme): void {
+    if (!theme) return;
 
-  private setStyle(key: string, href: string) {
-    this.getLinkElementForKey(key).setAttribute('href', href);
-  }
+    // Save to local storage
+    this.localStorage.savePermanentData(theme.id, this.themeKey);
 
-  private removeStyle(key: string) {
-    const existingLinkElement = this.getExistingLinkElementByKey(key);
-    if (existingLinkElement) {
-      document.head.removeChild(existingLinkElement);
+    // Remove all existing theme classes
+    document.body.classList.forEach(cls => {
+      if (cls.startsWith('e-') && cls.endsWith('-theme')) {
+        document.body.classList.remove(cls);
+      }
+    });
+
+    // Add new theme class
+    document.body.classList.add(theme.cssClass);
+
+    // Set preferred color scheme meta tag
+    const metaThemeColor = document.querySelector('meta[name=theme-color]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', theme.primary);
     }
+
+    // Update the dark mode preference
+    if (theme.isDark) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+
+    // Notify subscribers
+    this.currentThemeSubject.next(theme);
   }
 
-  private getLinkElementForKey(key: string) {
-    return this.getExistingLinkElementByKey(key) || this.createLinkElementWithKey(key);
-  }
-
-  private getExistingLinkElementByKey(key: string) {
-    return document.head.querySelector(`link[rel="stylesheet"].${this.getClassNameForKey(key)}`);
-  }
-
-  private createLinkElementWithKey(key: string) {
-    const linkEl = document.createElement('link');
-    linkEl.setAttribute('rel', 'stylesheet');
-    linkEl.classList.add(this.getClassNameForKey(key));
-    document.head.appendChild(linkEl);
-    return linkEl;
-  }
-
-  private getClassNameForKey(key: string) {
-    return `style-manager-${key}`;
+  /**
+   * Get theme by ID
+   * @param id The theme ID to find
+   * @returns The found theme or null if not found
+   */
+  public getThemeByID(id: number): AppTheme | null {
+    return this.themes.find(theme => theme.id === id) || null;
   }
 }

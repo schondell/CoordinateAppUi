@@ -1,17 +1,10 @@
-
-
-
-
-
-// tslint:disable:no-host-metadata-property
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, NgModule, Input } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
+import { TooltipModule } from '@syncfusion/ej2-angular-popups';
+import { ItemModel } from '@syncfusion/ej2-angular-splitbuttons';
+import { Subscription } from 'rxjs';
 
 import { ThemeManager } from './theme-manager';
 import { AppTheme } from '../../models/AppTheme';
@@ -22,45 +15,75 @@ import { ConfigurationService } from '../../services/configuration.service';
   templateUrl: 'theme-picker.component.html',
   styleUrls: ['theme-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  host: { 'aria-hidden': 'true' },
+  encapsulation: ViewEncapsulation.None
 })
-export class ThemePickerComponent {
-  @Input()
-  tooltip = 'Theme';
-
+export class ThemePickerComponent implements OnInit, OnDestroy {
+  @Input() tooltip = 'Theme';
+  
+  public dropdownItems: ItemModel[] = [];
+  private configSubscription: Subscription;
 
   constructor(
     public themeManager: ThemeManager,
     private configuration: ConfigurationService
-  ) {
-    configuration.configurationImported$.subscribe(() => this.setTheme(this.currentTheme));
-    this.setTheme(this.currentTheme);
+  ) {}
+  
+  ngOnInit(): void {
+    // Subscribe to configuration changes
+    this.configSubscription = this.configuration.configurationImported$.subscribe(() => {
+      const theme = this.currentTheme;
+      if (theme) {
+        this.setTheme(theme);
+      }
+    });
+    
+    // Set initial theme
+    const theme = this.currentTheme;
+    if (theme) {
+      this.setTheme(theme);
+    }
+    
+    // Setup dropdown items
+    this.setupDropdownItems();
+  }
+  
+  ngOnDestroy(): void {
+    // Clean up subscription to prevent memory leaks
+    if (this.configSubscription) {
+      this.configSubscription.unsubscribe();
+    }
+  }
+  
+  private setupDropdownItems(): void {
+    this.dropdownItems = this.themeManager.themes.map(theme => {
+      return {
+        text: theme.name,
+        iconCss: theme.isDark ? 'e-icons e-moon' : 'e-icons e-day',
+        id: theme.id.toString()
+      };
+    });
   }
 
-  get currentTheme(): AppTheme {
+  get currentTheme(): AppTheme | null {
     return this.themeManager.getThemeByID(this.configuration.themeId);
   }
 
-  setTheme(theme: AppTheme) {
+  setTheme(theme: AppTheme): void {
     if (theme) {
       this.themeManager.installTheme(theme);
       this.configuration.themeId = theme.id;
     }
   }
+  
+  public select(args: any): void {
+    if (!args || !args.item || !args.item.id) return;
+    
+    const selectedId = parseInt(args.item.id, 10);
+    const theme = this.themeManager.getThemeByID(selectedId);
+    if (theme) {
+      this.setTheme(theme);
+    }
+  }
 }
 
-@NgModule({
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatListModule,
-    MatTooltipModule,
-  ],
-  exports: [ThemePickerComponent],
-  declarations: [ThemePickerComponent],
-  providers: [ThemeManager, ConfigurationService],
-})
-export class ThemePickerModule { }
+// Module definition moved to shared.module.ts
