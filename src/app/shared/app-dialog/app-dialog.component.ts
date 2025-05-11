@@ -1,64 +1,96 @@
-import { Component, ViewChild, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 import { AlertDialog, DialogType, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
 
 @Component({
   selector: 'app-dialog',
-  templateUrl: 'app-dialog.component.html',
-  styleUrls: ['app-dialog.component.scss']
+  templateUrl: './app-dialog.component.html',
+  styleUrls: ['./app-dialog.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ButtonModule, DialogModule]
 })
-export class AppDialogComponent {
-  get showTitle() {
-    return this.data.title && this.data.title.length;
+export class AppDialogComponent implements OnInit {
+  @ViewChild('ejDialog', { static: false }) ejDialog: DialogComponent;
+  
+  public dialogData: AlertDialog | null = null;
+  public visible: boolean = false;
+  public result: string = '';
+  public animationSettings: Object = { effect: 'Zoom' };
+
+  get showTitle(): boolean {
+    return !!this.dialogData?.title && this.dialogData.title.length > 0;
   }
 
-  get title() {
-    return this.data.title;
+  get title(): string {
+    return this.dialogData?.title || '';
   }
 
-  get message() {
-    return this.data.message;
+  get message(): string {
+    return this.dialogData?.message || '';
   }
 
-  get okLabel() {
-    return this.data.okLabel || 'OK';
+  get okLabel(): string {
+    return this.dialogData?.okLabel || 'OK';
   }
 
-  get cancelLabel() {
-    return this.data.cancelLabel || 'CANCEL';
+  get cancelLabel(): string {
+    return this.dialogData?.cancelLabel || 'CANCEL';
   }
 
-  get showCancel() {
-    return this.data.type !== DialogType.alert;
+  get showCancel(): boolean {
+    return this.dialogData?.type !== DialogType.alert;
   }
 
-  get isPrompt() {
-    return this.data.type === DialogType.prompt;
+  get isPrompt(): boolean {
+    return this.dialogData?.type === DialogType.prompt;
   }
 
-  result: string;
+  constructor(private translationService: AppTranslationService) { }
 
-  constructor(
-    public dialogRef: MatDialogRef<AppDialogComponent>,
-    private translationService: AppTranslationService,
-    @Inject(MAT_DIALOG_DATA) private data: AlertDialog
-  ) { }
+  ngOnInit() {
+    // Dialog is initialized here but will be shown when data is passed
+  }
+
+  // Method to open the dialog with data
+  public openDialog(data: AlertDialog) {
+    this.dialogData = data;
+    this.result = data.defaultValue || '';
+    this.visible = true;
+  }
 
   ok() {
-    if (this.data.type === DialogType.prompt) {
-      this.data.okCallback(this.result || this.data.defaultValue);
-    } else {
-      this.data.okCallback();
+    if (this.dialogData) {
+      if (this.dialogData.type === DialogType.prompt) {
+        if (this.dialogData.okCallback) {
+          this.dialogData.okCallback(this.result || this.dialogData.defaultValue);
+        }
+      } else {
+        if (this.dialogData.okCallback) {
+          this.dialogData.okCallback();
+        }
+      }
     }
-    this.dialogRef.close();
+    this.visible = false;
   }
 
   cancel(): void {
-    if (this.data.cancelCallback) {
-      this.data.cancelCallback();
+    if (this.dialogData?.cancelCallback) {
+      this.dialogData.cancelCallback();
     }
-    this.dialogRef.close();
+    this.visible = false;
+  }
+  
+  // Dialog lifecycle events
+  public onDialogClose() {
+    // Only trigger cancel if dialog is closed by clicking outside
+    if (this.showCancel) {
+      this.cancel();
+    }
   }
 }

@@ -1,19 +1,33 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { CustomerWithWorkItemRepository } from '../../services/generated/customerwithworkitem-repository';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
+
+// Syncfusion imports
+import { TabModule } from '@syncfusion/ej2-angular-navigations';
+
+import { CustomerWithWorkItemRepository } from '../../services/generated/customerwithworkitem-repository';
 import { ConfigurationService } from '../../services/configuration.service';
 import { IRouteInput, RouteInput, GeoCoordinate, WayPoint } from '../../models/IRouteInput';
 import { OptimizeService } from '../../services/optimize.service';
 import { Address, ICustomerWithWorkItemDtoApi} from '../../models/generatedtypes';
 import { NotifyService } from '../../services/notify.service';
-import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    TabModule
+  ]
 })
 
 export class HomeComponent implements OnInit {

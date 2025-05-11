@@ -1,13 +1,13 @@
-
-
-
-// 
-
-
-
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatExpansionPanel } from '@angular/material/expansion';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { MatExpansionPanel, MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { UserEditorComponent } from '../admin/user-editor/user-editor.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
@@ -24,7 +24,22 @@ import { Utilities } from '../services/utilities';
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
-  animations: [fadeInOut]
+  animations: [fadeInOut],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatExpansionModule,
+    MatTabsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    TranslateModule,
+    UserEditorComponent,
+    UserPreferencesComponent
+  ]
 })
 export class SettingsComponent implements OnInit, OnDestroy, AfterViewInit {
   fragmentSubscription: any;

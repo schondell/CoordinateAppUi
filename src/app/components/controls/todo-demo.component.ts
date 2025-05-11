@@ -1,17 +1,19 @@
 
-
-
-// 
-
-
-
-import { Component, OnInit, OnDestroy, AfterViewInit, Input, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, OnDestroy, AfterViewInit, Input, TemplateRef, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatSortModule, MatSort } from '@angular/material/sort';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AuthService } from '../../services/auth.service';
 import { AlertService, MessageSeverity, DialogType } from '../../services/alert.service';
@@ -31,7 +33,26 @@ export interface ToDoTask {
 @Component({
   selector: 'app-todo-demo',
   templateUrl: './todo-demo.component.html',
-  styleUrls: ['./todo-demo.component.scss']
+  styleUrls: ['./todo-demo.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatCheckboxModule,
+    TranslateModule,
+    AddTaskDialogComponent
+  ]
 })
 export class TodoDemoComponent implements OnInit, AfterViewInit, OnDestroy {
   public static readonly DBKeyTodoDemo = 'todo-demo.todo_list';

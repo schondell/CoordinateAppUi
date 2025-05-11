@@ -1,0 +1,14 @@
+<div class="container">
+  <ejs-datepicker id="history_month"
+                  [start]='start' [depth]='depth' [format]='format' [value]='currentDate'
+                  placeholder="{{'history.month.Title' | translate}}"
+                  (change)="onDateChange($event)">
+  </ejs-datepicker>
+  <ejs-dropdownlist id="select_vehicle_history" class="myStyles"
+                    placeholder="{{'history.select.Title' | translate}}"
+                    [dataSource]='filteredVehicles' [fields]='localFields'
+                    [(value)]="selectedVehicleId"
+                    (change)="onVehicleChange()">
+  </ejs-dropdownlist>
+  <button ejs-button *ngIf="isFindButtonVisible" (click)="onFindClick()">{{'history.select.Title' | translate}}</button>
+</div>

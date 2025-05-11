@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+
+// Syncfusion imports
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
+import { TooltipModule } from '@syncfusion/ej2-angular-popups';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
 
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { ConfigurationService } from '../../services/configuration.service';
@@ -23,7 +31,17 @@ export interface LanguagePreference {
 @Component({
   selector: 'app-user-preferences',
   templateUrl: './user-preferences.component.html',
-  styleUrls: ['./user-preferences.component.scss']
+  styleUrls: ['./user-preferences.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    DropDownListModule,
+    SwitchModule,
+    TooltipModule,
+    DialogModule
+  ]
 })
 export class UserPreferencesComponent {
   languages: LanguagePreference[] = [
@@ -44,11 +62,16 @@ export class UserPreferencesComponent {
     { title: 'Settings', icon: 'settings', path: '/settings', isDefault: false }
   ];
 
+  // Dialog properties
+  public showConfirmDialog = false;
+  public dialogTitle = '';
+  public dialogContent = '';
+  public confirmAction: () => void = () => {}; 
+  
   constructor(
     private alertService: AlertService,
     private translationService: AppTranslationService,
     private accountService: AccountService,
-    private snackBar: MatSnackBar,
     public configurations: ConfigurationService
   ) { }
 
@@ -67,56 +90,70 @@ export class UserPreferencesComponent {
   }));
 
 
+  // Method to show confirmation dialog
+  showConfirmation(title: string, content: string, action: () => void): void {
+    this.dialogTitle = title;
+    this.dialogContent = content;
+    this.confirmAction = action;
+    this.showConfirmDialog = true;
+  }
+
+  // Method to handle dialog close
+  handleDialogClose(): void {
+    this.showConfirmDialog = false;
+  }
+
+  // Method to handle confirmation
+  handleConfirm(): void {
+    this.showConfirmDialog = false;
+    if (this.confirmAction) {
+      this.confirmAction();
+    }
+  }
+
   reload() {
-    this.snackBar.open('Reload preferences?', 'RELOAD', { duration: 5000 })
-      .onAction().subscribe(() => {
-        this.alertService.startLoadingMessage();
+    this.showConfirmation('Reload Preferences', 'Are you sure you want to reload your preferences?', () => {
+      this.alertService.startLoadingMessage();
 
-        this.accountService.getUserPreferences()
-          .subscribe({
-            next: results => {
-              this.alertService.stopLoadingMessage();
-
-              this.configurations.import(results);
-
-              this.alertService.showMessage('Defaults loaded!', '', MessageSeverity.info);
-
-            },
-            error: error => {
-              this.alertService.stopLoadingMessage();
-              this.alertService.showStickyMessage('Load Error', `Unable to retrieve user preferences from the server.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
-                MessageSeverity.error, error);
-            }
-          });
-      });
+      this.accountService.getUserPreferences()
+        .subscribe({
+          next: results => {
+            this.alertService.stopLoadingMessage();
+            this.configurations.import(results);
+            this.alertService.showMessage('Defaults loaded!', '', MessageSeverity.info);
+          },
+          error: error => {
+            this.alertService.stopLoadingMessage();
+            this.alertService.showStickyMessage('Load Error', `Unable to retrieve user preferences from the server.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
+              MessageSeverity.error, error);
+          }
+        });
+    });
   }
 
   save() {
-    this.snackBar.open('Save preferences?', 'SAVE', { duration: 5000 })
-      .onAction().subscribe(() => {
-        this.alertService.startLoadingMessage('', 'Saving new defaults');
+    this.showConfirmation('Save Preferences', 'Are you sure you want to save your preferences?', () => {
+      this.alertService.startLoadingMessage('', 'Saving new defaults');
 
-        this.accountService.updateUserPreferences(this.configurations.export())
-          .subscribe({
-            next: _ => {
-              this.alertService.stopLoadingMessage();
-              this.alertService.showMessage('New Defaults', 'Account defaults updated successfully', MessageSeverity.success);
-
-            },
-            error: error => {
-              this.alertService.stopLoadingMessage();
-              this.alertService.showStickyMessage('Save Error', `An error occurred whilst saving configuration defaults.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
-                MessageSeverity.error, error);
-            }
-          });
-      });
+      this.accountService.updateUserPreferences(this.configurations.export())
+        .subscribe({
+          next: _ => {
+            this.alertService.stopLoadingMessage();
+            this.alertService.showMessage('New Defaults', 'Account defaults updated successfully', MessageSeverity.success);
+          },
+          error: error => {
+            this.alertService.stopLoadingMessage();
+            this.alertService.showStickyMessage('Save Error', `An error occurred whilst saving configuration defaults.\r\nErrors: "${Utilities.getHttpResponseMessages(error)}"`,
+              MessageSeverity.error, error);
+          }
+        });
+    });
   }
 
   reset() {
-    this.snackBar.open('Reset defaults?', 'RESET', { duration: 5000 })
-      .onAction().subscribe(() => {
-        this.configurations.import(null);
-        this.alertService.showMessage('Defaults Reset', 'Account defaults reset completed successfully', MessageSeverity.success);
-      });
+    this.showConfirmation('Reset Defaults', 'Are you sure you want to reset to default settings?', () => {
+      this.configurations.import(null);
+      this.alertService.showMessage('Defaults Reset', 'Account defaults reset completed successfully', MessageSeverity.success);
+    });
   }
 }

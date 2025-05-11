@@ -1,15 +1,20 @@
-<h1 *ngIf="showTitle" mat-dialog-title>{{title}}></h1>
-<div mat-dialog-content>
-
-    <p *ngIf="!isPrompt">{{message}}</p>
-
-    <mat-form-field *ngIf="isPrompt" style="width: 100%;">
-        <mat-label>{{message}}</mat-label>
-        <input matInput [(ngModel)]="result" />
-    </mat-form-field>
-
-</div>
-<div mat-dialog-actions>
-    <button mat-raised-button (click)="ok()" color="primary">{{okLabel}}></button>
-    <button mat-raised-button (click)="cancel()" color="warn" *ngIf="showCancel">{{cancelLabel}}</button>
-</div>
+<ejs-dialog #ejDialog [visible]="visible" [header]="showTitle ? title : ''" 
+           [animationSettings]="animationSettings" [showCloseIcon]="true"
+           [width]="'400px'" (close)="onDialogClose()">
+  <ng-template #content>
+    <div class="dialog-content">
+      <p *ngIf="!isPrompt" class="dialog-message">{{message}}</p>
+      
+      <div *ngIf="isPrompt" class="e-input-group">
+        <span class="e-float-text">{{message}}</span>
+        <input type="text" class="e-input" [(ngModel)]="result" />
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #footerTemplate>
+    <div class="dialog-footer">
+      <button ejs-button cssClass="e-primary" (click)="ok()">{{okLabel}}</button>
+      <button ejs-button *ngIf="showCancel" (click)="cancel()">{{cancelLabel}}</button>
+    </div>
+  </ng-template>
+</ejs-dialog>

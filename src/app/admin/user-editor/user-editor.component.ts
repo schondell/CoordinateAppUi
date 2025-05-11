@@ -1,6 +1,14 @@
-import { Component, OnDestroy, ViewChild, Input, OnChanges, NgZone } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, OnDestroy, ViewChild, Input, OnChanges, NgZone, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgForm, FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AccountService } from '../../services/account.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
@@ -33,7 +41,21 @@ interface UserProfileForm {
 @Component({
   selector: 'app-user-editor',
   templateUrl: './user-editor.component.html',
-  styleUrls: ['./user-editor.component.scss']
+  styleUrls: ['./user-editor.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    TranslateModule
+  ]
 })
 export class UserEditorComponent implements OnChanges, OnDestroy {
   @ViewChild('form', { static: true })

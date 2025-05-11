@@ -1,8 +1,12 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule, DatePipe, DecimalPipe, Location } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+
 import { VehicleTripLogFullRepositoryEx } from 'src/app/services/repository/vehicle-trip-log-full-ex-repository';
 import { TripHistoryModel } from 'src/app/models/VehicleTripLogFullDto2';
-import {DatePipe, DecimalPipe, Location} from '@angular/common';
+import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
+import { DateVehicleSelectorComponent } from '../../shared/date-vehicle-selector/date-vehicle-selector.component';
 
 @Component({
   selector: 'app-history',
@@ -10,6 +14,15 @@ import {DatePipe, DecimalPipe, Location} from '@angular/common';
   styleUrls: ['./history.component.scss'],
   providers: [
     { provide: 'sourceFiles', useValue: { files: ['month-picker.css'] } }
+  ],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    PageHeaderComponent,
+    DateVehicleSelectorComponent
   ]
 })
 export class HistoryComponent implements OnInit, OnDestroy {

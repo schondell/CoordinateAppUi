@@ -1,0 +1,108 @@
+<div class="home-container">
+  <app-page-header-standalone title="Dashboard" icon="home"></app-page-header-standalone>
+  <div class="tabs-container">
+    <ejs-tab (selected)="selectTab($event)">
+      <e-tabitems>
+        <e-tabitem [header]="{'text': 'Map Overview'}" [routerLink]="['/map-overview']">
+          <ng-template #content>
+            <div class="tab-content">
+              <h3>Map Overview</h3>
+              <p>View all your work items on a map for better planning</p>
+              <div class="placeholder-map">
+                <div class="map-overlay">
+                  <span class="map-icon">🗺️</span>
+                  <p>Map integration available in full version</p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </e-tabitem>
+        <e-tabitem [header]="{'text': 'Route Planning'}" [routerLink]="['/route-planning']">
+          <ng-template #content>
+            <div class="tab-content">
+              <h3>Route Planning</h3>
+              <p>Plan and optimize your routes to save time and resources</p>
+              <div class="placeholder-content">
+                <div class="route-list">
+                  <div class="route-item">
+                    <span class="route-icon">📍</span>
+                    <div class="route-details">
+                      <h4>Start: Main Office</h4>
+                      <p>123 Business Ave, City Center</p>
+                    </div>
+                  </div>
+                  <div class="route-item">
+                    <span class="route-icon">🔷</span>
+                    <div class="route-details">
+                      <h4>Customer Stop: Acme Corp</h4>
+                      <p>456 Commerce St, Downtown</p>
+                    </div>
+                  </div>
+                  <div class="route-item">
+                    <span class="route-icon">🔷</span>
+                    <div class="route-details">
+                      <h4>Customer Stop: TechSolutions Inc</h4>
+                      <p>789 Innovation Dr, Tech Park</p>
+                    </div>
+                  </div>
+                  <div class="route-item">
+                    <span class="route-icon">🏁</span>
+                    <div class="route-details">
+                      <h4>End: Main Office</h4>
+                      <p>123 Business Ave, City Center</p>
+                    </div>
+                  </div>
+                </div>
+                <button ejs-button cssClass="e-primary">Optimize Route</button>
+              </div>
+            </div>
+          </ng-template>
+        </e-tabitem>
+        <e-tabitem [header]="{'text': 'All Work Items'}" [routerLink]="['/all-workitems']">
+          <ng-template #content>
+            <div class="tab-content">
+              <h3>All Work Items</h3>
+              <p>Manage and track all of your ongoing work items</p>
+              <div class="placeholder-content">
+                <table class="work-items-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Customer</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th>Priority</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>WI-1001</td>
+                      <td>Acme Corp</td>
+                      <td>Equipment installation</td>
+                      <td><span class="status-badge pending">Pending</span></td>
+                      <td>High</td>
+                    </tr>
+                    <tr>
+                      <td>WI-1002</td>
+                      <td>TechSolutions Inc</td>
+                      <td>Software update</td>
+                      <td><span class="status-badge in-progress">In Progress</span></td>
+                      <td>Medium</td>
+                    </tr>
+                    <tr>
+                      <td>WI-1003</td>
+                      <td>GlobalTraders Ltd</td>
+                      <td>System maintenance</td>
+                      <td><span class="status-badge completed">Completed</span></td>
+                      <td>Low</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </e-tabitem>
+      </e-tabitems>
+    </ejs-tab>
+  </div>
+</div>

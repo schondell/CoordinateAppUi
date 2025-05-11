@@ -1,0 +1,238 @@
+<form [formGroup]="userProfileForm" novalidate (ngSubmit)="save()" class="form-horizontal">
+  <div class="form-container">
+    <div class="form-header">
+      <div class="heading">
+        <span *ngIf="isNewUser">{{ 'users.editor.NewUser' | translate }}</span>
+        <span *ngIf="!isNewUser">{{ 'users.editor.EditUser' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-body">
+      <!-- Username -->
+      <div class="form-group">
+        <label class="form-control-label">{{ 'users.editor.UserName' | translate }}</label>
+        <div class="form-input">
+          <ejs-textbox id="userName" formControlName="userName" 
+                     [readonly]="!isEditMode"
+                     [placeholder]="'users.editor.UserNamePlaceholder' | translate">
+          </ejs-textbox>
+          <div *ngIf="userName.invalid && (userName.dirty || userName.touched)"
+               class="error-block">
+            <div *ngIf="userName.errors?.['required']">
+              {{ 'users.editor.UserNameRequired' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label class="form-control-label">{{ 'users.editor.Email' | translate }}</label>
+        <div class="form-input">
+          <ejs-textbox id="email" formControlName="email" 
+                     [readonly]="!isEditMode"
+                     [placeholder]="'users.editor.EmailPlaceholder' | translate">
+          </ejs-textbox>
+          <div *ngIf="email.invalid && (email.dirty || email.touched)"
+               class="error-block">
+            <div *ngIf="email.errors?.['required']">
+              {{ 'users.editor.EmailRequired' | translate }}
+            </div>
+            <div *ngIf="email.errors?.['email']">
+              {{ 'users.editor.InvalidEmail' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label class="form-control-label">{{ 'users.editor.FullName' | translate }}</label>
+        <div class="form-input">
+          <ejs-textbox id="fullName" formControlName="fullName" 
+                     [readonly]="!isEditMode"
+                     [placeholder]="'users.editor.FullNamePlaceholder' | translate">
+          </ejs-textbox>
+        </div>
+      </div>
+
+      <!-- Job Title -->
+      <div class="form-group">
+        <label class="form-control-label">{{ 'users.editor.JobTitle' | translate }}</label>
+        <div class="form-input">
+          <ejs-textbox id="jobTitle" formControlName="jobTitle" 
+                     [readonly]="!isEditMode"
+                     [placeholder]="'users.editor.JobTitlePlaceholder' | translate">
+          </ejs-textbox>
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label class="form-control-label">{{ 'users.editor.PhoneNumber' | translate }}</label>
+        <div class="form-input">
+          <ejs-textbox id="phoneNumber" formControlName="phoneNumber" 
+                     [readonly]="!isEditMode"
+                     [placeholder]="'users.editor.PhoneNumberPlaceholder' | translate">
+          </ejs-textbox>
+        </div>
+      </div>
+
+      <!-- Roles -->
+      <div *ngIf="canViewRoles" class="form-group">
+        <label class="form-control-label">{{ 'users.editor.Roles' | translate }}</label>
+        <div class="form-input">
+          <ejs-multiselect id="roles" formControlName="roles"
+                       [dataSource]="assignableRoles"
+                       [fields]="roleFields"
+                       [enabled]="isEditMode && canAssignRoles"
+                       (change)="rolesChanged($event)"
+                       [placeholder]="'users.editor.RolesPlaceholder' | translate">
+          </ejs-multiselect>
+          <div *ngIf="showRolesError" class="error-block">
+            {{ 'users.editor.RoleRequired' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Status -->
+      <div class="form-group">
+        <label class="form-control-label">{{ 'users.editor.AccountStatus' | translate }}</label>
+        <div class="form-input account-status">
+          <div>
+            <ejs-checkbox id="isEnabled" formControlName="isEnabled" 
+                        [disabled]="!isEditMode || isEditingSelf"
+                        [label]="'users.editor.Enabled' | translate">
+            </ejs-checkbox>
+          </div>
+          
+          <div *ngIf="!isNewUser && user.isLockedOut">
+            <div class="locked-status">
+              <div class="lock-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <div class="lock-text">
+                {{ 'users.editor.Locked' | translate }}
+              </div>
+            </div>
+            <div *ngIf="isEditMode && !isEditingSelf">
+              <button ejs-button cssClass="e-primary e-small"
+                      (click)="unlockUser()">
+                {{ 'users.editor.UnlockButton' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password Section -->
+      <div *ngIf="isNewUser || isChangePassword" formGroupName="password">
+        <h4 class="password-section-title">
+          {{ isNewUser ? ('users.editor.SetPassword' | translate) : ('users.editor.ChangePassword' | translate) }}
+        </h4>
+
+        <!-- Current Password (when editing) -->
+        <div *ngIf="!isNewUser && userHasPassword" class="form-group">
+          <label class="form-control-label">{{ 'users.editor.CurrentPassword' | translate }}</label>
+          <div class="form-input">
+            <ejs-textbox id="currentPassword" type="password" formControlName="currentPassword"
+                       [placeholder]="'users.editor.CurrentPasswordPlaceholder' | translate">
+            </ejs-textbox>
+            <div *ngIf="currentPassword.invalid && (currentPassword.dirty || currentPassword.touched)"
+                 class="error-block">
+              <div *ngIf="currentPassword.errors?.['required']">
+                {{ 'users.editor.CurrentPasswordRequired' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Password -->
+        <div class="form-group">
+          <label class="form-control-label">
+            {{ isNewUser ? ('users.editor.Password' | translate) : ('users.editor.NewPassword' | translate) }}
+          </label>
+          <div class="form-input">
+            <ejs-textbox id="newPassword" type="password" formControlName="newPassword"
+                       [placeholder]="'users.editor.PasswordPlaceholder' | translate">
+            </ejs-textbox>
+            <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)"
+                 class="error-block">
+              <div *ngIf="newPassword.errors?.['required']">
+                {{ 'users.editor.PasswordRequired' | translate }}
+              </div>
+              <div *ngIf="newPassword.errors?.['pattern']">
+                {{ 'users.editor.PasswordPattern' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label class="form-control-label">{{ 'users.editor.ConfirmPassword' | translate }}</label>
+          <div class="form-input">
+            <ejs-textbox id="confirmPassword" type="password" formControlName="confirmPassword"
+                       [placeholder]="'users.editor.ConfirmPasswordPlaceholder' | translate">
+            </ejs-textbox>
+            <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+                 class="error-block">
+              <div *ngIf="confirmPassword.errors?.['required']">
+                {{ 'users.editor.ConfirmPasswordRequired' | translate }}
+              </div>
+              <div *ngIf="confirmPassword.errors?.['notEqual']">
+                {{ 'users.editor.PasswordMismatch' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <div class="action-buttons">
+        <!-- Edit Mode Toggle -->
+        <div *ngIf="!isNewUser && !isEditMode">
+          <button ejs-button cssClass="e-primary" (click)="beginEdit()">
+            {{ 'users.editor.EditButton' | translate }}
+          </button>
+        </div>
+
+        <!-- Change Password Button -->
+        <div *ngIf="!isNewUser && isEditMode && !isChangePassword">
+          <button ejs-button cssClass="e-outline" (click)="changePassword()">
+            {{ 'users.editor.ChangePasswordButton' | translate }}
+          </button>
+        </div>
+
+        <!-- Save/Cancel Buttons -->
+        <div *ngIf="isEditMode || isNewUser">
+          <button ejs-button cssClass="e-outline" type="button" (click)="cancel()">
+            {{ 'users.editor.CancelButton' | translate }}
+          </button>
+          <button ejs-button cssClass="e-primary" type="submit" [disabled]="isSaving">
+            {{ 'users.editor.SaveButton' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Confirmation Dialog -->
+<ejs-dialog #confirmDialog [isModal]="true" [visible]="showConfirmDialog" 
+          [header]="dialogTitle" (close)="handleDialogClose()">
+  <ng-template #content>
+    <div class="dialog-content">
+      <p>{{ dialogContent }}</p>
+    </div>
+    <div class="dialog-footer">
+      <button ejs-button cssClass="e-outline" (click)="handleDialogClose()">
+        {{ 'common.cancel' | translate }}
+      </button>
+      <button ejs-button cssClass="e-primary" (click)="handleConfirm()">
+        {{ 'common.confirm' | translate }}
+      </button>
+    </div>
+  </ng-template>
+</ejs-dialog>

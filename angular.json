@@ -19,36 +19,24 @@
           "options": {
             "progress": false,
             "outputPath": "dist",
-            "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "index": "src/index.html",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets"
             ],
             "styles": [
-              {
-                "input": "src/styles.scss"
-              },
-              {
-                "input": "src/app/assets/themes/deeppurple-amber.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/indigo-pink.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/pink-bluegrey.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/purple-green.scss",
-                "inject": false
-              }
+              "src/styles.scss",
+              "src/styles-standalone.css",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-grids/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-calendars/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [ "src/app/assets/styles" ]
@@ -78,12 +66,8 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -95,7 +79,6 @@
               "buildTarget": "quickapp-pro:build:production"
             },
             "development": {
-              "proxyConfig": "proxy.conf.js",
               "buildTarget": "quickapp-pro:build:development"
             }
           },
@@ -120,25 +103,15 @@
               "src/assets"
             ],
             "styles": [
-              {
-                "input": "src/styles.scss"
-              },
-              {
-                "input": "src/app/assets/themes/deeppurple-amber.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/indigo-pink.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/pink-bluegrey.scss",
-                "inject": false
-              },
-              {
-                "input": "src/app/assets/themes/purple-green.scss",
-                "inject": false
-              }
+              "src/styles.scss",
+              "src/styles-standalone.css",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-grids/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-calendars/styles/material.css",
+              "node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [ "src/app/assets/styles" ]
@@ -157,5 +130,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

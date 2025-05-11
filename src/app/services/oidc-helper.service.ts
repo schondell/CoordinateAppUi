@@ -15,7 +15,10 @@ import { LoginResponse } from '../models/login-response.model';
 export class OidcHelperService {
 
   private readonly clientId = 'coordinateapp_spa';
-  private readonly scope = 'openid email phone profile offline_access roles coordinateapp_api';
+  private readonly scope = 'profile email roles';
+  
+  // The issuer must match the backend's issuer for token validation
+  private readonly issuer = this.configurations.baseUrl;
 
   private readonly tokenEndpoint =  this.configurations.baseUrl + '/connect/token';
   private readonly twitterRequestTokenEndpoint = '/oauth/twitter/request_token';

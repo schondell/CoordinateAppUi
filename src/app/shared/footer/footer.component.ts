@@ -3,21 +3,18 @@
 
 
 
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+  styleUrls: ['./footer.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class FooterComponent {
   getYear() {
     return new Date().getUTCFullYear();
   }
 }
-
-@NgModule({
-  exports: [FooterComponent],
-  declarations: [FooterComponent],
-})
-export class FooterModule { }

@@ -1,0 +1,56 @@
+.pageHeader {
+  margin-bottom: 30px;
+}
+
+.bg-grey {
+  background-color: #f6f6f6;
+}
+
+.logo {
+  font-size: 200px;
+}
+
+.more-templates {
+  width: 100%;
+}
+
+// Additional modern styling
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+h4 {
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+.title {
+  color: #3f51b5;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.block.services .thumbnails li {
+  margin-bottom: 30px;
+}
+
+.center {
+  margin: 0 auto;
+  float: none;
+}
+
+@media (max-width: 768px) {
+  .thumbnails li {
+    margin-bottom: 30px;
+  }
+}

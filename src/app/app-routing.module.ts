@@ -10,14 +10,16 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SettingsStandaloneComponent } from './settings/settings.component.standalone';
 import { AboutComponent } from './components/about/about.component';
+import { AboutStandaloneComponent } from './components/about/about.component.standalone';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { Utilities } from './services/utilities';
 import { HistoryComponent } from "./components/history/history.component";
 import {WorkItemComponent} from "./components/workitem/workitem.component";
-import {DrivingJournalComponent} from "./components/driving-journal/driving-journal/driving-journal.component";
+import { DrivingJournalComponent } from "./components/driving-journal/driving-journal/driving-journal.component";
 import {LogoutComponent} from "./components/logout/logout.component";
 import {RouteviewComponent} from "./components/routeview/routeview.component";
 import {
@@ -76,8 +78,11 @@ const routes: Routes = [
   { path: 'customers', component: CustomersComponent, canActivate: [AuthGuard], data: { title: 'Customers' } },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard], data: { title: 'Products' } },
   { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard], data: { title: 'Orders' } },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { title: 'Settings' } },
-  { path: 'about', component: AboutComponent, data: { title: 'About Us' } },
+  
+  // Using the standalone components in the main app routes
+  { path: 'settings', component: SettingsStandaloneComponent, canActivate: [AuthGuard], data: { title: 'Settings' } },
+  { path: 'about', component: AboutStandaloneComponent, data: { title: 'About Us' } },
+  
   { path: 'home', component: HomeComponent, pathMatch: 'full' },
   { path: '**', component: NotFoundComponent, data: { title: 'Page Not Found' } }
 ];

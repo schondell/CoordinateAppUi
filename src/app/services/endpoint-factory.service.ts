@@ -35,9 +35,9 @@ export class EndpointFactory {
     const params = new HttpParams()
       .append('username', userName)
       .append('password', password)
-      .append('client_id', 'coordinate_spa')
+      .append('client_id', 'coordinateapp_spa')
       .append('grant_type', 'password')
-      .append('scope', 'openid email phone profile offline_access roles coordinate_api');
+      .append('scope', 'profile email roles');
 
     return this.http.post<T>(this.loginUrl, params, { headers: header });
   }
@@ -47,7 +47,7 @@ export class EndpointFactory {
 
     const params = new HttpParams()
       .append('refresh_token', this.authService.refreshToken)
-      .append('client_id', 'coordinate_spa')
+      .append('client_id', 'coordinateapp_spa')
       .append('grant_type', 'refresh_token');
 
     return this.http.post<T>(this.loginUrl, params, { headers: header }).pipe<T>(
