@@ -37,7 +37,7 @@ import { registerLicense } from '@syncfusion/ej2-base';
 import { PageService, SortService, ToolbarService, PdfExportService, ExcelExportService } from '@syncfusion/ej2-angular-grids';
 
 // Register Syncfusion license
-registerLicense('Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXxcdnVQR2JYV0R3Wkc=');
+registerLicense('ORg4AjUWIQA/Gnt2XFhhQlJHfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTH5WdkFjUH1adHRSRGZfWkZ/');
 
 // Debug console logs
 console.log('Starting standalone application bootstrap with routing');
