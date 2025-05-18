@@ -29,7 +29,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/styles-standalone.css",
               "node_modules/@syncfusion/ej2-base/styles/material.css",
               "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
               "node_modules/@syncfusion/ej2-angular-buttons/styles/material.css",
@@ -104,7 +103,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/styles-standalone.css",
               "node_modules/@syncfusion/ej2-base/styles/material.css",
               "node_modules/@syncfusion/ej2-angular-navigations/styles/material.css",
               "node_modules/@syncfusion/ej2-angular-buttons/styles/material.css",
