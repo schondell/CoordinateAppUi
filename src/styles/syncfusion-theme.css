@@ -1,0 +1,247 @@
+/* Syncfusion theme variables */
+:root {
+  /* Primary color palette */
+  --primary-color: #3f51b5;
+  --primary-color-50: rgba(63, 81, 181, 0.1);
+  --primary-color-100: rgba(63, 81, 181, 0.2);
+  --primary-color-200: rgba(63, 81, 181, 0.3);
+  --primary-color-300: rgba(63, 81, 181, 0.4);
+  --primary-color-400: rgba(63, 81, 181, 0.5);
+  --primary-color-500: rgba(63, 81, 181, 0.6);
+  --primary-color-600: rgba(63, 81, 181, 0.7);
+  --primary-color-700: rgba(63, 81, 181, 0.8);
+  --primary-color-800: rgba(63, 81, 181, 0.9);
+  --primary-color-900: rgba(63, 81, 181, 1);
+  
+  /* Accent color palette */
+  --accent-color: #ff4081;
+  --accent-color-50: rgba(255, 64, 129, 0.1);
+  --accent-color-100: rgba(255, 64, 129, 0.2);
+  --accent-color-200: rgba(255, 64, 129, 0.3);
+  --accent-color-300: rgba(255, 64, 129, 0.4);
+  --accent-color-400: rgba(255, 64, 129, 0.5);
+  --accent-color-500: rgba(255, 64, 129, 0.6);
+  --accent-color-600: rgba(255, 64, 129, 0.7);
+  --accent-color-700: rgba(255, 64, 129, 0.8);
+  --accent-color-800: rgba(255, 64, 129, 0.9);
+  --accent-color-900: rgba(255, 64, 129, 1);
+  
+  /* Warn color palette */
+  --warn-color: #f44336;
+  --warn-color-50: rgba(244, 67, 54, 0.1);
+  --warn-color-100: rgba(244, 67, 54, 0.2);
+  --warn-color-200: rgba(244, 67, 54, 0.3);
+  --warn-color-300: rgba(244, 67, 54, 0.4);
+  --warn-color-400: rgba(244, 67, 54, 0.5);
+  --warn-color-500: rgba(244, 67, 54, 0.6);
+  --warn-color-600: rgba(244, 67, 54, 0.7);
+  --warn-color-700: rgba(244, 67, 54, 0.8);
+  --warn-color-800: rgba(244, 67, 54, 0.9);
+  --warn-color-900: rgba(244, 67, 54, 1);
+  
+  /* Background colors */
+  --background-color: #fafafa;
+  --card-background: #ffffff;
+  --hover-background: rgba(0, 0, 0, 0.04);
+  
+  /* Text colors */
+  --text-color: rgba(0, 0, 0, 0.87);
+  --secondary-text-color: rgba(0, 0, 0, 0.54);
+  --disabled-text-color: rgba(0, 0, 0, 0.38);
+  
+  /* Border colors */
+  --border-color: rgba(0, 0, 0, 0.12);
+  --divider-color: rgba(0, 0, 0, 0.12);
+  
+  /* Elevation */
+  --elevation-z1: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+  --elevation-z2: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  --elevation-z3: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+  --elevation-z4: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+  --elevation-z6: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  --elevation-z8: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+  
+  /* Component specific */
+  --button-border-radius: 4px;
+  --card-border-radius: 4px;
+  --input-border-radius: 4px;
+}
+
+/* Dark theme variables */
+.e-dark-theme {
+  /* Primary color palette - lighter for dark theme */
+  --primary-color: #7986cb;
+  --primary-color-50: rgba(121, 134, 203, 0.1);
+  --primary-color-100: rgba(121, 134, 203, 0.2);
+  --primary-color-200: rgba(121, 134, 203, 0.3);
+  --primary-color-300: rgba(121, 134, 203, 0.4);
+  --primary-color-400: rgba(121, 134, 203, 0.5);
+  --primary-color-500: rgba(121, 134, 203, 0.6);
+  --primary-color-600: rgba(121, 134, 203, 0.7);
+  --primary-color-700: rgba(121, 134, 203, 0.8);
+  --primary-color-800: rgba(121, 134, 203, 0.9);
+  --primary-color-900: rgba(121, 134, 203, 1);
+  
+  /* Accent color palette - lighter for dark theme */
+  --accent-color: #ff80ab;
+  --accent-color-50: rgba(255, 128, 171, 0.1);
+  --accent-color-100: rgba(255, 128, 171, 0.2);
+  
+  /* Warn color palette - lighter for dark theme */
+  --warn-color: #e57373;
+  --warn-color-50: rgba(229, 115, 115, 0.1);
+  --warn-color-100: rgba(229, 115, 115, 0.2);
+  
+  /* Background colors */
+  --background-color: #303030;
+  --card-background: #424242;
+  --hover-background: rgba(255, 255, 255, 0.08);
+  
+  /* Text colors */
+  --text-color: rgba(255, 255, 255, 0.87);
+  --secondary-text-color: rgba(255, 255, 255, 0.7);
+  --disabled-text-color: rgba(255, 255, 255, 0.5);
+  
+  /* Border colors */
+  --border-color: rgba(255, 255, 255, 0.12);
+  --divider-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Custom utility classes to replace Material elevation */
+.e-elevation-z1 {
+  box-shadow: var(--elevation-z1);
+}
+
+.e-elevation-z2 {
+  box-shadow: var(--elevation-z2);
+}
+
+.e-elevation-z3 {
+  box-shadow: var(--elevation-z3);
+}
+
+.e-elevation-z4 {
+  box-shadow: var(--elevation-z4);
+}
+
+.e-elevation-z6 {
+  box-shadow: var(--elevation-z6);
+}
+
+.e-elevation-z8 {
+  box-shadow: var(--elevation-z8);
+}
+
+/* Syncfusion component overrides */
+.e-btn.e-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.e-btn.e-danger {
+  background-color: var(--warn-color);
+  border-color: var(--warn-color);
+  color: white;
+}
+
+.e-btn.e-info {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+}
+
+.e-input-group {
+  border-color: var(--border-color);
+}
+
+.e-input-group:focus-within {
+  border-color: var(--primary-color);
+}
+
+.e-grid {
+  border-color: var(--border-color);
+  background-color: var(--card-background);
+}
+
+.e-grid .e-headercell {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.e-accordion .e-acrdn-header {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.e-accordion .e-acrdn-header.e-select {
+  border-color: var(--border-color);
+}
+
+.e-accordion .e-acrdn-header.e-select.e-active {
+  background-color: var(--primary-color-50);
+  color: var(--primary-color);
+}
+
+/* Custom classes for accordion header styling */
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.accordion-title {
+  font-weight: 500;
+}
+
+.accordion-description {
+  color: var(--secondary-text-color);
+  display: flex;
+  align-items: center;
+}
+
+.accordion-description .e-icons {
+  margin-left: 8px;
+}
+
+/* Action row styling */
+.e-action-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0;
+  border-top: 1px solid var(--divider-color);
+  margin-top: 16px;
+}
+
+/* Dialog styling */
+.e-dialog-header {
+  padding: 16px 24px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.e-dialog-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.e-dialog-content {
+  padding: 16px 24px;
+}
+
+.e-dialog-footer {
+  padding: 8px 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.e-footer-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Switch label styling */
+.switch-label {
+  margin-left: 8px;
+  vertical-align: middle;
+}
