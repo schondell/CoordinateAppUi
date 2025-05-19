@@ -1,0 +1,19 @@
+.page-header {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--divider, #eee);
+}
+
+.page-header h2 {
+  margin: 0;
+  font-weight: 500;
+  color: var(--primary, #3f51b5);
+  font-size: 1.5rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}

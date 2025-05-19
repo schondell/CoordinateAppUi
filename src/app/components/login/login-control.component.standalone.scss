@@ -1,0 +1,24 @@
+// Use shared styles
+.login-form {
+  @extend .form-container;
+}
+
+.form-group {
+  @extend .form-group;
+}
+
+label {
+  @extend .form-label;
+}
+
+.e-input {
+  @extend .form-input;
+}
+
+.checkbox-group {
+  @extend .checkbox-group;
+}
+
+.error-message {
+  @extend .error-message;
+}

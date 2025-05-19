@@ -9,33 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     TranslateModule
   ],
-  template: `
-    <header class="page-header">
-      <span class="icon">{{iconEmoji}}</span>
-      <h2>{{title}}</h2>
-    </header>
-  `,
-  styles: [`
-    .page-header {
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .page-header h2 {
-      margin: 0;
-      font-weight: 500;
-      color: var(--app-primary-color, #3f51b5);
-      font-size: 1.5rem;
-    }
-    
-    .icon {
-      font-size: 1.5rem;
-      margin-right: 0.75rem;
-    }
-  `]
+  templateUrl: './page-header.component.standalone.html',
+  styleUrls: ['./page-header.component.standalone.scss']
 })
 export class PageHeaderStandaloneComponent {
   @Input() title: string = 'Page Title';

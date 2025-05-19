@@ -1,0 +1,33 @@
+// Use shared styles
+.logout-container {
+  @extend .centered-container;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.logout-box {
+  @extend .card;
+  padding: 30px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.logout-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  @extend .text-primary;
+  margin-bottom: 16px;
+}
+
+p {
+  @extend .text-light;
+  margin-bottom: 24px;
+}
+
+.spinner {
+  @extend .spinner;
+  @extend .spinner-lg;
+}

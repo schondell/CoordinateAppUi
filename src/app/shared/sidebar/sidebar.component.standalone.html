@@ -1,0 +1,20 @@
+<ejs-sidebar id="menuSidebar" class="sidebar-menu expanded" #sidebarMenuInstance
+             [enableDock]='enableDock'
+             [dockSize]="dockSize" 
+             [width]="width" 
+             [target]="target" 
+             [isOpen]="isOpen" 
+             type="Auto">
+  <div class="main-menu">
+    <div>
+      <ejs-menu [items]="menuItems" orientation='Vertical' cssClass='dock-menu'>
+        <ng-template #template let-item>
+          <a [routerLink]="item.url" [title]="isSidebarCollapsed ? (item.text | translate) : ''">
+            <span class="e-menu-icon {{ item.iconCss }}"></span>
+            <span class="e-menu-text">{{ item.text | translate }}</span>
+          </a>
+        </ng-template>
+      </ejs-menu>
+    </div>
+  </div>
+</ejs-sidebar>

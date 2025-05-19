@@ -1,0 +1,62 @@
+// Use shared styles
+.login-container {
+  @extend .centered-container;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  @extend .card;
+  @extend .elevated;
+}
+
+.card-header {
+  @extend .card-header;
+}
+
+.card-content {
+  @extend .card-content;
+  margin-bottom: 10px;
+}
+
+.card-actions {
+  @extend .card-actions;
+  padding: 0 20px 20px;
+}
+
+.actions-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--divider, #ddd);
+  margin: 0 8px;
+}
+
+.spinner-container {
+  @extend .spinner-container;
+}
+
+.loading-icon {
+  @extend .loading-icon;
+}
+
+@media (max-width: 480px) {
+  .actions-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  .spacer, .divider {
+    display: none;
+  }
+}

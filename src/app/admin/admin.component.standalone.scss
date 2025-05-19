@@ -1,0 +1,17 @@
+// Use shared styles
+.admin-container {
+  @extend .page-container;
+}
+
+.admin-title {
+  @extend .text-primary;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--divider, #eee);
+  padding-bottom: 15px;
+}
+
+.admin-content {
+  @extend .content-box;
+}

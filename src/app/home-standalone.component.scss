@@ -1,0 +1,41 @@
+// Use shared styles
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  @extend .content-box;
+}
+
+.info-box {
+  margin-top: 20px;
+  @extend .info-box;
+  @extend .info;
+}
+
+.navigation-box {
+  margin-top: 20px;
+  @extend .info-box;
+  @extend .success;
+  
+  a {
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+      color: var(--primary-dark);
+    }
+  }
+}
+
+h2 {
+  @extend .text-primary;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 8px;
+}

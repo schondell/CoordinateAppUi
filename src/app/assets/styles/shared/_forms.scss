@@ -1,0 +1,89 @@
+// Shared Form Styles
+
+// Form Container
+.form-container {
+  width: 100%;
+}
+
+// Form Group
+.form-group {
+  margin-bottom: 1.5rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Form Label
+.form-label, 
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+// Form Input
+.form-input,
+.e-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--divider, #ddd);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  
+  &:focus {
+    border-color: var(--primary, #3f51b5);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 63, 81, 181), 0.2);
+  }
+  
+  &.e-error,
+  &.ng-invalid.ng-touched {
+    border-color: var(--warn, #f44336);
+  }
+}
+
+// Checkbox Container
+.checkbox-group {
+  display: flex;
+  align-items: center;
+}
+
+// Error Messages
+.error-message {
+  color: var(--warn, #f44336);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+// Form Actions
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    
+    button, a {
+      width: 100%;
+    }
+  }
+}
+
+// Inline Form
+.form-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

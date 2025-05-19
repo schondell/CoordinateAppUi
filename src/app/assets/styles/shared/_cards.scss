@@ -1,0 +1,132 @@
+// Shared Card and Container Styles
+
+// Card Container
+.card {
+  background-color: var(--background-card, white);
+  border-radius: 8px;
+  box-shadow: var(--elevation-z1, 0 2px 4px rgba(0, 0, 0, 0.1));
+  overflow: hidden;
+  
+  &.elevated {
+    box-shadow: var(--elevation-z2, 0 4px 8px rgba(0, 0, 0, 0.1));
+  }
+  
+  &.card-lg {
+    box-shadow: var(--elevation-z8, 0 8px 16px rgba(0, 0, 0, 0.1));
+  }
+}
+
+// Card Header
+.card-header {
+  background-color: var(--primary, #3f51b5);
+  color: var(--primary-contrast, white);
+  padding: 16px 20px;
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  &.secondary {
+    background-color: var(--accent, #ff4081);
+    color: var(--accent-contrast, white);
+  }
+  
+  &.subtle {
+    background-color: transparent;
+    color: var(--text-primary, rgba(0, 0, 0, 0.87));
+    border-bottom: 1px solid var(--divider, #eee);
+  }
+}
+
+// Card Content
+.card-content {
+  padding: 20px;
+}
+
+// Card Actions
+.card-actions {
+  display: flex;
+  padding: 10px 20px 20px;
+  
+  &.centered {
+    justify-content: center;
+  }
+  
+  &.end {
+    justify-content: flex-end;
+  }
+  
+  &.between {
+    justify-content: space-between;
+  }
+  
+  &.stretched {
+    justify-content: space-around;
+  }
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 10px;
+    
+    button, a {
+      width: 100%;
+    }
+  }
+}
+
+// Page Containers
+.page-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+// Content Containers
+.content-box {
+  background-color: var(--background-card, white);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--elevation-z1, 0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+// Info Boxes
+.info-box {
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+  
+  &.primary {
+    background-color: rgba(var(--primary-rgb, 63, 81, 181), 0.1);
+    border-left: 4px solid var(--primary, #3f51b5);
+  }
+  
+  &.accent {
+    background-color: rgba(var(--accent-rgb, 255, 64, 129), 0.1);
+    border-left: 4px solid var(--accent, #ff4081);
+  }
+  
+  &.warn {
+    background-color: rgba(var(--warn-rgb, 244, 67, 54), 0.1);
+    border-left: 4px solid var(--warn, #f44336);
+  }
+  
+  &.info {
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+  }
+  
+  &.success {
+    background-color: #f1f8e9;
+    border-left: 4px solid #8bc34a;
+  }
+}

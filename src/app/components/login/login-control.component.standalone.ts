@@ -28,71 +28,8 @@ interface LoginForm {
     CheckBoxModule,
     TranslateModule
   ],
-  template: `
-    <form #form="ngForm" [formGroup]="loginForm" (ngSubmit)="login()" novalidate class="login-form">
-      <div class="form-group">
-        <label for="userName">Username</label>
-        <input type="text" id="userName" class="e-input" formControlName="userName" 
-               autocomplete="username" (keydown.enter)="enterKeyDown()">
-        <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="error-message">
-          <div *ngIf="userName.errors?.['required']">User name is required</div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" class="e-input" formControlName="password" 
-               autocomplete="current-password" (keydown.enter)="enterKeyDown()">
-        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
-          <div *ngIf="password.errors?.['required']">Password is required</div>
-        </div>
-      </div>
-
-      <div class="form-group checkbox-group">
-        <ejs-checkbox formControlName="rememberMe" label="Remember me" (keydown.enter)="enterKeyDown()"></ejs-checkbox>
-      </div>
-    </form>
-  `,
-  styles: [`
-    .login-form {
-      width: 100%;
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    
-    .e-input {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-    
-    .e-input:focus {
-      border-color: var(--app-primary-color, #3f51b5);
-      outline: none;
-    }
-    
-    .checkbox-group {
-      display: flex;
-      align-items: center;
-    }
-    
-    .error-message {
-      color: #f44336;
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
-    }
-  `]
+  templateUrl: './login-control.component.standalone.html',
+  styleUrls: ['./login-control.component.standalone.scss']
 })
 export class LoginControlStandaloneComponent implements OnInit, OnDestroy {
   isLoading = false;

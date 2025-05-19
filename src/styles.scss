@@ -1,20 +1,26 @@
 /* Global styles for Coordinate App */
 @use 'flex-layout';
 
+/* Import shared styles */
+@import 'app/assets/styles/shared/index';
+
 /* Theme System - CSS Custom Properties */
 :root {
   /* Light Theme Default (Indigo/Pink) */
   --primary: #3F51B5;
+  --primary-rgb: 63, 81, 181;
   --primary-light: #7986CB;
   --primary-dark: #303F9F;
   --primary-contrast: #ffffff;
   
   --accent: #E91E63;
+  --accent-rgb: 233, 30, 99;
   --accent-light: #F48FB1;
   --accent-dark: #C2185B;
   --accent-contrast: #ffffff;
   
   --warn: #F44336;
+  --warn-rgb: 244, 67, 54;
   --warn-light: #FFCDD2;
   --warn-dark: #D32F2F;
   --warn-contrast: #ffffff;

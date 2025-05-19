@@ -1,0 +1,49 @@
+// Use shared styles
+.register-container {
+  @extend .centered-container;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 450px;
+  @extend .card;
+  @extend .elevated;
+}
+
+.card-header {
+  @extend .card-header;
+}
+
+.card-content {
+  @extend .card-content;
+}
+
+.form-group {
+  @extend .form-group;
+}
+
+label {
+  @extend .form-label;
+}
+
+.e-input {
+  @extend .form-input;
+}
+
+.error-message {
+  @extend .error-message;
+}
+
+.card-actions {
+  @extend .card-actions;
+  @extend .between;
+  padding: 10px 20px 20px;
+}
+
+.spinner-container {
+  @extend .spinner-container;
+}
+
+.loading-icon {
+  @extend .loading-icon;
+}

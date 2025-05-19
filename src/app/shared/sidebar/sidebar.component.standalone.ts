@@ -17,76 +17,8 @@ import { MenuModule } from '@syncfusion/ej2-angular-navigations';
     SidebarModule,
     MenuModule
   ],
-  template: `
-    <ejs-sidebar id="menuSidebar" class="sidebar-menu expanded" #sidebarMenuInstance
-                 [enableDock]='enableDock'
-                 [dockSize]="dockSize" 
-                 [width]="width" 
-                 [target]="target" 
-                 [isOpen]="isOpen" 
-                 type="Auto">
-      <div class="main-menu">
-        <div>
-          <ejs-menu [items]="menuItems" orientation='Vertical' cssClass='dock-menu'>
-            <ng-template #template let-item>
-              <a [routerLink]="item.url" [title]="isSidebarCollapsed ? (item.text | translate) : ''">
-                <span class="e-menu-icon {{ item.iconCss }}"></span>
-                <span class="e-menu-text">{{ item.text | translate }}</span>
-              </a>
-            </ng-template>
-          </ejs-menu>
-        </div>
-      </div>
-    </ejs-sidebar>
-  `,
-  styles: [`
-    .sidebar-menu {
-      background-color: #f8f9fa;
-      border-right: 1px solid #e9ecef;
-    }
-    
-    .main-menu {
-      padding-top: 20px;
-    }
-    
-    .e-menu-icon {
-      margin-right: 12px;
-      font-size: 18px;
-    }
-    
-    .e-menu-text {
-      font-size: 14px;
-    }
-    
-    .dock-menu {
-      width: 100%;
-    }
-    
-    :host ::ng-deep .e-menu-wrapper.e-vertical {
-      width: 100%;
-    }
-    
-    :host ::ng-deep .e-menu-wrapper ul.e-menu {
-      border: none;
-      background-color: transparent;
-    }
-    
-    :host ::ng-deep .e-menu-wrapper ul.e-menu .e-menu-item {
-      height: 48px;
-      line-height: 48px;
-      border-radius: 0;
-      color: #333;
-    }
-    
-    :host ::ng-deep .e-menu-wrapper ul.e-menu .e-menu-item:hover {
-      background-color: rgba(63, 81, 181, 0.08);
-    }
-    
-    :host ::ng-deep .e-menu-wrapper ul.e-menu .e-menu-item.e-selected {
-      background-color: rgba(63, 81, 181, 0.12);
-      color: var(--app-primary-color, #3f51b5);
-    }
-  `]
+  templateUrl: './sidebar.component.standalone.html',
+  styleUrls: ['./sidebar.component.standalone.scss']
 })
 export class SidebarStandaloneComponent {
   @ViewChild('sidebarMenuInstance') sidebarMenuInstance: EjsSidebarComponent;

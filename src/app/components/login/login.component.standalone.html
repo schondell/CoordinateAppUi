@@ -1,0 +1,27 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="card-header">
+      <h2>{{ 'mainMenu.Login' | translate }}</h2>
+    </div>
+    <div class="card-content">
+      <app-login-control-standalone 
+        [isModal]="false" 
+        (enterKeyPress)="loginControl.login()">
+      </app-login-control-standalone>
+    </div>
+    <div class="card-actions">
+      <div class="actions-row">
+        <button ejs-button cssClass="e-primary" [disabled]="loginControl.isLoading" (click)="loginControl.login()">
+          <div *ngIf="loginControl.isLoading && !loginControl.isExternalLogin" class="spinner-container">
+            <span class="loading-icon">⌛</span>
+          </div>
+          <span>{{ 'mainMenu.Login' | translate | uppercase }}</span>
+        </button>
+        <div class="spacer"></div>
+        <a ejs-button cssClass="e-flat" routerLink="/recoverpassword">FORGOT PASSWORD</a>
+        <div class="divider"></div>
+        <a ejs-button cssClass="e-flat" routerLink="/register">REGISTER</a>
+      </div>
+    </div>
+  </div>
+</div>
