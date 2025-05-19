@@ -1,9 +1,25 @@
-@use 'sass:map';
+/* Role editor component theme using CSS custom properties */
 
-@mixin role-editor-theme($theme) {
-  $primary: map.get($theme, primary);
-  $accent: map.get($theme, accent);
-  $warn: map.get($theme, warn);
-  $background: map.get($theme, background);
-  $foreground: map.get($theme, foreground);
+@mixin role-editor-theme() {
+  app-role-editor {
+    .role-editor-header {
+      color: var(--primary);
+    }
+    
+    .role-editor-section {
+      border-color: var(--divider);
+      background-color: var(--background-card);
+    }
+    
+    .permission-item {
+      &.selected {
+        background-color: var(--primary-light);
+        color: var(--primary-contrast);
+      }
+      
+      &:hover:not(.selected) {
+        background-color: var(--surface);
+      }
+    }
+  }
 }

@@ -1,3 +1,11 @@
+/**
+ * DEPRECATED: This module is being phased out in favor of Syncfusion components.
+ * Keep this module until all components are migrated to Syncfusion.
+ * 
+ * The theming system now uses CSS custom properties instead of Angular Material theming.
+ * Any new components should use Syncfusion and reference the CSS custom properties
+ * defined in styles.scss for theming.
+ */
 import { NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';

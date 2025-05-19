@@ -1,10 +1,4 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
-@use '@angular/material/core/theming/palette' as palette;
-
-@import './shared/footer/footer.component-theme.scss';
-@import './admin/role-editor/role-editor.component-theme.scss';
-
+/* App theme file - CSS Custom Properties based */
 
 @mixin clearfix() {
   &:before,
@@ -18,38 +12,27 @@
   }
 }
 
-@mixin quickapp-pro-app-theme($theme) {
-  $primary: map.get($theme, primary);
-  $accent: map.get($theme, accent);
-  $warn: map.get($theme, warn);
-  $background: map.get($theme, background);
-  $foreground: map.get($theme, foreground);
+/* Component specific themes */
+@import './shared/footer/_footer.component-theme.scss';
+@import './admin/role-editor/role-editor.component-theme.scss';
 
-  mat-nav-list .mat-mdc-list-item.active {
-    $color: palette.get-color-from-palette($primary);
-
-    background-color: palette.get-color-from-palette($primary, 50);
-    color: $color;
-
-    .mdc-list-item__primary-text {
-      color: $color;
-    }
-  }
-
-  a {
-    text-decoration: none;
-    color: palette.get-color-from-palette($primary, 400);
-  }
-
-  .container,
-  .card {
-    background: palette.get-color-from-palette($background, 'card');
+/* Main application theme */
+@mixin apply-theme() {
+  .active-nav-item {
+    background-color: var(--primary-light);
+    color: var(--primary);
   }
 
   .clearfix {
     @include clearfix();
   }
 
-  @include footer-theme($theme);
-  @include role-editor-theme($theme);
+  /* Apply component-specific themes */
+  @include footer-theme();
+  @include role-editor-theme();
+}
+
+/* Use this mixin in the global styles.scss if component-specific themes are needed */
+@mixin quickapp-pro-app-theme() {
+  @include apply-theme();
 }

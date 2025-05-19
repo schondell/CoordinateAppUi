@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { AppTheme } from '../models/AppTheme';
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +10,6 @@ export class ThemeManager {
       primary: '#3F51B5',
       accent: '#E91E63',
       cssClass: 'indigo-pink-theme',
-      href: 'indigo-pink.css',
       isDark: false,
       isDefault: true,
     },
@@ -21,7 +19,6 @@ export class ThemeManager {
       primary: '#673AB7',
       accent: '#FFC107',
       cssClass: 'deeppurple-amber-theme',
-      href: 'deeppurple-amber.css',
       isDark: false,
     },
     {
@@ -30,7 +27,6 @@ export class ThemeManager {
       primary: '#E91E63',
       accent: '#607D8B',
       cssClass: 'pink-bluegrey-theme',
-      href: 'pink-bluegrey.css',
       isDark: true,
     },
     {
@@ -39,51 +35,37 @@ export class ThemeManager {
       primary: '#9C27B0',
       accent: '#4CAF50',
       cssClass: 'purple-green-theme',
-      href: 'purple-green.css',
       isDark: true,
     },
   ];
 
   installTheme(theme: AppTheme) {
-    if (theme == null || theme.isDefault) {
-      this.removeStyle('theme');
-    } else {
-      this.setStyle('theme', `assets/themes/${theme.href}`);
+    // Remove any existing theme classes from the body element
+    document.body.classList.remove(
+      'indigo-pink-theme', 
+      'deeppurple-amber-theme', 
+      'pink-bluegrey-theme', 
+      'purple-green-theme',
+      'theme-dark'
+    );
+    
+    // Apply the theme class
+    if (theme && !theme.isDefault) {
+      document.body.classList.add(theme.cssClass);
+    }
+    
+    // Apply dark theme class if needed
+    if (theme && theme.isDark) {
+      document.body.classList.add('theme-dark');
+    }
+    
+    // Store the current theme in localStorage for persistence
+    if (theme) {
+      localStorage.setItem('themeId', theme.id.toString());
     }
   }
 
   getThemeByID(id: number): AppTheme {
-    return this.themes.find(theme => theme.id === id);
-  }
-
-  private setStyle(key: string, href: string) {
-    this.getLinkElementForKey(key).setAttribute('href', href);
-  }
-
-  private removeStyle(key: string) {
-    const existingLinkElement = this.getExistingLinkElementByKey(key);
-    if (existingLinkElement) {
-      document.head.removeChild(existingLinkElement);
-    }
-  }
-
-  private getLinkElementForKey(key: string) {
-    return this.getExistingLinkElementByKey(key) || this.createLinkElementWithKey(key);
-  }
-
-  private getExistingLinkElementByKey(key: string) {
-    return document.head.querySelector(`link[rel="stylesheet"].${this.getClassNameForKey(key)}`);
-  }
-
-  private createLinkElementWithKey(key: string) {
-    const linkEl = document.createElement('link');
-    linkEl.setAttribute('rel', 'stylesheet');
-    linkEl.classList.add(this.getClassNameForKey(key));
-    document.head.appendChild(linkEl);
-    return linkEl;
-  }
-
-  private getClassNameForKey(key: string) {
-    return `style-manager-${key}`;
+    return this.themes.find(theme => theme.id === id) || this.themes[0];
   }
 }

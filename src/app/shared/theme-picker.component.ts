@@ -1,15 +1,14 @@
 import { Component, ViewEncapsulation, ChangeDetectionStrategy, NgModule, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule, } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule  } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
-
 import { ThemeManager } from './theme-manager';
 import { AppTheme } from '../models/AppTheme';
 import { ConfigurationService } from '../services/configuration.service';
+
+// Import Syncfusion components
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { DropDownButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
+import { TooltipModule } from '@syncfusion/ej2-angular-popups';
 
 @Component({
     selector: 'app-theme-picker',
@@ -23,6 +22,7 @@ export class ThemePicker {
     @Input()
     tooltip = 'Theme';
 
+    public dropdownItems: any[] = [];
 
     constructor(
         public themeManager: ThemeManager,
@@ -30,6 +30,17 @@ export class ThemePicker {
     ) {
         configuration.configurationImported$.subscribe(() => this.setTheme(this.currentTheme));
         this.setTheme(this.currentTheme);
+        this.setupDropdownItems();
+    }
+
+    private setupDropdownItems(): void {
+        this.dropdownItems = this.themeManager.themes.map(theme => {
+            return {
+                text: theme.name,
+                iconCss: theme.isDark ? 'e-icons e-moon' : 'e-icons e-day',
+                id: theme.id.toString()
+            };
+        });
     }
 
     get currentTheme(): AppTheme {
@@ -42,16 +53,24 @@ export class ThemePicker {
             this.configuration.themeId = theme.id;
         }
     }
+    
+    public select(args: any): void {
+        if (!args || !args.item || !args.item.id) return;
+        
+        const selectedId = parseInt(args.item.id, 10);
+        const theme = this.themeManager.getThemeByID(selectedId);
+        if (theme) {
+            this.setTheme(theme);
+        }
+    }
 }
 
 @NgModule({
     imports: [
         CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatListModule,
-        MatTooltipModule,
+        ButtonModule,
+        DropDownButtonModule,
+        TooltipModule
     ],
     exports: [ThemePicker],
     declarations: [ThemePicker],

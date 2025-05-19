@@ -11,35 +11,35 @@ export class ThemeManager {
   themes: Array<AppTheme> = [
     {
       id: 1,
-      name: 'Material',
+      name: 'Indigo/Pink',
       primary: '#3F51B5',
       accent: '#E91E63',
-      cssClass: 'e-material-theme',
+      cssClass: 'indigo-pink-theme',
       isDark: false,
       isDefault: true,
     },
     {
       id: 2,
-      name: 'Material Dark',
+      name: 'Purple/Amber',
       primary: '#673AB7',
       accent: '#FFC107',
-      cssClass: 'e-material-dark-theme',
-      isDark: true,
-    },
-    {
-      id: 3,
-      name: 'Bootstrap 5',
-      primary: '#0d6efd',
-      accent: '#fd7e14',
-      cssClass: 'e-bootstrap5-theme',
+      cssClass: 'deeppurple-amber-theme',
       isDark: false,
     },
     {
+      id: 3,
+      name: 'Pink/Blue',
+      primary: '#E91E63',
+      accent: '#607D8B',
+      cssClass: 'pink-bluegrey-theme',
+      isDark: true,
+    },
+    {
       id: 4,
-      name: 'Bootstrap 5 Dark',
-      primary: '#0d6efd',
-      accent: '#fd7e14',
-      cssClass: 'e-bootstrap5-dark-theme',
+      name: 'Purple/Green',
+      primary: '#9C27B0',
+      accent: '#4CAF50',
+      cssClass: 'purple-green-theme',
       isDark: true,
     },
   ];
@@ -78,14 +78,18 @@ export class ThemeManager {
     this.localStorage.savePermanentData(theme.id, this.themeKey);
 
     // Remove all existing theme classes
-    document.body.classList.forEach(cls => {
-      if (cls.startsWith('e-') && cls.endsWith('-theme')) {
-        document.body.classList.remove(cls);
-      }
-    });
+    document.body.classList.remove(
+      'indigo-pink-theme', 
+      'deeppurple-amber-theme', 
+      'pink-bluegrey-theme', 
+      'purple-green-theme',
+      'theme-dark'
+    );
 
     // Add new theme class
-    document.body.classList.add(theme.cssClass);
+    if (!theme.isDefault) {
+      document.body.classList.add(theme.cssClass);
+    }
 
     // Set preferred color scheme meta tag
     const metaThemeColor = document.querySelector('meta[name=theme-color]');
@@ -95,9 +99,7 @@ export class ThemeManager {
 
     // Update the dark mode preference
     if (theme.isDark) {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
+      document.body.classList.add('theme-dark');
     }
 
     // Notify subscribers

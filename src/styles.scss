@@ -1,6 +1,144 @@
 /* Global styles for Coordinate App */
 @use 'flex-layout';
 
+/* Theme System - CSS Custom Properties */
+:root {
+  /* Light Theme Default (Indigo/Pink) */
+  --primary: #3F51B5;
+  --primary-light: #7986CB;
+  --primary-dark: #303F9F;
+  --primary-contrast: #ffffff;
+  
+  --accent: #E91E63;
+  --accent-light: #F48FB1;
+  --accent-dark: #C2185B;
+  --accent-contrast: #ffffff;
+  
+  --warn: #F44336;
+  --warn-light: #FFCDD2;
+  --warn-dark: #D32F2F;
+  --warn-contrast: #ffffff;
+  
+  --background: #FFFFFF;
+  --background-card: #FFFFFF;
+  --surface: #FFFFFF;
+  
+  --on-background: rgba(0, 0, 0, 0.87);
+  --on-surface: rgba(0, 0, 0, 0.87);
+  --on-primary: #ffffff;
+  --on-accent: #ffffff;
+  
+  --text-primary: rgba(0, 0, 0, 0.87);
+  --text-secondary: rgba(0, 0, 0, 0.54);
+  --text-hint: rgba(0, 0, 0, 0.38);
+  --text-disabled: rgba(0, 0, 0, 0.38);
+  
+  --divider: rgba(0, 0, 0, 0.12);
+  --elevation-z1: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+  --elevation-z2: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+  --elevation-z8: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+}
+
+/* Dark theme class that can be applied to elements/body */
+.theme-dark {
+  --primary: #7986CB;
+  --primary-light: #9FA8DA;
+  --primary-dark: #5C6BC0;
+  --primary-contrast: #000000;
+  
+  --accent: #FF4081;
+  --accent-light: #FF80AB;
+  --accent-dark: #F50057;
+  --accent-contrast: #ffffff;
+  
+  --warn: #FF5252;
+  --warn-light: #FF8A80;
+  --warn-dark: #D50000;
+  --warn-contrast: #ffffff;
+  
+  --background: #303030;
+  --background-card: #424242;
+  --surface: #424242;
+  
+  --on-background: #ffffff;
+  --on-surface: #ffffff;
+  --on-primary: #000000;
+  --on-accent: #ffffff;
+  
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-hint: rgba(255, 255, 255, 0.5);
+  --text-disabled: rgba(255, 255, 255, 0.5);
+  
+  --divider: rgba(255, 255, 255, 0.12);
+  --elevation-z1: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+  --elevation-z2: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+  --elevation-z8: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+}
+
+/* Theme variations */
+.deeppurple-amber-theme {
+  --primary: #673AB7;
+  --primary-light: #9575CD;
+  --primary-dark: #512DA8;
+  --primary-contrast: #ffffff;
+  
+  --accent: #FFC107;
+  --accent-light: #FFD54F;
+  --accent-dark: #FFA000;
+  --accent-contrast: #000000;
+}
+
+.pink-bluegrey-theme {
+  --primary: #E91E63;
+  --primary-light: #F48FB1;
+  --primary-dark: #C2185B;
+  --primary-contrast: #ffffff;
+  
+  --accent: #607D8B;
+  --accent-light: #90A4AE;
+  --accent-dark: #455A64;
+  --accent-contrast: #ffffff;
+  
+  --background: #303030;
+  --background-card: #424242;
+  --surface: #424242;
+  
+  --on-background: #ffffff;
+  --on-surface: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-hint: rgba(255, 255, 255, 0.5);
+  --text-disabled: rgba(255, 255, 255, 0.5);
+  
+  --divider: rgba(255, 255, 255, 0.12);
+}
+
+.purple-green-theme {
+  --primary: #9C27B0;
+  --primary-light: #BA68C8;
+  --primary-dark: #7B1FA2;
+  --primary-contrast: #ffffff;
+  
+  --accent: #4CAF50;
+  --accent-light: #81C784;
+  --accent-dark: #388E3C;
+  --accent-contrast: #000000;
+  
+  --background: #303030;
+  --background-card: #424242;
+  --surface: #424242;
+  
+  --on-background: #ffffff;
+  --on-surface: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-hint: rgba(255, 255, 255, 0.5);
+  --text-disabled: rgba(255, 255, 255, 0.5);
+  
+  --divider: rgba(255, 255, 255, 0.12);
+}
+
 /* Bootstrap (optional - could be removed if fully on Syncfusion) */
 @import 'node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -36,12 +174,17 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
 }
 
 /* Layout Containers */
 .container {
   padding: 16px;
   border-radius: 4px;
+  background-color: var(--background-card);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-z1);
   
   & > :first-child {
     margin-top: 0;
@@ -56,16 +199,20 @@ body {
 .card {
   padding: 16px;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--background-card);
+  color: var(--text-primary);
+  box-shadow: var(--elevation-z1);
   
   .card-header {
     font-size: 18px;
     margin-bottom: 12px;
     font-weight: 500;
+    color: var(--text-primary);
   }
   
   .card-content {
     margin-bottom: 16px;
+    color: var(--text-secondary);
   }
   
   .card-actions {
@@ -90,19 +237,47 @@ body {
 
 /* Link Styles */
 a {
-  color: #0366d6;
+  color: var(--primary);
   text-decoration: none;
   
   &:hover {
     text-decoration: underline;
+    color: var(--primary-dark);
   }
 }
 
 /* Button Override */
 .btn-primary {
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  color: var(--primary-contrast);
+  background-color: var(--primary);
+  border-color: var(--primary-dark);
+  
+  &:hover, &:focus, &:active {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+  }
+}
+
+.btn-accent {
+  color: var(--accent-contrast);
+  background-color: var(--accent);
+  border-color: var(--accent-dark);
+  
+  &:hover, &:focus, &:active {
+    background-color: var(--accent-dark);
+    border-color: var(--accent-dark);
+  }
+}
+
+.btn-warn {
+  color: var(--warn-contrast);
+  background-color: var(--warn);
+  border-color: var(--warn-dark);
+  
+  &:hover, &:focus, &:active {
+    background-color: var(--warn-dark);
+    border-color: var(--warn-dark);
+  }
 }
 
 /* Common utility classes */
@@ -144,12 +319,41 @@ a {
 
 /* Syncfusion Grid Customizations */
 .e-grid .e-row:hover {
-  background-color: #f5f5f5;
+  background-color: var(--primary-light);
+  color: var(--primary-contrast);
+}
+
+.e-grid .e-headercell {
+  background-color: var(--primary);
+  color: var(--primary-contrast);
+}
+
+.e-grid .e-rowcell {
+  color: var(--text-primary);
 }
 
 /* Syncfusion Form Customizations */
 .e-input-group.e-success .e-input {
-  color: #22c55e;
+  color: var(--accent);
+}
+
+.e-input-group {
+  background-color: var(--surface);
+}
+
+.e-input-group .e-input {
+  color: var(--text-primary);
+}
+
+.e-btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-contrast);
+  border-color: var(--primary);
+}
+
+.e-btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
 }
 
 /* Custom Icon Classes for Sidebar */
