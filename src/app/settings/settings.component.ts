@@ -19,6 +19,8 @@ import { AccountService } from '../services/account.service';
 import { AlertService, MessageSeverity } from '../services/alert.service';
 import { fadeInOut } from '../services/animations';
 import { Utilities } from '../services/utilities';
+import {PageHeaderComponent} from "../shared/page-header/page-header.component";
+import {CoordinateSyncfusionModule} from "../modules/syncfusion.module";
 
 @Component({
   selector: 'app-settings',
@@ -38,7 +40,9 @@ import { Utilities } from '../services/utilities';
     MatTooltipModule,
     TranslateModule,
     UserEditorComponent,
-    UserPreferencesComponent
+    UserPreferencesComponent,
+    PageHeaderComponent,
+    CoordinateSyncfusionModule
   ]
 })
 export class SettingsComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -69,6 +73,15 @@ export class SettingsComponent implements OnInit, OnDestroy, AfterViewInit {
           this.profilePanel.open();
       }
     });
+  }
+
+  onAccordionExpanding(event: any) {
+    const header = event?.item?.header;
+    if (header && header.includes('Profile')) {
+      this.navigateToFragment('profile');
+    } else if (header && header.includes('Preferences')) {
+      this.navigateToFragment('preferences');
+    }
   }
 
   ngAfterViewInit() {

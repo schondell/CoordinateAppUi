@@ -1,5 +1,6 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
+@use '@angular/material/core/theming/palette' as palette;
 
 @import './shared/footer/footer.component-theme.scss';
 @import './admin/role-editor/role-editor.component-theme.scss';
@@ -25,9 +26,9 @@
   $foreground: map.get($theme, foreground);
 
   mat-nav-list .mat-mdc-list-item.active {
-    $color: mat.get-color-from-palette($primary);
+    $color: palette.get-color-from-palette($primary);
 
-    background-color: mat.get-color-from-palette($primary, 50);
+    background-color: palette.get-color-from-palette($primary, 50);
     color: $color;
 
     .mdc-list-item__primary-text {
@@ -37,12 +38,12 @@
 
   a {
     text-decoration: none;
-    color: mat.get-color-from-palette($primary, 400);
+    color: palette.get-color-from-palette($primary, 400);
   }
 
   .container,
   .card {
-    background: mat.get-color-from-palette($background, 'card');
+    background: palette.get-color-from-palette($background, 'card');
   }
 
   .clearfix {

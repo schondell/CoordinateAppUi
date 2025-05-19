@@ -5,12 +5,17 @@ import { AccountService } from '../../services/account.service';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
 
-import { RoleEditorComponent } from '../role-editor/role-editor.component';
+import {SharedModule} from "../../shared.module";
+import {RoleEditorComponent} from "../../role-editor.component";
 
 @Component({
-  selector: 'app-edit-user-dialog',
-  templateUrl: 'edit-role-dialog.component.html',
-  styleUrls: ['edit-role-dialog.component.scss']
+    selector: 'app-edit-user-dialog',
+    templateUrl: 'edit-role-dialog.component.html',
+    imports: [
+        SharedModule,
+        RoleEditorComponent
+    ],
+    styleUrls: ['edit-role-dialog.component.scss']
 })
 export class EditRoleDialogComponent implements AfterViewInit {
   @ViewChild(RoleEditorComponent, { static: true })

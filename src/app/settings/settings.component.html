@@ -2,62 +2,62 @@
 
 <div [@fadeInOut] class="page-content">
 
-  <ejs-accordion #accordion>
-    <e-accordionitems>
-      <e-accordionitem #profile expanded="true" (expanding)="navigateToFragment('profile')">
-        <ng-template #header>
-          <div class="accordion-header">
-            <div class="accordion-title">{{'settings.tab.Profile' | translate}}</div>
-            <div class="accordion-description">
-              {{'settings.description.UserProfile' | translate}}
-              <span class="e-icons e-account-circle"></span>
-            </div>
-          </div>
-        </ng-template>
-        <ng-template #content>
-          <app-user-editor #userProfile></app-user-editor>
+    <ejs-accordion #accordion (expanding)="onAccordionExpanding($event)">
+        <e-accordionitems>
+            <e-accordionitem #profile expanded="true">
+                <ng-template #header>
+                    <div class="accordion-header">
+                        <div class="accordion-title">{{'settings.tab.Profile' | translate}}</div>
+                        <div class="accordion-description">
+                            {{'settings.description.UserProfile' | translate}}
+                            <span class="e-icons e-account-circle"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #content>
+                    <app-user-editor #userProfile></app-user-editor>
 
-          <div class="e-action-row">
-            <button ejs-button *ngIf="!userProfile.isEditMode" (click)="userProfile.beginEdit()" cssClass="e-primary">Edit</button>
-            <button ejs-button *ngIf="userProfile.isEditMode" (click)="userProfile.save()" cssClass="e-primary" style="margin-right: 1em;">Save</button>
-            <button ejs-button *ngIf="userProfile.isEditMode" (click)="userProfile.cancel()" cssClass="e-danger">Cancel</button>
-          </div>
-        </ng-template>
-      </e-accordionitem>
+                    <div class="e-action-row">
+                        <button ejs-button *ngIf="!userProfile.isEditMode" (click)="userProfile.beginEdit()" cssClass="e-primary">Edit</button>
+                        <button ejs-button *ngIf="userProfile.isEditMode" (click)="userProfile.save()" cssClass="e-primary" style="margin-right: 1em;">Save</button>
+                        <button ejs-button *ngIf="userProfile.isEditMode" (click)="userProfile.cancel()" cssClass="e-danger">Cancel</button>
+                    </div>
+                </ng-template>
+            </e-accordionitem>
 
-      <e-accordionitem #preferences (expanding)="navigateToFragment('preferences')">
-        <ng-template #header>
-          <div class="accordion-header">
-            <div class="accordion-title">{{'settings.tab.Preferences' | translate}}</div>
-            <div class="accordion-description">
-              {{'settings.description.UserPreferences' | translate}}
-              <span class="e-icons e-tune"></span>
-            </div>
-          </div>
-        </ng-template>
-        <ng-template #content>
-          <app-user-preferences></app-user-preferences>
+            <e-accordionitem #preferences>
+                <ng-template #header>
+                    <div class="accordion-header">
+                        <div class="accordion-title">{{'settings.tab.Preferences' | translate}}</div>
+                        <div class="accordion-description">
+                            {{'settings.description.UserPreferences' | translate}}
+                            <span class="e-icons e-tune"></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #content>
+                    <app-user-preferences></app-user-preferences>
 
-          <div class="e-action-row">
-            <button ejs-button (click)="userPreferences.reset()"
-                    title="{{'preferences.ResetPreferencesHint' | translate}}"
-                    cssClass="e-danger" style="margin-right: 1em;">
-              {{'commands.Reset' | translate}}
-            </button>
-            <button ejs-button (click)="userPreferences.save()"
-                    title="{{'preferences.SavePreferencesHint' | translate}}"
-                    cssClass="e-primary" style="margin-right: 1em;">
-              {{'commands.Save' | translate}}
-            </button>
-            <button ejs-button (click)="userPreferences.reload()"
-                    title="{{'preferences.ReloadPreferencesHint' | translate}}"
-                    cssClass="e-info">
-              {{'commands.Reload' | translate}}
-            </button>
-          </div>
-        </ng-template>
-      </e-accordionitem>
-    </e-accordionitems>
-  </ejs-accordion>
+                    <div class="e-action-row">
+                        <button ejs-button (click)="userPreferences.reset()"
+                                title="{{'preferences.ResetPreferencesHint' | translate}}"
+                                cssClass="e-danger" style="margin-right: 1em;">
+                            {{'commands.Reset' | translate}}
+                        </button>
+                        <button ejs-button (click)="userPreferences.save()"
+                                title="{{'preferences.SavePreferencesHint' | translate}}"
+                                cssClass="e-primary" style="margin-right: 1em;">
+                            {{'commands.Save' | translate}}
+                        </button>
+                        <button ejs-button (click)="userPreferences.reload()"
+                                title="{{'preferences.ReloadPreferencesHint' | translate}}"
+                                cssClass="e-info">
+                            {{'commands.Reload' | translate}}
+                        </button>
+                    </div>
+                </ng-template>
+            </e-accordionitem>
+        </e-accordionitems>
+    </ejs-accordion>
 
 </div>
