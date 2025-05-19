@@ -1,10 +1,14 @@
-// Use shared styles
+/* Use shared styles */
 .admin-container {
-  @extend .page-container;
+  @extend .page-container !optional;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .admin-title {
-  @extend .text-primary;
+  @extend .text-primary !optional;
+  color: var(--primary);
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: 500;
@@ -13,5 +17,9 @@
 }
 
 .admin-content {
-  @extend .content-box;
+  @extend .content-box !optional;
+  background-color: var(--background-card);
+  border-radius: 8px;
+  box-shadow: var(--elevation-z1);
+  padding: 20px;
 }

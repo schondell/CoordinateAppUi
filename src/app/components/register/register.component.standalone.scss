@@ -1,49 +1,87 @@
-// Use shared styles
+/* Use shared styles */
 .register-container {
-  @extend .centered-container;
+  @extend .centered-container !optional;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
 }
 
 .register-card {
   width: 100%;
   max-width: 450px;
-  @extend .card;
-  @extend .elevated;
+  @extend .card !optional;
+  background-color: var(--background-card);
+  border-radius: 8px;
+  box-shadow: var(--elevation-z2);
+  overflow: hidden;
 }
 
 .card-header {
-  @extend .card-header;
+  background-color: var(--primary);
+  color: var(--primary-contrast);
+  padding: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
 }
 
 .card-content {
-  @extend .card-content;
+  padding: 20px;
 }
 
 .form-group {
-  @extend .form-group;
+  @extend .form-group !optional;
+  margin-bottom: 1.5rem;
 }
 
 label {
-  @extend .form-label;
+  @extend .form-label !optional;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .e-input {
-  @extend .form-input;
+  @extend .form-input !optional;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--divider);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
 }
 
 .error-message {
-  @extend .error-message;
+  @extend .error-message !optional;
+  color: var(--warn);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
 .card-actions {
-  @extend .card-actions;
-  @extend .between;
   padding: 10px 20px 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .spinner-container {
-  @extend .spinner-container;
+  @extend .spinner-container !optional;
+  display: inline-flex;
+  margin-right: 8px;
 }
 
 .loading-icon {
-  @extend .loading-icon;
+  @extend .loading-icon !optional;
+  display: inline-block;
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

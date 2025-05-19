@@ -1,12 +1,18 @@
-// Use shared styles
+/* Use shared styles */
 .logout-container {
-  @extend .centered-container;
+  @extend .centered-container !optional;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.03);
 }
 
 .logout-box {
-  @extend .card;
+  @extend .card !optional;
+  background-color: var(--background-card);
+  border-radius: 8px;
+  box-shadow: var(--elevation-z2);
   padding: 30px;
   text-align: center;
   max-width: 400px;
@@ -18,16 +24,28 @@
 }
 
 h2 {
-  @extend .text-primary;
+  @extend .text-primary !optional;
+  color: var(--primary);
   margin-bottom: 16px;
 }
 
 p {
-  @extend .text-light;
+  @extend .text-light !optional;
+  color: var(--text-secondary);
   margin-bottom: 24px;
 }
 
 .spinner {
-  @extend .spinner;
-  @extend .spinner-lg;
+  @extend .spinner !optional;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

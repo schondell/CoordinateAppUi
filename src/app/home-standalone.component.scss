@@ -1,20 +1,28 @@
-// Use shared styles
+/* Use shared styles */
 .content {
   max-width: 800px;
   margin: 0 auto;
-  @extend .content-box;
+  @extend .content-box !optional;
+  background-color: var(--background-card);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: var(--elevation-z1);
 }
 
 .info-box {
   margin-top: 20px;
-  @extend .info-box;
-  @extend .info;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
 }
 
 .navigation-box {
   margin-top: 20px;
-  @extend .info-box;
-  @extend .success;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #f1f8e9;
+  border-left: 4px solid #8bc34a;
   
   a {
     color: var(--primary);
@@ -29,7 +37,9 @@
 }
 
 h2 {
-  @extend .text-primary;
+  @extend .text-primary !optional;
+  color: var(--primary);
+  margin-top: 0;
 }
 
 ul {
