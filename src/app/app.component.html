@@ -20,22 +20,17 @@
     </ejs-toolbar>
   </div>
   <div class="main-content">
-    <ejs-sidebar id="menuSidebar" class="sidebar-menu expanded" #sidebarMenuInstance [enableDock]='enableDock'
-                 [dockSize]="dockSize" [width]="width" [target]="target" [isOpen]="true" type="Auto">
-      <div class="main-menu">
-        <div>
-          <ejs-menu [items]="menuItems" orientation='Vertical' cssClass='dock-menu'>
-            <ng-template #template let-item>
-              <a [routerLink]="item.url" [title]="isSidebarCollapsed ? (item.text | translate) : ''">
-                <span class="e-menu-icon {{ item.iconCss }}"></span>
-                <span class="e-menu-text">{{ item.text | translate }}</span>
-              </a>
-            </ng-template>
-          </ejs-menu>
-        </div>
-      </div>
-    </ejs-sidebar>
-    <div class="main-menu-content" id="maintext">
+    <app-sidebar-standalone #sidebarMenuInstance
+                         [enableDock]='enableDock'
+                         [dockSize]="dockSize" 
+                         [width]="width" 
+                         [target]="target" 
+                         [isOpen]="true"
+                         [isSidebarCollapsed]="isSidebarCollapsed"
+                         [menuItems]="menuItems"
+                         (collapsedChange)="onSidebarCollapsedChange($event)">
+    </app-sidebar-standalone>
+    <div [class]="'main-menu-content ' + (isSidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded')" id="maintext">
       <router-outlet></router-outlet>
     </div>
   </div>

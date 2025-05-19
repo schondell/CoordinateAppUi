@@ -36,6 +36,7 @@ import { LoginDialogComponent } from "./components/login/login-dialog.component"
 import { NotificationService } from "./services/notification.service";
 import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 import { FooterComponent } from './shared/footer/footer.component';
+import { SidebarStandaloneComponent } from './shared/sidebar/sidebar.component.standalone';
 
 interface NodeItem {
   nodeId: string;
@@ -61,7 +62,8 @@ interface NodeItem {
     SplitButtonModule,
     DialogModule,
     AppDialogComponent,
-    FooterComponent
+    FooterComponent,
+    SidebarStandaloneComponent
   ]
 })
 
@@ -79,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public target: string = '.main-content';
 
   @ViewChild('sidebarMenuInstance')
-  public sidebarMenuInstance!: SidebarComponent;
+  public sidebarMenuInstance!: SidebarStandaloneComponent;
 
   private readonly _mobileQueryListener: () => void;
   isUserLoggedIn: boolean;
@@ -177,69 +179,69 @@ export class AppComponent implements OnInit, OnDestroy {
   public menuItems: MenuItemModel[] = [
     {
       text: 'mainMenu.Home',
-      iconCss: 'icon-user icon',
+      iconCss: 'e-icons e-home',
       url: '/'
     },
     {
       text: 'mainMenu.OverView',
-      iconCss: 'icon-user icon',
+      iconCss: 'e-icons e-dashboard',
       url: '/job-overview'
     },
     {
       text: 'mainMenu.DrivingJournal',
-      iconCss: 'icon-bell-alt icon',
+      iconCss: 'e-icons e-book',
       url: '/journal'
     },
     {
       text: 'mainMenu.History',
-      iconCss: 'icon-tag icon',
+      iconCss: 'e-icons e-history',
       url: '/history'
     },
     {
       text: 'mainMenu.DataManagement',
-      iconCss: 'icon-comment-inv-alt2 icon',
+      iconCss: 'e-icons e-work',
       items: [
         {
           text: 'mainMenu.Address',
-          iconCss: 'icon-circle-thin icon',
+          iconCss: 'e-icons e-menu',
           url: '/address'
         },
         {
           text: 'mainMenu.Vehicles',
-          iconCss: 'icon-circle-thin icon',
+          iconCss: 'e-icons e-menu',
           url: '/vehicle'
         },
         {
           text: 'mainMenu.GpsTrackers',
-          iconCss: 'icon-circle-thin icon',
+          iconCss: 'e-icons e-menu',
           url: '/gpstracker'
         }
       ]
     },
     {
       text: 'Settings',
-      iconCss: 'icon-cog icon',
+      iconCss: 'e-icons e-settings',
       url: '/settings'
     },
     {
       text: 'Admin',
-      iconCss: 'icon-users icon',
+      iconCss: 'e-icons e-admin',
       items: [
         {
           text: 'Users',
-          iconCss: 'icon-circle-thin icon',
+          iconCss: 'e-icons e-user',
           url: '/admin/users'
         },
         {
           text: 'Roles',
-          iconCss: 'icon-circle-thin icon',
+          iconCss: 'e-icons e-menu',
           url: '/admin/roles'
         }
       ]
     },
     {
       text: 'mainMenu.About',
-      iconCss: 'icon-info icon',
+      iconCss: 'e-icons e-info',
       url: '/about'
     }
   ];
@@ -249,12 +251,12 @@ export class AppComponent implements OnInit, OnDestroy {
   toolbarClicked(args: ClickEventArgs) {
     if (args.item.tooltipText == "Menu") {
       this.sidebarMenuInstance.toggle();
-      const sidebarElement = document.getElementById('menuSidebar');
-      if (sidebarElement) {
-        sidebarElement.classList.toggle('collapsed');
-        sidebarElement.classList.toggle('expanded');
-      }
+      this.isSidebarCollapsed = !this.isSidebarCollapsed;
     }
+  }
+  
+  onSidebarCollapsedChange(collapsed: boolean) {
+    this.isSidebarCollapsed = collapsed;
   }
 
   // public field:object ={ dataSource: this.data, id: 'nodeId', text: 'nodeText', child: 'nodeChild', iconCss: 'iconCss' };

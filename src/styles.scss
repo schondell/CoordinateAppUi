@@ -1,6 +1,28 @@
 /* Global styles for Coordinate App */
 @use 'app/assets/styles/shared/index' as *;
 
+/* Syncfusion Icon Classes */
+.e-icons {
+  font-family: 'e-icons';
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  text-transform: none;
+}
+
+.e-home::before { content: '\e900'; }
+.e-dashboard::before { content: '\e901'; }
+.e-history::before { content: '\e902'; }
+.e-book::before { content: '\e903'; }
+.e-work::before { content: '\e904'; }
+.e-admin::before { content: '\e905'; }
+.e-settings::before { content: '\e906'; }
+.e-info::before { content: '\e907'; }
+.e-logout::before { content: '\e908'; }
+.e-user::before { content: '\e909'; }
+.e-menu::before { content: '\e910'; }
+
 /* Theme System - CSS Custom Properties */
 :root {
   /* Light Theme Default (Indigo/Pink) */
@@ -402,6 +424,29 @@ a {
 
 .e-icons.e-user::before {
   content: '\e713';
+}
+
+/* Toolbar menu hamburger icon */
+.e-tbar-menu-icon::before {
+  content: '\e919';
+  font-family: 'e-icons';
+}
+
+/* Menu icons for profile dropdown */
+.e-ddb-icons {
+  font-family: 'e-icons';
+}
+
+.e-ddb-icons.e-profile::before {
+  content: '\e713';
+}
+
+.e-ddb-icons.e-settings::before {
+  content: '\e910';
+}
+
+.e-ddb-icons.e-logout::before {
+  content: '\e815';
 }
 
 /* Layout adjustments for sidebar + content */

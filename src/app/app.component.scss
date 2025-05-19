@@ -16,6 +16,15 @@
   flex-grow: 1;
   overflow-y: auto;
   padding: 16px;
+  transition: margin-left 0.3s;
+  
+  &.sidebar-collapsed {
+    margin-left: 60px;
+  }
+  
+  &.sidebar-expanded {
+    margin-left: 240px;
+  }
 }
 
 // Sidebar configuration
