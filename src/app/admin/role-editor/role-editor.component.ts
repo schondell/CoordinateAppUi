@@ -7,6 +7,8 @@ import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AccountService } from '../../services/account.service';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
+import {SharedModule} from "../../shared.module";
+import {CoordinateSyncfusionModule} from "../../modules/syncfusion.module";
 
 interface RoleForm {
   name: FormControl<string>;
@@ -16,6 +18,10 @@ interface RoleForm {
 @Component({
   selector: 'app-role-editor',
   templateUrl: './role-editor.component.html',
+  imports: [
+    SharedModule,
+    CoordinateSyncfusionModule
+  ],
   styleUrls: ['./role-editor.component.scss']
 })
 export class RoleEditorComponent implements OnChanges {

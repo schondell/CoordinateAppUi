@@ -2,63 +2,44 @@
 <div [@fadeInOut] class="page-content">
 
   <div class="search-box">
-    <mat-form-field>
-      <mat-label>{{'roles.management.Search' | translate}}</mat-label>
-      <input matInput (keyup)="applyFilter($event.target.value)">
-    </mat-form-field>
+    <div class="e-input-group">
+      <input class="e-input" (keyup)="applyFilter($event.target.value)" placeholder="{{'roles.management.Search' | translate}}">
+    </div>
   </div>
 
-  <div class="example-container mat-elevation-z8">
-    <mat-progress-bar *ngIf="loadingIndicator" mode="query"></mat-progress-bar>
-    <mat-table [dataSource]="dataSource" matSort>
-
-      <ng-container matColumnDef="name">
-        <mat-header-cell class="flex-grow40" *matHeaderCellDef mat-sort-header> {{'roles.management.Name' | translate}} </mat-header-cell>
-        <mat-cell class="flex-grow40" *matCellDef="let role"> {{role.name}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> {{'roles.management.Description' | translate}} </mat-header-cell>
-        <mat-cell *matCellDef="let role"> {{role.description}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="usersCount">
-        <mat-header-cell *matHeaderCellDef mat-sort-header class="flex-70px"> {{'roles.management.Users' | translate}} </mat-header-cell>
-        <mat-cell *matCellDef="let role" class="flex-70px"> {{role.usersCount}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef class="flex-170px justify-center">
-          <button *ngIf="canManageRoles" mat-button color="primary" matTooltip="{{'roles.management.NewRole' | translate}}" (click)="editRole()">
-            <mat-icon>add</mat-icon>{{'roles.management.NewRole' | translate}}
-          </button>
-        </mat-header-cell>
-        <mat-cell *matCellDef="let role" class="flex-170px justify-center">
-          <button *ngIf="!canManageRoles" mat-icon-button matTooltip="{{'roles.management.Details' | translate}}" (click)="editRole(role)">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <button *ngIf="canManageRoles" mat-icon-button matTooltip="{{'roles.management.Edit' | translate}}" (click)="editRole(role)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button *ngIf="canManageRoles" mat-icon-button matTooltip="{{'roles.management.Delete' | translate}}" (click)="confirmDelete(role)">
-            <mat-icon color="warn">delete</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;">
-      </mat-row>
-    </mat-table>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <div class="e-card">
+    <div *ngIf="loadingIndicator" class="e-progress-container">
+      <ejs-progressbar type="Linear" height="4" [value]="100" [isIndeterminate]="true"></ejs-progressbar>
+    </div>
+    
+    <ejs-grid [dataSource]="dataSource" allowPaging="true" allowSorting="true">
+      <e-columns>
+        <e-column field="name" headerText="{{'roles.management.Name' | translate}}" width="40%" [allowSorting]="true"></e-column>
+        <e-column field="description" headerText="{{'roles.management.Description' | translate}}" [allowSorting]="true"></e-column>
+        <e-column field="usersCount" headerText="{{'roles.management.Users' | translate}}" width="70px" [allowSorting]="true"></e-column>
+        <e-column headerText="" width="170px">
+          <ng-template #headerTemplate>
+            <div class="justify-center">
+              <button *ngIf="canManageRoles" ejs-button cssClass="e-primary" title="{{'roles.management.NewRole' | translate}}" (click)="editRole()">
+                <span class="e-icons e-add"></span>{{'roles.management.NewRole' | translate}}
+              </button>
+            </div>
+          </ng-template>
+          <ng-template #template let-role>
+            <div class="justify-center">
+              <button *ngIf="!canManageRoles" ejs-button cssClass="e-round e-flat" title="{{'roles.management.Details' | translate}}" (click)="editRole(role)">
+                <span class="e-icons e-more-vertical"></span>
+              </button>
+              <button *ngIf="canManageRoles" ejs-button cssClass="e-round e-flat" title="{{'roles.management.Edit' | translate}}" (click)="editRole(role)">
+                <span class="e-icons e-edit"></span>
+              </button>
+              <button *ngIf="canManageRoles" ejs-button cssClass="e-round e-flat e-danger" title="{{'roles.management.Delete' | translate}}" (click)="confirmDelete(role)">
+                <span class="e-icons e-delete"></span>
+              </button>
+            </div>
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
   </div>
-
-
-
 </div>
-
-
-
-
-

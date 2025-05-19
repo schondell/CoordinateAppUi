@@ -1,24 +1,19 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
-import { AdminComponent } from './admin.component';
-import { RoleListComponent } from './role-list/role-list.component';
-import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.component';
-import { RoleEditorComponent } from './role-editor/role-editor.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
-import { UserEditorComponent } from './user-editor/user-editor.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
-// Angular Material Modules
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+// Standalone Components
+import { AdminStandaloneComponent } from './admin.component.standalone';
+import { RoleListStandaloneComponent } from './role-list/role-list.component.standalone';
+import { RoleEditorStandaloneComponent } from './role-editor/role-editor.component.standalone';
+import { UserListStandaloneComponent } from './user-list/user-list.component.standalone';
+import { UserEditorComponent } from './user-editor/user-editor.component';
+
+// Import Syncfusion modules directly from shared module
+// No need to import Angular Material modules directly as they're being phased out
 
 @NgModule({
   imports: [
@@ -26,24 +21,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     FormsModule,
     ReactiveFormsModule,
     TranslateModule,
-    SharedModule,
+    SharedModule,  // This now includes CoordinateSyncfusionModule
     AdminRoutingModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCheckboxModule,
-    // Import standalone components instead of declaring them
-    AdminComponent,
-    RoleListComponent,
-    EditRoleDialogComponent,
-    RoleEditorComponent,
-    UserListComponent,
-    EditUserDialogComponent,
+    
+    // Import standalone components
+    AdminStandaloneComponent,
+    RoleListStandaloneComponent,
+    RoleEditorStandaloneComponent,
+    UserListStandaloneComponent,
     UserEditorComponent
   ],
-  // Remove standalone components from declarations
   declarations: []
 })
 export class AdminModule { }

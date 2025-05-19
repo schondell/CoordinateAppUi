@@ -1,31 +1,43 @@
 <form #form="ngForm" [formGroup]="roleForm" novalidate (ngSubmit)="save()" class="flex-col gap-1em" autocomplete="off">
 
   <div class="flex-row flex-col-ltmd gap-col-1em">
-    <mat-form-field class="flex-1">
-      <mat-label>{{'roles.editor.Name' | translate}}</mat-label>
-      <input matInput formControlName="name" [readonly]="!canManageRoles" />
-      <mat-error *ngIf="name.hasError('required')">{{'roles.editor.RoleNameRequired' | translate}}</mat-error>
-    </mat-form-field>
+    <div class="e-input-group flex-1">
+      <div class="e-float-input">
+        <input type="text" formControlName="name" [readonly]="!canManageRoles" />
+        <span class="e-float-line"></span>
+        <label class="e-float-text">{{'roles.editor.Name' | translate}}</label>
+      </div>
+      <div *ngIf="name.hasError('required')" class="e-error">{{'roles.editor.RoleNameRequired' | translate}}</div>
+    </div>
 
-    <mat-form-field class="flex-1">
-      <mat-label>{{'roles.editor.Description' | translate}}</mat-label>
-      <input matInput formControlName="description" [readonly]="!canManageRoles" />
-    </mat-form-field>
+    <div class="e-input-group flex-1">
+      <div class="e-float-input">
+        <input type="text" formControlName="description" [readonly]="!canManageRoles" />
+        <span class="e-float-line"></span>
+        <label class="e-float-text">{{'roles.editor.Description' | translate}}</label>
+      </div>
+    </div>
   </div>
 
-  <mat-expansion-panel [expanded]="isNewRole" *ngFor="let permissionGroup of allPermissions | groupBy: 'groupName'" class="mat-elevation-z6">
-    <mat-expansion-panel-header color="primary">
-      <mat-panel-title>
-        {{permissionGroup.key}}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <mat-slide-toggle [disabled]="!canManageRoles" *ngFor="let permission of permissionGroup.value"
-                      matTooltip="{{permission.description}}"
+  <ejs-accordion *ngFor="let permissionGroup of allPermissions | groupBy: 'groupName'" [expanded]="isNewRole">
+    <e-accordionitems>
+      <e-accordionitem>
+        <ng-template #header>
+          <div>{{permissionGroup.key}}</div>
+        </ng-template>
+        <ng-template #content>
+          <div *ngFor="let permission of permissionGroup.value">
+            <ejs-switch [disabled]="!canManageRoles"
+                      [title]="permission.description"
                       (click)="$event.stopPropagation()"
                       (change)="$event ? selectedPermissions.toggle(permission) : null"
                       [checked]="selectedPermissions.isSelected(permission)">
-      {{permission.name}}
-    </mat-slide-toggle>
-  </mat-expansion-panel>
+            </ejs-switch>
+            <span class="switch-label">{{permission.name}}</span>
+          </div>
+        </ng-template>
+      </e-accordionitem>
+    </e-accordionitems>
+  </ejs-accordion>
   <br />
 </form>

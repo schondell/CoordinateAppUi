@@ -4,15 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TranslateModule } from '@ngx-translate/core';
 
-// Syncfusion modules
-import { SidebarModule, MenuModule, ToolbarModule, TabModule } from '@syncfusion/ej2-angular-navigations';
-import { ButtonModule, SwitchModule, RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
-import { DropDownButtonModule, SplitButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
-import { TooltipModule, DialogModule } from '@syncfusion/ej2-angular-popups';
-import { DropDownListModule, ComboBoxModule, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
-import { DatePickerModule, DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
-import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
-import { GridModule } from '@syncfusion/ej2-angular-grids';
+// Import the Syncfusion module instead of individual components
+import { CoordinateSyncfusionModule } from '../modules/syncfusion.module';
 
 // We'll keep Material module for backward compatibility until all components are migrated
 import { CoordinateMaterialModule } from '../modules/material.module';
@@ -34,26 +27,8 @@ import { FooterComponent } from './footer/footer.component';
     ReactiveFormsModule,
     TranslateModule,
     
-    // Syncfusion modules
-    SidebarModule,
-    MenuModule,
-    ToolbarModule,
-    ButtonModule,
-    SwitchModule,
-    RadioButtonModule,
-    DropDownButtonModule,
-    SplitButtonModule,
-    TooltipModule,
-    DialogModule,
-    DropDownListModule,
-    ComboBoxModule,
-    MultiSelectModule,
-    DatePickerModule,
-    DateRangePickerModule,
-    TextBoxModule,
-    NumericTextBoxModule,
-    GridModule,
-    TabModule,
+    // Use the consolidated Syncfusion module
+    CoordinateSyncfusionModule,
     
     // Legacy Material module - will be phased out gradually
     CoordinateMaterialModule,
@@ -73,26 +48,8 @@ import { FooterComponent } from './footer/footer.component';
     ReactiveFormsModule,
     TranslateModule,
     
-    // Syncfusion modules
-    SidebarModule,
-    MenuModule,
-    ToolbarModule,
-    ButtonModule,
-    SwitchModule,
-    RadioButtonModule,
-    DropDownButtonModule,
-    SplitButtonModule,
-    TooltipModule,
-    DialogModule,
-    DropDownListModule,
-    ComboBoxModule,
-    MultiSelectModule,
-    DatePickerModule,
-    DateRangePickerModule,
-    TextBoxModule,
-    NumericTextBoxModule,
-    GridModule,
-    TabModule,
+    // Use the consolidated Syncfusion module
+    CoordinateSyncfusionModule,
     
     // Legacy Material module - will be phased out gradually
     CoordinateMaterialModule,

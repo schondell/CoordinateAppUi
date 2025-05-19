@@ -1,9 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { GridComponent, SortService, PageService } from '@syncfusion/ej2-angular-grids';
+import { ToastComponent } from '@syncfusion/ej2-angular-notifications';
 
 import { fadeInOut } from '../../services/animations';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
@@ -13,19 +11,25 @@ import { Utilities } from '../../services/utilities';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
 import { EditRoleDialogComponent } from '../edit-role-dialog/edit-role-dialog.component';
+import {PageHeaderComponent} from "../../shared/page-header/page-header.component";
+import {SharedModule} from "../../shared.module";
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.scss'],
+  imports: [
+    PageHeaderComponent,
+    SharedModule
+  ],
   animations: [fadeInOut]
 })
 export class RoleListComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('grid') grid: GridComponent;
+  @ViewChild('toast') toast: ToastComponent;
 
   displayedColumns = ['name', 'description', 'usersCount', 'actions'];
-  dataSource: MatTableDataSource<Role>;
+  dataSource: Role[] = [];
   allPermissions: Permission[] = [];
   sourceRole: Role;
   editingRoleName: { name: string };
@@ -35,11 +39,8 @@ export class RoleListComponent implements OnInit, AfterViewInit {
     private alertService: AlertService,
     private translationService: AppTranslationService,
     private accountService: AccountService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog
-  ) {
-    this.dataSource = new MatTableDataSource();
-  }
+    private dialog: DialogComponent
+  ) { }
 
   get canManageRoles() {
     return this.accountService.userHasPermission(Permission.manageRolesPermission);
@@ -50,27 +51,36 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // Grid is configured with built-in sorting and paging
   }
 
   public applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue;
+    if (this.grid) {
+      this.grid.search(filterValue);
+    }
   }
 
   private refresh() {
-    // Causes the filter to refresh there by updating with recently added data.
-    this.applyFilter(this.dataSource.filter);
+    if (this.grid) {
+      this.grid.refresh();
+    }
   }
 
   private updateRoles(role: Role) {
     if (this.sourceRole) {
-      Object.assign(this.sourceRole, role);
+      // Find and update existing role
+      const index = this.dataSource.findIndex(r => r === this.sourceRole);
+      if (index >= 0) {
+        this.dataSource[index] = role;
+      }
       this.sourceRole = null;
     } else {
-      this.dataSource.data.push(role);
+      // Add new role
+      this.dataSource.push(role);
     }
 
+    // Update grid data source
+    this.grid.dataSource = [...this.dataSource];
     this.refresh();
   }
 
@@ -84,7 +94,7 @@ export class RoleListComponent implements OnInit, AfterViewInit {
           this.alertService.stopLoadingMessage();
           this.loadingIndicator = false;
 
-          this.dataSource.data = results[0];
+          this.dataSource = results[0];
           this.allPermissions = results[1];
         },
         error: error => {
@@ -100,12 +110,16 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   public editRole(role?: Role) {
     this.sourceRole = role;
 
-    const dialogRef = this.dialog.open(EditRoleDialogComponent,
-      {
-        panelClass: 'mat-dialog-md',
-        data: { role, allPermissions: this.allPermissions }
-      });
-    dialogRef.afterClosed().subscribe(r => {
+    // Using Syncfusion dialog service
+    const dialogRef = this.dialog.open(EditRoleDialogComponent, {
+      width: '500px',
+      showCloseIcon: true,
+      closeOnEscape: true,
+      data: { role, allPermissions: this.allPermissions }
+    });
+    
+    // Subscribe to dialog result
+    dialogRef.beforeClose.subscribe(r => {
       if (r && this.canManageRoles) {
         this.updateRoles(r);
       }
@@ -113,26 +127,34 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   }
 
   public confirmDelete(role: Role) {
-    this.snackBar.open(`Delete ${role.name} role?`, 'DELETE', { duration: 5000 })
-      .onAction().subscribe(() => {
-        this.alertService.startLoadingMessage('Deleting...');
-        this.loadingIndicator = true;
+    // Using Syncfusion toast for confirmation
+    this.toast.content = `Delete ${role.name} role?`;
+    this.toast.buttons = [
+      { model: { content: 'DELETE', cssClass: 'e-danger' }, click: () => this.deleteRole(role) },
+      { model: { content: 'CANCEL' } }
+    ];
+    this.toast.show();
+  }
 
-        this.accountService.deleteRole(role)
-          .subscribe({
-            next: _ => {
-              this.alertService.stopLoadingMessage();
-              this.loadingIndicator = false;
-              this.dataSource.data = this.dataSource.data.filter(item => item !== role);
-            },
-            error: error => {
-              this.alertService.stopLoadingMessage();
-              this.loadingIndicator = false;
+  private deleteRole(role: Role) {
+    this.alertService.startLoadingMessage('Deleting...');
+    this.loadingIndicator = true;
 
-              this.alertService.showStickyMessage('Delete Error', `An error occurred whilst deleting the role.\r\nError: "${Utilities.getHttpResponseMessages(error)}"`,
-                MessageSeverity.error, error);
-            }
-          });
+    this.accountService.deleteRole(role)
+      .subscribe({
+        next: _ => {
+          this.alertService.stopLoadingMessage();
+          this.loadingIndicator = false;
+          this.dataSource = this.dataSource.filter(item => item !== role);
+          this.grid.dataSource = [...this.dataSource];
+        },
+        error: error => {
+          this.alertService.stopLoadingMessage();
+          this.loadingIndicator = false;
+
+          this.alertService.showStickyMessage('Delete Error', `An error occurred whilst deleting the role.\r\nError: "${Utilities.getHttpResponseMessages(error)}"`,
+            MessageSeverity.error, error);
+        }
       });
   }
 }
