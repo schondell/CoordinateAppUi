@@ -21,7 +21,7 @@ import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inp
 import { GridModule } from '@syncfusion/ej2-angular-grids';
 
 // Material module for backward compatibility
-import { CoordinateMaterialModule } from '../modules/material.module';
+//import { CoordinateMaterialModule } from '../modules/material.module';
 
 // Components and Pipes from the shared module
 import { PageHeaderComponent } from './page-header/page-header.component';
@@ -62,9 +62,6 @@ export const SHARED_MODULES = [
   NumericTextBoxModule,
   GridModule,
   TabModule,
-  
-  // Legacy Material module - will be phased out gradually
-  CoordinateMaterialModule
 ];
 
 // Export all the standalone components

@@ -1,7 +1,7 @@
 import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { CoordinateMaterialModule } from '../../modules/material.module';
+//import { CoordinateMaterialModule } from '../../modules/material.module';
 
 @Component({
   selector: 'app-page-header',
@@ -12,7 +12,6 @@ import { CoordinateMaterialModule } from '../../modules/material.module';
   imports: [
     CommonModule,
     TranslateModule,
-    CoordinateMaterialModule
   ]
 })
 export class PageHeaderComponent {

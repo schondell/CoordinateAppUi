@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CoordinateSyncfusionModule } from '../modules/syncfusion.module';
 
 // We'll keep Material module for backward compatibility until all components are migrated
-import { CoordinateMaterialModule } from '../modules/material.module';
+//import { CoordinateMaterialModule } from '../modules/material.module';
 
 // Components and Pipes
 import { PageHeaderComponent } from './page-header/page-header.component';
@@ -30,9 +30,6 @@ import { FooterComponent } from './footer/footer.component';
     // Use the consolidated Syncfusion module
     CoordinateSyncfusionModule,
     
-    // Legacy Material module - will be phased out gradually
-    CoordinateMaterialModule,
-    
     // Standalone components
     PageHeaderComponent,
     GroupByPipe,
@@ -52,7 +49,7 @@ import { FooterComponent } from './footer/footer.component';
     CoordinateSyncfusionModule,
     
     // Legacy Material module - will be phased out gradually
-    CoordinateMaterialModule,
+    //CoordinateMaterialModule,
     
     // Standalone Components and Pipes
     PageHeaderComponent,
