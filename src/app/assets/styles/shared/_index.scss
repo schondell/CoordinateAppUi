@@ -1,9 +1,9 @@
 // Main shared styles index file
 // Import this file in your component stylesheets to access all shared styles
 
-@import './forms';
-@import './cards';
-@import './animations';
+@forward './forms';
+@forward './cards';
+@forward './animations';
 
 // Typography shared styles
 h1, h2, h3, h4, h5, h6 {
