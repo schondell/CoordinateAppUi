@@ -2,7 +2,6 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { fadeInOut } from '../../services/animations';
 import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
-import { TodoDemoComponent } from '../controls/todo-demo.component';
 
 @Component({
   selector: 'app-customers',
@@ -13,8 +12,7 @@ import { TodoDemoComponent } from '../controls/todo-demo.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
-    PageHeaderComponent,
-    TodoDemoComponent
+    PageHeaderComponent
   ]
 })
 export class CustomersComponent {

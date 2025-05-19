@@ -24,7 +24,7 @@ import { GroupByPipe } from '../pipes/group-by.pipe';
 import { ThemePickerComponent } from './theme-picker/theme-picker.component';
 import { ThemeManager } from './theme-picker/theme-manager';
 import { DateVehicleSelectorComponent } from './date-vehicle-selector/date-vehicle-selector.component';
-import { FooterModule } from './footer/footer.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   imports: [
@@ -58,8 +58,13 @@ import { FooterModule } from './footer/footer.component';
     // Legacy Material module - will be phased out gradually
     CoordinateMaterialModule,
     
-    // External feature modules
-    FooterModule
+    // Standalone components
+    PageHeaderComponent,
+    GroupByPipe,
+    AppDialogComponent,
+    DateVehicleSelectorComponent,
+    FooterComponent,
+    ThemePickerComponent
   ],
   exports: [
     CommonModule,
@@ -92,22 +97,16 @@ import { FooterModule } from './footer/footer.component';
     // Legacy Material module - will be phased out gradually
     CoordinateMaterialModule,
     
-    // Components and Pipes
+    // Standalone Components and Pipes
     PageHeaderComponent,
     GroupByPipe,
     AppDialogComponent,
     DateVehicleSelectorComponent,
-    
-    // External feature modules
-    FooterModule,
+    FooterComponent,
     ThemePickerComponent
   ],
   declarations: [
-    PageHeaderComponent,
-    GroupByPipe,
-    AppDialogComponent,
-    DateVehicleSelectorComponent,
-    ThemePickerComponent
+    // No declarations - all components are standalone
   ],
   providers: [
     ThemeManager

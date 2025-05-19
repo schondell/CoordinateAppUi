@@ -1,18 +1,15 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 
-// Import providers and routes
+// Routing and modules
 import { AppRoutingModule } from './app/app-routing.module';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthScopeInterceptor } from './app/services/auth-scope-interceptor';
 
-// Import needed services
+// Services
 import { ThemeManager } from './app/shared/theme-picker/theme-manager';
 import { ConfigurationService } from './app/services/configuration.service';
 import { AppTitleService } from './app/services/app-title.service';
@@ -26,21 +23,19 @@ import { AccountService } from './app/services/account.service';
 import { AccountEndpoint } from './app/services/account-endpoint.service';
 import { OidcHelperService, OidcTempStorage } from './app/services/oidc-helper.service';
 import { AppTranslationService, TranslateLanguageLoader } from './app/services/app-translation.service';
+import { AuthScopeInterceptor } from './app/services/auth-scope-interceptor';
 
 // External modules
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { ToastaModule } from 'ngx-toasta';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
-// Import Syncfusion modules
+// Syncfusion
 import { registerLicense } from '@syncfusion/ej2-base';
 import { PageService, SortService, ToolbarService, PdfExportService, ExcelExportService } from '@syncfusion/ej2-angular-grids';
 
 // Register Syncfusion license
 registerLicense('ORg4AjUWIQA/Gnt2XFhhQlJHfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTH5WdkFjUH1adHRSRGZfWkZ/');
-
-// Debug console logs
-console.log('Starting standalone application bootstrap with routing');
 
 export function getBaseUrl() {
   return document.getElementsByTagName('base')[0].href;
@@ -50,23 +45,15 @@ if (environment.production) {
   enableProdMode();
 }
 
-// Try/catch to better track bootstrap errors
 try {
-  console.log('About to bootstrap application');
-  
   bootstrapApplication(AppComponent, {
     providers: [
-      // Import routing
       importProvidersFrom(AppRoutingModule),
-      
-      // Basic Angular providers
       provideAnimations(),
       provideHttpClient(withInterceptorsFromDi()),
-      
-      // Base URL
       { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
-      
-      // Services
+
+      // App services
       AlertService,
       ConfigurationService,
       AppTitleService,
@@ -82,20 +69,20 @@ try {
       OidcHelperService,
       { provide: OAuthStorage, useClass: OidcTempStorage },
       { provide: HTTP_INTERCEPTORS, useClass: AuthScopeInterceptor, multi: true },
-      
+
       // Third-party modules
       importProvidersFrom(
-        OAuthModule.forRoot(),
-        ToastaModule.forRoot(),
-        GoogleMapsModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: TranslateLanguageLoader
-          }
-        })
+          OAuthModule.forRoot(),
+          ToastaModule.forRoot(),
+          GoogleMapsModule,
+          TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useClass: TranslateLanguageLoader
+            }
+          })
       ),
-      
+
       // Syncfusion services
       PageService,
       SortService,
@@ -104,12 +91,12 @@ try {
       ExcelExportService
     ]
   })
-  .then(ref => {
-    console.log('Angular standalone app bootstrapped successfully');
-  })
-  .catch(err => {
-    console.error('Error during bootstrap:', err);
-  });
+      .then(() => {
+        console.log('Angular standalone app bootstrapped successfully');
+      })
+      .catch(err => {
+        console.error('Error during bootstrap:', err);
+      });
 } catch (e) {
   console.error('Fatal error during startup:', e);
 }

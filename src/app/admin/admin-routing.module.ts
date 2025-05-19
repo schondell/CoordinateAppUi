@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './admin.component';
-import { RoleListComponent } from './role-list/role-list.component';
-import { UserListComponent } from './user-list/user-list.component';
 import { AuthService } from '../services/auth.service';
 import { AuthGuard } from '../services/auth-guard.service';
+
+// Only import standalone components
+import { AdminStandaloneComponent } from './admin.component.standalone';
+import { RoleListStandaloneComponent } from './role-list/role-list.component.standalone';
 import { RoleEditorStandaloneComponent } from './role-editor/role-editor.component.standalone';
-import { UserEditorStandaloneComponent } from './user-editor/user-editor.component.standalone';
 import { UserListStandaloneComponent } from './user-list/user-list.component.standalone';
+import { UserEditorComponent } from './user-editor/user-editor.component';
 
 const adminRoutes: Routes = [
   {
     path: 'admin',
-    component: AdminComponent,
+    component: AdminStandaloneComponent,
     children: [
-      { path: 'users', component: UserListComponent, canActivate: [AuthGuard], data: { title: 'Admin | Users' } },
-      { path: 'roles', component: RoleListComponent, canActivate: [AuthGuard], data: { title: 'Admin | Roles' } },
-      // Additional routes for standalone components
-      { path: 'users/editor', component: UserEditorStandaloneComponent, canActivate: [AuthGuard], data: { title: 'Admin | User Editor' } },
+      { path: 'users', component: UserListStandaloneComponent, canActivate: [AuthGuard], data: { title: 'Admin | Users' } },
+      { path: 'roles', component: RoleListStandaloneComponent, canActivate: [AuthGuard], data: { title: 'Admin | Roles' } },
+      { path: 'users/editor', component: UserEditorComponent, canActivate: [AuthGuard], data: { title: 'Admin | User Editor' } },
       { path: 'roles/editor', component: RoleEditorStandaloneComponent, canActivate: [AuthGuard], data: { title: 'Admin | Role Editor' } }
     ]
   }

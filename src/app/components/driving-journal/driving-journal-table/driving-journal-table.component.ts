@@ -22,7 +22,7 @@ import {RecordDoubleClickEventArgs} from "@syncfusion/ej2-angular-gantt";
     GridModule,
     FormsModule,
     TranslateModule,
-    DrivingJournalEditComponent,
+   DrivingJournalEditComponent,
     DialogModule
   ],
   animations: [fadeInOut]

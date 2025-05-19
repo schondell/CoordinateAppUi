@@ -1,11 +1,20 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { IVehicleTripLogFullDto } from 'src/app/models/generatedtypes';
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { DialogComponent, DialogModule } from '@syncfusion/ej2-angular-popups';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
-  styleUrls: ['./trip.component.scss']
+  styleUrls: ['./trip.component.scss'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    DialogModule,
+    ButtonModule
+  ]
 })
 export class TripComponent implements OnInit {
   private _trip: IVehicleTripLogFullDto;

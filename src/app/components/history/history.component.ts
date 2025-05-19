@@ -7,13 +7,17 @@ import { VehicleTripLogFullRepositoryEx } from 'src/app/services/repository/vehi
 import { TripHistoryModel } from 'src/app/models/VehicleTripLogFullDto2';
 import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
 import { DateVehicleSelectorComponent } from '../../shared/date-vehicle-selector/date-vehicle-selector.component';
+import { TripComponent } from './trip/trip.component';
+import { AccordionModule } from '@syncfusion/ej2-angular-navigations';
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss'],
   providers: [
-    { provide: 'sourceFiles', useValue: { files: ['month-picker.css'] } }
+    { provide: 'sourceFiles', useValue: { files: ['month-picker.css'] } },
+    DatePipe,
+    DecimalPipe
   ],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -22,7 +26,9 @@ import { DateVehicleSelectorComponent } from '../../shared/date-vehicle-selector
     RouterModule,
     TranslateModule,
     PageHeaderComponent,
-    DateVehicleSelectorComponent
+    DateVehicleSelectorComponent,
+    TripComponent,
+    AccordionModule
   ]
 })
 export class HistoryComponent implements OnInit, OnDestroy {

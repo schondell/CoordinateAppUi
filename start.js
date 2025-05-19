@@ -1,9 +1,9 @@
 /**
- * Main start script for the Angular application with standalone components
+ * Main start script for the Angular application
  */
 const { spawn } = require('child_process');
 
-console.log('Starting Coordinate App with proper standalone configuration...');
+console.log('Starting Coordinate App...');
 
 // Use npx to run the Angular CLI
 const angularProcess = spawn('npx', ['ng', 'serve', 'quickapp-pro',

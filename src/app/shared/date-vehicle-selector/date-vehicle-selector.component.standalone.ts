@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from "@angular/forms";
 import { CalendarView } from "@syncfusion/ej2-angular-calendars";
 import { IDropDownItemWithDate } from "../../models/DropDownItemWithDate";
-import { VehicleRepository } from 'src/app/services/generated/vehicle-repository';
+import { VehicleRepository } from '../../services/generated/vehicle-repository';
 import { TranslateModule } from '@ngx-translate/core';
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';

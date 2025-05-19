@@ -70,7 +70,6 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { TodoDemoComponent } from './components/controls/todo-demo.component';
 import { StatisticsDemoComponent } from './components/controls/statistics-demo.component';
 import { NotificationsViewerComponent } from './components/controls/notifications-viewer.component';
 import { AddTaskDialogComponent } from './components/controls/add-task-dialog.component';
@@ -91,15 +90,7 @@ import { UserEditorComponent } from './admin/user-editor/user-editor.component';
 export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginDialogComponent,
-    AuthCallbackComponent,
-    AboutComponent,
-    OverviewComponent,
-    WorkItemComponent,
-    HistoryComponent, 
-    TripComponent,
-    VehicleCardComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -138,7 +129,7 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     MenuModule,
     ButtonModule,
     SplitButtonModule,
-    
+
     // Import standalone components
     LoginComponent,
     LoginControlComponent,
@@ -151,7 +142,6 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     ProductsComponent,
     OrdersComponent,
     NotFoundComponent,
-    TodoDemoComponent,
     StatisticsDemoComponent,
     NotificationsViewerComponent,
     AddTaskDialogComponent,
@@ -172,7 +162,16 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     UserEditorStandaloneComponent,
     RoleEditorStandaloneComponent,
     UserListStandaloneComponent,
-    AboutStandaloneComponent
+    AboutStandaloneComponent,
+    AppComponent,
+    LoginDialogComponent,
+    AuthCallbackComponent,
+    AboutComponent,
+    OverviewComponent,
+    WorkItemComponent,
+    HistoryComponent,
+    TripComponent,
+    VehicleCardComponent
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
@@ -196,7 +195,7 @@ export const SOURCE_FILES = new InjectionToken<string>('sourceFiles');
     PdfExportService, ToolbarService,
     ExcelExportService
   ],
-  bootstrap: [AppComponent]
+  //bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {

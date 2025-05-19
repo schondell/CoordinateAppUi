@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * Simple script to start the regular Angular application (not standalone mode)
+ * Script to start the Angular application
  */
 const { spawn } = require('child_process');
 
-console.log('Starting regular Angular application (not standalone)...');
+console.log('Starting Angular application...');
 
-// Start Angular dev server with the quickapp-pro project (not minimal)
+// Start Angular dev server with the quickapp-pro project
 const angularProcess = spawn('ng', ['serve', 'quickapp-pro', '--port', '44450', '--configuration=development'], {
   cwd: process.cwd(),
   stdio: 'inherit',
