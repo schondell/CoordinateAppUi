@@ -4,8 +4,8 @@ import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
 // Syncfusion components
-import { SidebarModule, SidebarComponent as EjsSidebarComponent } from '@syncfusion/ej2-angular-navigations';
-import { MenuModule } from '@syncfusion/ej2-angular-navigations';
+import { SidebarComponent as EjsSidebarComponent } from '@syncfusion/ej2-angular-navigations';
+import { SyncfusionModules } from '../syncfusion-standalone';
 
 @Component({
   selector: 'app-sidebar-standalone',
@@ -14,8 +14,7 @@ import { MenuModule } from '@syncfusion/ej2-angular-navigations';
     CommonModule,
     RouterModule,
     TranslateModule,
-    SidebarModule,
-    MenuModule
+    ...SyncfusionModules
   ],
   templateUrl: './sidebar.component.standalone.html',
   styleUrls: ['./sidebar.component.standalone.scss']
