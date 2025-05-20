@@ -6,9 +6,10 @@
 
 
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AuthService, OidcProviders } from '../../services/auth.service';
@@ -25,7 +26,14 @@ interface LoginForm {
 @Component({
   selector: 'app-auth-callback',
   templateUrl: './auth-callback.component.html',
-  styleUrls: ['./auth-callback.component.scss']
+  styleUrls: ['./auth-callback.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
+  ]
 })
 
 export class AuthCallbackComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -1,13 +1,17 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode, importProvidersFrom, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler } from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { provideRouter, withComponentInputBinding, withRouterConfig, RouteReuseStrategy, UrlSerializer } from '@angular/router';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
-// Routing and modules
-import { AppRoutingModule } from './app/app-routing.module';
+// Routes
+import { routes } from './app/app.routes';
+import { LowerCaseUrlSerializer } from './app/services/url-serializer';
 
 // Services
 import { ThemeManager } from './app/shared/theme-picker/theme-manager';
@@ -24,15 +28,16 @@ import { AccountEndpoint } from './app/services/account-endpoint.service';
 import { OidcHelperService, OidcTempStorage } from './app/services/oidc-helper.service';
 import { AppTranslationService, TranslateLanguageLoader } from './app/services/app-translation.service';
 import { AuthScopeInterceptor } from './app/services/auth-scope-interceptor';
+import { AppErrorHandler } from './app/app-error.handler';
 
 // External modules
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { ToastaModule } from 'ngx-toasta';
+import { ToastaModule, ToastaService, ToastaConfig } from 'ngx-toasta';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
 // Syncfusion
 import { registerLicense } from '@syncfusion/ej2-base';
-import { PageService, SortService, ToolbarService, PdfExportService, ExcelExportService } from '@syncfusion/ej2-angular-grids';
+import { SyncfusionProviders } from './app/shared/syncfusion-standalone';
 
 // Register Syncfusion license
 registerLicense('ORg4AjUWIQA/Gnt2XFhhQlJHfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTH5WdkFjUH1adHRSRGZfWkZ/');
@@ -48,11 +53,26 @@ if (environment.production) {
 try {
   bootstrapApplication(AppComponent, {
     providers: [
-      importProvidersFrom(AppRoutingModule),
+      // Core Angular providers
+      provideClientHydration(),
       provideAnimations(),
       provideHttpClient(withInterceptorsFromDi()),
       { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
-
+      
+      // Router configuration
+      provideRouter(
+        routes,
+        withComponentInputBinding(),
+        withRouterConfig({ 
+          paramsInheritanceStrategy: 'always',
+          urlUpdateStrategy: 'eager' 
+        })
+      ),
+      { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },
+      
+      // Error handling
+      { provide: ErrorHandler, useClass: AppErrorHandler },
+      
       // App services
       AlertService,
       ConfigurationService,
@@ -67,9 +87,17 @@ try {
       AuthGuard,
       ThemeManager,
       OidcHelperService,
+      ToastaService,
+      ToastaConfig,
+      
+      // Auth providers
       { provide: OAuthStorage, useClass: OidcTempStorage },
       { provide: HTTP_INTERCEPTORS, useClass: AuthScopeInterceptor, multi: true },
-
+      
+      // Common utilities
+      DatePipe,
+      DecimalPipe,
+      
       // Third-party modules
       importProvidersFrom(
           OAuthModule.forRoot(),
@@ -84,11 +112,7 @@ try {
       ),
 
       // Syncfusion services
-      PageService,
-      SortService,
-      ToolbarService,
-      PdfExportService,
-      ExcelExportService
+      ...SyncfusionProviders
     ]
   })
       .then(() => {

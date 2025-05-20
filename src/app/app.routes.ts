@@ -35,7 +35,7 @@ export const routes: Routes = [
   // Lazy-loaded routes
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes),
     canActivate: [AuthGuard]
   },
   {

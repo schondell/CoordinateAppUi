@@ -3,19 +3,16 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+// Import all Syncfusion components needed
 import {
   MenuItemModel,
   SidebarComponent,
   TreeViewComponent,
-  ClickEventArgs,
-  ToolbarModule,
-  SidebarModule,
-  MenuModule,
-  TreeViewModule
+  ClickEventArgs
 } from '@syncfusion/ej2-angular-navigations';
 
-import { SplitButtonModule } from '@syncfusion/ej2-angular-splitbuttons';
-import { DialogModule } from '@syncfusion/ej2-angular-popups';
+// Import from our consolidated modules
+import { SyncfusionModules } from './shared/syncfusion-standalone';
 
 import { AppTranslationService } from './services/app-translation.service';
 import { AuthService } from './services/auth.service';
@@ -52,15 +49,15 @@ interface NodeItem {
   styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [
+    // Angular core modules
     CommonModule,
     RouterModule,
     TranslateModule,
-    ToolbarModule,
-    SidebarModule,
-    MenuModule,
-    TreeViewModule,
-    SplitButtonModule,
-    DialogModule,
+    
+    // Import all Syncfusion modules needed
+    ...SyncfusionModules,
+    
+    // App components
     AppDialogComponent,
     FooterComponent,
     SidebarStandaloneComponent
