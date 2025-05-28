@@ -5,19 +5,14 @@
   [center]="center"
   [options]="options"
 >
-  <map-marker *ngFor="let m of markers" [options]="m"></map-marker>
+  <!-- Draw a polyline for each vehicle's path -->
+  <map-polyline *ngFor="let path of vehiclePathsArray"
+    [path]="path"
+    [options]="{ strokeColor: '#4285F4', strokeOpacity: 1.0, strokeWeight: 3 }">
+  </map-polyline>
+  <!-- Draw a marker for each vehicle at its latest position -->
+  <map-marker *ngFor="let marker of vehicleMarkersArray" [options]="marker"></map-marker>
 </google-map>
-
-<!--<div class="control-section card-control-section tile_layout">-->
-<!--  <div class="card-resize-container">-->
-<!--    <div class="card-layout">-->
-<!--      &lt;!&ndash; Iterate over the emitted value (which should be an array of vehicles) &ndash;&gt;-->
-<!--      <div class="flex-container">-->
-<!--        <app-vehicle-card *ngFor="let vehicle of (vehicleComponents$ | async)" [vehicle]="vehicle"></app-vehicle-card>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
 
 <div class=>
   <div class="col-lg-12 control-section card-control-section tile_layout">

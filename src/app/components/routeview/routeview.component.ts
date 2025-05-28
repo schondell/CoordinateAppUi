@@ -45,6 +45,10 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   vehicleComponents$: Observable<VehicleSummary[]>;
 
+  vehiclePaths: Map<number, google.maps.LatLngLiteral[]> = new Map();
+  vehicleMarkers: Map<number, google.maps.MarkerOptions> = new Map();
+  vehicleLastTimestamps: Map<number, string> = new Map();
+
   constructor(
       private signalRService: SignalrService,
       private vehicleSummaryRepositoryService: VehicleSummaryRepositoryService,
@@ -95,16 +99,44 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateVehicleCard(data: { vehicleId: number; vehicleSummary: VehicleSummary }) {
-    const newMarker: google.maps.MarkerOptions = {
-      position: {
-        lat: data.vehicleSummary.latitude,
-        lng: data.vehicleSummary.longitude
-      },
-      title: data.vehicleSummary.name
-    };
-
-    this.markers.push(newMarker);
+    const vehicleId = data.vehicleId;
+    const summary = data.vehicleSummary;
+    const newTimestamp = new Date(summary.deviceTimestamp);
+    let shouldReset = false;
+    const lastTimestampStr = this.vehicleLastTimestamps.get(vehicleId);
+    if (lastTimestampStr) {
+      const lastTimestamp = new Date(lastTimestampStr);
+      if (
+        newTimestamp.getFullYear() !== lastTimestamp.getFullYear() ||
+        newTimestamp.getMonth() !== lastTimestamp.getMonth() ||
+        newTimestamp.getDate() !== lastTimestamp.getDate()
+      ) {
+        shouldReset = true;
+      }
+    }
+    if (shouldReset) {
+      this.vehiclePaths.set(vehicleId, []);
+    }
+    // Update path
+    const path = this.vehiclePaths.get(vehicleId) || [];
+    path.push({ lat: summary.latitude, lng: summary.longitude });
+    this.vehiclePaths.set(vehicleId, path);
+    // Update marker to last position
+    this.vehicleMarkers.set(vehicleId, {
+      position: { lat: summary.latitude, lng: summary.longitude },
+      title: summary.name
+    });
+    // Update last timestamp
+    this.vehicleLastTimestamps.set(vehicleId, new Date(summary.deviceTimestamp).toISOString());
     this.cd.detectChanges();
+  }
+
+  get vehiclePathsArray(): google.maps.LatLngLiteral[][] {
+    return Array.from(this.vehiclePaths.values());
+  }
+
+  get vehicleMarkersArray(): google.maps.MarkerOptions[] {
+    return Array.from(this.vehicleMarkers.values());
   }
 
   ngOnDestroy() {
@@ -116,3 +148,4 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 }
+

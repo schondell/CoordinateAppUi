@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Input, OnDestroy, OnInit, ViewChild, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { CommonModule, formatDate, formatNumber } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { GoogleMap, GoogleMapsModule, MapMarker, MapPolyline } from '@angular/google-maps';
+import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { Subscription } from "rxjs";
 import { filter } from "rxjs/operators";
 import { VehicleSummary } from "../models/vehicle-summary";
@@ -65,9 +65,29 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
 
   private updateVehicleCard(data: { vehicleId: number; vehicleSummary: VehicleSummary }) {
     if (data && data.vehicleSummary) {  // Check if data and vehicleSummary are not null or undefined
-    console.log(`Vehicle Make is: ${data.vehicleSummary.make}`);
-    console.log(`Vehicle Model is: ${data.vehicleSummary.model}`);
-    console.log(`Vehicle Year is: ${data.vehicleSummary.modelYear}`);
+      // Check if the deviceTimestamp is a new day in the user's timezone
+      const newTimestamp = new Date(data.vehicleSummary.deviceTimestamp);
+      const lastVertex = this.vertices.length > 0 ? this.vertices[this.vertices.length - 1] : null;
+      let shouldReset = false;
+      if (lastVertex && this.vehicle && this.vehicle.deviceTimestamp) {
+        const lastTimestamp = new Date(this.vehicle.deviceTimestamp);
+        // Compare the local date parts (year, month, day)
+        if (
+          newTimestamp.getFullYear() !== lastTimestamp.getFullYear() ||
+          newTimestamp.getMonth() !== lastTimestamp.getMonth() ||
+          newTimestamp.getDate() !== lastTimestamp.getDate()
+        ) {
+          shouldReset = true;
+        }
+      }
+      if (shouldReset) {
+        // Clear all markers and vertices
+        this.vertices = [];
+        this.markerOptions = {};
+      }
+      console.log(`Vehicle Make is: ${data.vehicleSummary.make}`);
+      console.log(`Vehicle Model is: ${data.vehicleSummary.model}`);
+      console.log(`Vehicle Year is: ${data.vehicleSummary.modelYear}`);
 
       this.name = data.vehicleSummary.name;
       this.speed = formatNumber(data.vehicleSummary.speed, this.currentLocale, "1.0-0");

@@ -21,6 +21,7 @@ import { fadeInOut } from '../services/animations';
 import { Utilities } from '../services/utilities';
 import {PageHeaderComponent} from "../shared/page-header/page-header.component";
 import {CoordinateSyncfusionModule} from "../modules/syncfusion.module";
+import {AccordionAllModule} from "@syncfusion/ej2-angular-navigations";
 
 @Component({
   selector: 'app-settings',
@@ -42,7 +43,8 @@ import {CoordinateSyncfusionModule} from "../modules/syncfusion.module";
     UserEditorComponent,
     UserPreferencesComponent,
     PageHeaderComponent,
-    CoordinateSyncfusionModule
+    CoordinateSyncfusionModule,
+    AccordionAllModule
   ]
 })
 export class SettingsComponent implements OnInit, OnDestroy, AfterViewInit {

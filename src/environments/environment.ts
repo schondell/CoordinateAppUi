@@ -4,11 +4,11 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://192.168.1.230:8880', // Matching the backend's HTTPS port in launchSettings.json
+  baseUrl: 'http://localhost:8880', // Matching the backend's HTTPS port in launchSettings.json
   loginUrl: '/login',
   googleClientId: null,
   facebookClientId: null,
-  tokenUrl: 'http://192.168.1.230:8880', // Base URL without /connect/token - this is added in the endpoint factory
+  tokenUrl: 'http://localhost:8880', // Base URL without /connect/token - this is added in the endpoint factory
   microsoftClientId: null
 };
 

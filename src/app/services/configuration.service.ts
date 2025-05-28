@@ -107,7 +107,7 @@ export class ConfigurationService {
   public googleClientId = environment.googleClientId;
   public facebookClientId = environment.facebookClientId;
   public microsoftClientId = environment.microsoftClientId;
-  public fallbackBaseUrl = 'https://coordinatewebapp.azurewebsites.net/';
+  public fallbackBaseUrl = 'https://orange-desert-087274d03.6.azurestaticapps.net/';
   // ***End of defaults***
 
   private _language: string = null;

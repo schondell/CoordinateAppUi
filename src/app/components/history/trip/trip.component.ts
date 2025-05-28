@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IVehicleTripLogFullDto } from 'src/app/models/generatedtypes';
 import { DialogComponent, DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import {DisplayTripFormComponent} from "../../controls/display-trip-form/display-trip-form.component";
+import {AccordionModule} from "@syncfusion/ej2-angular-navigations";
 
 @Component({
   selector: 'app-trip',
@@ -13,7 +15,9 @@ import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
   imports: [
     CommonModule,
     DialogModule,
-    ButtonModule
+    ButtonModule,
+    DisplayTripFormComponent,
+    AccordionModule
   ]
 })
 export class TripComponent implements OnInit {

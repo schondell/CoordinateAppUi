@@ -1,15 +1,26 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, SimpleChanges, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule, DatePipe, DecimalPipe, NgIf } from '@angular/common';
 import { IVehicleTripLogFullDto, VehicleTripLogFullDto } from 'src/app/models/generatedtypes';
 import { IRouteResponse } from 'src/app/models/IRouteInput';
-import { GoogleMap } from "@angular/google-maps";
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
+import { GoogleMap,  GoogleMapsModule } from "@angular/google-maps";
+import { DialogComponent, DialogModule } from '@syncfusion/ej2-angular-popups';
 import { Subscription } from "rxjs";
 import { DisplayTripFormService } from "./display-trip-form-service";
 
 @Component({
-  selector: 'app-display-trip-form',
-  templateUrl: './display-trip-form.component.html',
-  styleUrls: ['./display-trip-form.component.scss']
+    selector: 'app-display-trip-form',
+    templateUrl: './display-trip-form.component.html',
+    styleUrls: ['./display-trip-form.component.scss'],
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [
+      CommonModule,
+      DatePipe,
+      DecimalPipe,
+      GoogleMapsModule,
+      DialogModule,
+      NgIf
+    ]
 })
 export class DisplayTripFormComponent implements OnInit, OnDestroy, OnChanges {
   private closeSubscription: Subscription;
