@@ -45,6 +45,9 @@
 		"StatisticsTitle": "Quelques trucs importants"
 	},
 	"mainMenu": {
+		"Navigation": "Navigation",
+		"Management": "Gestion",
+		"System": "Système",
 		"About": "À Propos",
 		"Account": "Compte",
 		"Admin": "Admin",
@@ -89,7 +92,7 @@
 		"AllWorkitems": "Tous les éléments de travail",
 		"MapOverview": "Aperçu de la carte",
 		"OptimizeRouteBtn": "Optimiser l'itinéraire",
-		"RoutePlanning": "Planification d’itinéraire"
+		"RoutePlanning": "Planification d'itinéraire"
 	},
 	"pageHeader": {
 		"About": "À Propos",
@@ -243,7 +246,7 @@
 			"EmailRequired": "L'adresse e-mail est obligatoire (200 caractères maximum)",
 			"Enabled": "Active",
 			"FullName": " Nom complet",
-			"InvalidEmail": "L’adresse e-mail spécifiée n’est pas valide",
+			"InvalidEmail": "L'adresse e-mail spécifiée n'est pas valide",
 			"JobTitle": "Titre du poste",
 			"NewPassword": "Nouveau mot de passe",
 			"NewPasswordRequired": "Un nouveau mot de passe est requis",
@@ -276,3 +279,4 @@
 		}
 	}
 }
+

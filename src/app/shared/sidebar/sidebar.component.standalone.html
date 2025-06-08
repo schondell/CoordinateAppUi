@@ -7,18 +7,78 @@
              [target]="target" 
              [isOpen]="isOpen" 
              type="Auto">
-  <div class="main-menu">
-    <div>
-      <ejs-menu [items]="menuItems" orientation='Vertical' cssClass='dock-menu'>
-        <ng-template #template let-item>
-          <a [routerLink]="item.url" 
-             [title]="isSidebarCollapsed ? (item.text | translate) : ''"
-             [class.active]="isActive(item.url)">
-            <span class="e-menu-icon {{ item.iconCss }}"></span>
-            <span class="e-menu-text">{{ item.text | translate }}</span>
-          </a>
-        </ng-template>
-      </ejs-menu>
+             
+  <!-- User profile section -->
+  <div class="user-profile">
+    <div class="user-avatar">
+      <span>{{ userInitials }}</span>
     </div>
+    <div class="user-info">
+      <div class="user-name">{{ userName }}</div>
+      <div class="user-role">{{ userRole }}</div>
+    </div>
+  </div>
+  
+  <div class="main-menu">
+    <!-- Navigation section header -->
+    <div class="menu-section" *ngIf="!isSidebarCollapsed">{{ 'mainMenu.Navigation' | translate }}</div>
+    <!-- Hardcoded menu items -->
+    <ul class="menu-list">
+      <li>
+        <a routerLink="/" [class.active]="isActive('/')">
+          <span class="e-menu-icon e-icons e-home"></span>
+          <span class="e-menu-text">{{ 'mainMenu.Home' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/job-overview" [class.active]="isActive('/job-overview')">
+          <span class="e-menu-icon e-icons e-dashboard"></span>
+          <span class="e-menu-text">{{ 'mainMenu.OverView' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/journal" [class.active]="isActive('/journal')">
+          <span class="e-menu-icon e-icons e-book"></span>
+          <span class="e-menu-text">{{ 'mainMenu.DrivingJournal' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/history" [class.active]="isActive('/history')">
+          <span class="e-menu-icon e-icons e-history"></span>
+          <span class="e-menu-text">{{ 'mainMenu.History' | translate }}</span>
+        </a>
+      </li>
+
+      <!-- Management section header -->
+      <div class="menu-section" *ngIf="!isSidebarCollapsed">{{ 'mainMenu.Management' | translate }}</div>
+
+      <li>
+        <a routerLink="/vehicle" [class.active]="isActive('/vehicle')">
+          <span class="e-menu-icon e-icons e-menu"></span>
+          <span class="e-menu-text">{{ 'mainMenu.Vehicles' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin" [class.active]="isActive('/admin')">
+          <span class="e-menu-icon e-icons e-admin"></span>
+          <span class="e-menu-text">Admin</span>
+        </a>
+      </li>
+
+      <!-- System section header -->
+      <div class="menu-section" *ngIf="!isSidebarCollapsed">{{ 'mainMenu.System' | translate }}</div>
+      <li>
+        <a routerLink="/settings" [class.active]="isActive('/settings')">
+          <span class="e-menu-icon e-icons e-settings"></span>
+          <span class="e-menu-text">{{ 'mainMenu.Settings' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/about" [class.active]="isActive('/about')">
+          <span class="e-menu-icon e-icons e-info"></span>
+          <span class="e-menu-text">{{ 'mainMenu.About' | translate }}</span>
+        </a>
+      </li>
+    </ul>
   </div>
 </ejs-sidebar>

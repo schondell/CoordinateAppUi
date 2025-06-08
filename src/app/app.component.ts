@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-// Import all Syncfusion components needed
+// Import Syncfusion components
 import {
   MenuItemModel,
-  SidebarComponent,
-  TreeViewComponent,
-  ClickEventArgs
+  ClickEventArgs,
+  SidebarComponent
 } from '@syncfusion/ej2-angular-navigations';
 
 // Import from our consolidated modules
@@ -19,7 +18,6 @@ import { AuthService } from './services/auth.service';
 import { ItemModel } from '@syncfusion/ej2-angular-splitbuttons';
 import { Router } from '@angular/router';
 import { DomSanitizer } from "@angular/platform-browser";
-import { VehicleSummary } from "./models/vehicle-summary";
 import { SignalrService } from "./signalr.service";
 import { MediaMatcher } from "@angular/cdk/layout";
 import { LocalStoreManager } from "./services/local-store-manager.service";
@@ -29,19 +27,8 @@ import { AlertCommand, AlertService, MessageSeverity } from "./services/alert.se
 import { Permission } from "./models/permission.model";
 import { AccountService } from "./services/account.service";
 import { AppDialogComponent } from "./shared/app-dialog/app-dialog.component";
-import { LoginDialogComponent } from "./components/login/login-dialog.component";
-import { NotificationService } from "./services/notification.service";
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
 import { FooterComponent } from './shared/footer/footer.component';
-import { SidebarStandaloneComponent } from './shared/sidebar/sidebar.component.standalone';
-
-interface NodeItem {
-  nodeId: string;
-  nodeText: string;
-  nodeRoute?: string;
-  iconCss: string;
-  nodeChild?: NodeItem[];
-}
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -59,33 +46,28 @@ interface NodeItem {
     
     // App components
     AppDialogComponent,
-    FooterComponent,
-    SidebarStandaloneComponent
+    FooterComponent
   ]
 })
 
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('appDialog')
   public appDialog!: AppDialogComponent;
-  @ViewChild('sidebarTreeviewInstance')
-  public sidebarTreeviewInstance?: SidebarComponent;
-  @ViewChild('treeviewInstance')
-  public treeviewInstance?: TreeViewComponent;
-  public width: string = '290px';
-  public enableDock: boolean = true;
-  public dockSize:string ="44px";
-  public mediaQuery: string = ('(min-width: 600px)');
-  public target: string = '.main-content';
+  @ViewChild('sidebar')
+  public sidebar!: SidebarComponent;
 
-  @ViewChild('sidebarMenuInstance')
-  public sidebarMenuInstance!: SidebarStandaloneComponent;
+  // Simple sidebar toggle state
+  public sidebarCollapsed = false;
+
+  // User information for sidebar
+  userDisplayName: string = '';
+  userRole: string = 'User';
 
   private readonly _mobileQueryListener: () => void;
   isUserLoggedIn: boolean;
   isAdminExpanded = false;
   newNotificationCount = 0;
   appTitle = 'Coordinate';
-
   mobileQuery: MediaQueryList;
   stickyToasties: number[] = [];
 
@@ -99,15 +81,14 @@ export class AppComponent implements OnInit, OnDestroy {
               private appTitleService: AppTitleService,
               private authService: AuthService,
               private accountService: AccountService,
-              private notificationService: NotificationService,
               private domSanitizer: DomSanitizer,
-              private router: Router,
+              public router: Router,
               public signalRService: SignalrService,
               private alertService: AlertService,
+              private notificationService: NotificationService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher)  {
     translate.setDefaultLang('fr');
-    //this.matIconRegistry.addSvgIconSet(this.domSanitizer.bypassSecurityTrustResourceUrl('./assets/custom-icons.svg'));
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     // tslint:disable-next-line:deprecation
@@ -128,7 +109,17 @@ export class AppComponent implements OnInit, OnDestroy {
       this.signalRService.startConnection(this.authService.accessToken);
     }
     
-    // SignalR event handlers are now set up in the SignalR service itself
+    // Update user display name and role if user is logged in
+    if (this.authService.currentUser) {
+      this.userDisplayName = this.authService.currentUser.userName;
+      this.userRole = this.authService.currentUser.roles.length > 0 ?
+                      this.authService.currentUser.roles[0] : 'User';
+    }
+  }
+
+  // Simple sidebar toggle
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   items: ItemModel[] = [
@@ -149,20 +140,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   ];
 
-  login(): void {
-    // Handle login logic
-  }
-
-  profileSettings(): void {
-    // Handle profile settings logic
-  }
-
   menuSelect(event: any): void {
     const selectedItem = event.item.text;
 
     switch (selectedItem) {
-      case 'Profile Settings':
-        this.profileSettings();
+      case 'Profile':
+        this.router.navigate(['/profile']);
+        break;
+      case 'Settings':
+        this.router.navigate(['/settings']);
         break;
       case 'Logout':
         this.logout();
@@ -172,8 +158,16 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  login(): void {
+    // Handle login logic
+  }
 
-  public menuItems: MenuItemModel[] = [
+  profileSettings(): void {
+    // Handle profile settings logic
+  }
+
+  // Make sure the menuItems are properly defined as an array of objects with the expected structure
+  public menuItems = [
     {
       text: 'mainMenu.Home',
       iconCss: 'e-icons e-home',
@@ -243,69 +237,27 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   ];
 
-  public isSidebarCollapsed = false;
-
   toolbarClicked(args: ClickEventArgs) {
-    if (args.item.tooltipText == "Menu") {
-      this.sidebarMenuInstance.toggle();
-      this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    if (args.item.tooltipText === "Menu") {
+      this.toggleSidebar();
     }
   }
-  
   onSidebarCollapsedChange(collapsed: boolean) {
-    this.isSidebarCollapsed = collapsed;
+    this.sidebarCollapsed = collapsed;
   }
 
-  // public field:object ={ dataSource: this.data, id: 'nodeId', text: 'nodeText', child: 'nodeChild', iconCss: 'iconCss' };
-  //
-  // public onCreated(args: any) {
-  //   (this.sidebarTreeviewInstance as SidebarComponent).element.style.visibility = '';
-  // }
-  public onClose(args: any) {
-    (this.treeviewInstance as TreeViewComponent).collapseAll();
-  }
-
-  // onNodeSelected(event: any) {
-  //   const nodeId = event.nodeData.id;
-  //   const node = this.findNodeById(this.data, nodeId);
-  //
-  //   if(node && node.nodeRoute) {
-  //     this.router.navigate([node.nodeRoute]);
-  //   }
-  // }
-
-  findNodeById(data: NodeItem[], nodeId: string): NodeItem | null {
-    for(const node of data) {
-      if(node.nodeId === nodeId) {
-        return node;
-      }
-
-      if(node.nodeChild) {
-        const found = this.findNodeById(node.nodeChild, nodeId);
-        if(found) {
-          return found;
-        }
-      }
-    }
-
-    return null;
-  }
-  openClick() {
-    if((this.sidebarTreeviewInstance as SidebarComponent).isOpen)
-    {
-      (this.sidebarTreeviewInstance as SidebarComponent).hide();
-      (this.treeviewInstance as TreeViewComponent).collapseAll();
-    }
-    else {
-      (this.sidebarTreeviewInstance as SidebarComponent).show();
-      // (this.treeviewInstance as TreeViewComponent).expandAll();
-    }
-  }
    dataLoadingConsecutiveFailures = 0;
    notificationsLoadingSubscription: any;
 
   ngOnInit() {
     this.isUserLoggedIn = this.authService.isLoggedIn;
+
+    // Update user display name if the user is logged in
+    if (this.authService.currentUser) {
+      this.userDisplayName = this.authService.currentUser.userName;
+      this.userRole = this.authService.currentUser.roles.length > 0 ?
+                      this.authService.currentUser.roles[0] : 'User';
+    }
 
     setTimeout(() => {
       if (this.isUserLoggedIn) {
@@ -326,16 +278,23 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.getLoginStatusEvent().subscribe(isLoggedIn => {
       this.isUserLoggedIn = isLoggedIn;
       if (this.isUserLoggedIn) {
-        this.initNotificationsLoading();
-        
+        // Update user display name
+        if (this.authService.currentUser) {
+          this.userDisplayName = this.authService.currentUser.userName;
+          this.userRole = this.authService.currentUser.roles.length > 0 ?
+                          this.authService.currentUser.roles[0] : 'User';
+        }
+
         // Start or restart the SignalR connection when user logs in
         if (this.authService.accessToken) {
           console.log('Restarting SignalR connection with new auth token');
           this.signalRService.startConnection(this.authService.accessToken);
         }
       } else {
-        this.unsubscribeNotifications();
-      }
+        // Clear user display name on logout
+        this.userDisplayName = '';
+        this.userRole = 'User';
+          }
 
       setTimeout(() => {
         if (!this.isUserLoggedIn) {
@@ -343,20 +302,11 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }, 500);
     });
-
-   // this.refreshAdminExpanderState(this.router.url);
-
-    // this.router.events.subscribe(event => {
-    //   if (event instanceof NavigationStart) {
-    //     this.refreshAdminExpanderState((event as NavigationStart).url);
-    //   }
-    // });
   }
 
   ngOnDestroy() {
     // tslint:disable-next-line:deprecation
     this.mobileQuery.removeListener(this._mobileQueryListener); // https://github.com/mdn/sprints/issues/858
-    this.unsubscribeNotifications();
   }
 
   mainNav = {
@@ -364,21 +314,13 @@ export class AppComponent implements OnInit, OnDestroy {
     toggle() {
       this.isOpen = !this.isOpen;
     }
-  };
+    };
 
   private unsubscribeNotifications() {
     if (this.notificationsLoadingSubscription) {
       this.notificationsLoadingSubscription.unsubscribe();
     }
   }
-
-  // private refreshAdminExpanderState(currentUrl: string) {
-  //   setTimeout(() => {
-  //     if (this.adminExpander && currentUrl.toLowerCase().indexOf('admin') > 0) {
-  //       this.adminExpander.open();
-  //     }
-  //   }, 200);
-  // }
 
   initNotificationsLoading() {
     this.notificationsLoadingSubscription = this.notificationService.getNewNotificationsPeriodically()
@@ -392,9 +334,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
           if (this.dataLoadingConsecutiveFailures++ < 20) {
             setTimeout(() => this.initNotificationsLoading(), 5000);
-          } else {
+    } else {
             this.alertService.showStickyMessage('Load Error', 'Loading new notifications from the server failed!', MessageSeverity.error);
-          }
+    }
         }
       });
   }
@@ -421,29 +363,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   showLoginDialog(): void {
     this.alertService.showStickyMessage('Session Expired', 'Your Session has expired. Please log in again', MessageSeverity.info);
-
-    // For now, navigate directly to login page
     this.router.navigateByUrl('/login');
-    
-    // TODO: Implement login dialog with Syncfusion components
-    // const dialogRef = this.syncfusionDialog.open(LoginDialogComponent, { minWidth: 300 });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.alertService.resetStickyMessage();
-    //   if (!result || this.authService.isSessionExpired) {
-    //     this.authService.logout();
-    //     this.router.navigateByUrl('/login');
-    //     this.alertService.showStickyMessage('Session Expired', 'Your Session has expired. Please log in again to renew your session', MessageSeverity.warn);
-    //   }
-    // });
   }
-//
-  showToast(alert: AlertCommand) {
 
+  showToast(alert: AlertCommand) {
     if (alert.operation === 'clear') {
       for (const id of this.stickyToasties.slice(0)) {
         this.toastaService.clear(id);
       }
-
       return;
     }
 
@@ -451,7 +378,6 @@ export class AppComponent implements OnInit, OnDestroy {
       title: alert.message.summary,
       msg: alert.message.detail,
     };
-
 
     if (alert.operation === 'add_sticky') {
       toastOptions.timeout = 0;
@@ -504,6 +430,7 @@ export class AppComponent implements OnInit, OnDestroy {
   get canViewCustomers() {
     return this.accountService.userHasPermission(Permission.viewUsersPermission);
   }
+
   get canViewHistory() {
     return this.accountService.userHasPermission(Permission.viewHistoryPermission);
   }
@@ -531,24 +458,5 @@ export class AppComponent implements OnInit, OnDestroy {
   get canViewRoles() {
     return this.accountService.userHasPermission(Permission.viewRolesPermission);
   }
-//
-//   openClick() {
-//     if((this.sidebarTreeviewInstance as SidebarComponent).isOpen)
-//     {
-//       (this.sidebarTreeviewInstance as SidebarComponent).hide();
-//       (this.treeviewInstance as TreeViewComponent).collapseAll();
-//     }
-//     else {
-//       (this.sidebarTreeviewInstance as SidebarComponent).show();
-//       // (this.treeviewInstance as TreeViewComponent).expandAll();
-//     }
-//   }
-//
-//
-//   onCreated($event: any) {
-//
-//   }
-// }
-
 }
 

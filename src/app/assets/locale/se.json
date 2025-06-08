@@ -45,6 +45,9 @@
 		"StatisticsTitle": "Some Important Stuff"
 	},
 	"mainMenu": {
+		"Navigation": "Navigering",
+		"Management": "Förvaltning",
+		"System": "System",
 		"About": "Om",
 		"Account": "Konto",
 		"Admin": "Administration",
@@ -276,3 +279,4 @@
 		}
 	}
 }
+

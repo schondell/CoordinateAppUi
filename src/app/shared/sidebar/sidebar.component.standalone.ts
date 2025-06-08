@@ -7,6 +7,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent as EjsSidebarComponent } from '@syncfusion/ej2-angular-navigations';
 import { SyncfusionModules } from '../syncfusion-standalone';
 
+interface MenuItem {
+  text: string;
+  iconCss: string;
+  url?: string;
+  items?: MenuItem[];
+}
+
 @Component({
   selector: 'app-sidebar-standalone',
   standalone: true,
@@ -30,62 +37,40 @@ export class SidebarStandaloneComponent implements OnInit {
   @Input() isSidebarCollapsed = false;
   @Output() collapsedChange = new EventEmitter<boolean>();
   
-  @Input() menuItems = [
-    {
-      text: 'mainMenu.Home',
-      iconCss: 'e-icons e-home',
-      url: '/'
-    },
-    {
-      text: 'mainMenu.OverView',
-      iconCss: 'e-icons e-dashboard',
-      url: '/job-overview'
-    },
-    {
-      text: 'mainMenu.DrivingJournal',
-      iconCss: 'e-icons e-book',
-      url: '/journal'
-    },
-    {
-      text: 'mainMenu.History',
-      iconCss: 'e-icons e-history',
-      url: '/history'
-    },
-    {
-      text: 'mainMenu.DataManagement',
-      iconCss: 'e-icons e-work',
-      url: '/data-management'
-    },
-    {
-      text: 'Settings',
-      iconCss: 'e-icons e-settings',
-      url: '/settings'
-    },
-    {
-      text: 'Admin',
-      iconCss: 'e-icons e-admin',
-      url: '/admin'
-    },
-    {
-      text: 'mainMenu.About',
-      iconCss: 'e-icons e-info',
-      url: '/about'
-    },
-    {
-      text: 'Logout',
-      iconCss: 'e-icons e-logout',
-      url: '/logout'
-    }
-  ];
-  
+  // User information
+  @Input() userName = 'John Doe';
+  @Input() userRole = 'Administrator';
+
+  // Menu items - we'll directly use these instead of categorizing
+  @Input() menuItems: MenuItem[] = [];
+
+  // For backward compatibility
+  navigationItems: MenuItem[] = [];
+  managementItems: MenuItem[] = [];
+  systemItems: MenuItem[] = [];
+
+  // Computed user initials for avatar
+  get userInitials(): string {
+    if (!this.userName) return '';
+    return this.userName
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .substr(0, 2)
+      .toUpperCase();
+  }
+
   activeMenuItem: string = '';
-  
+
   constructor(private router: Router) {}
-  
+
   ngOnInit() {
+    // Add diagnostic logging
+    console.log('Menu items received in sidebar component:', this.menuItems);
+
     // Set the active menu item based on the current route
     this.setActiveMenuItem(this.router.url);
-    
+
     // Update active menu item when route changes
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -93,27 +78,39 @@ export class SidebarStandaloneComponent implements OnInit {
       }
     });
   }
-  
+
   setActiveMenuItem(url: string) {
     // Find the matching menu item for the current URL
-    const foundItem = this.menuItems.find(item => 
-      url.startsWith(item.url) || 
-      (item.url === '/home' && url === '/')
-    );
-    
-    if (foundItem) {
+    if (!this.menuItems || this.menuItems.length === 0) return;
+    const findMatchingItem = (items: MenuItem[]): MenuItem | undefined => {
+      for (const item of items) {
+        if (item.url && url.startsWith(item.url)) {
+          return item;
+        }
+        if (item.items && item.items.length > 0) {
+          const match = findMatchingItem(item.items);
+          if (match) return match;
+        }
+      }
+      return undefined;
+    };
+
+    const foundItem = findMatchingItem(this.menuItems);
+
+    if (foundItem && foundItem.url) {
       this.activeMenuItem = foundItem.url;
-    }
+}
   }
-  
+
   toggle() {
     this.sidebarMenuInstance.toggle();
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
     this.collapsedChange.emit(this.isSidebarCollapsed);
   }
-  
+
   // Check if a menu item is active
   isActive(url: string): boolean {
-    return this.activeMenuItem === url;
+    if (!url) return false;
+    return this.router.url.startsWith(url);
   }
 }

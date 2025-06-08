@@ -68,6 +68,9 @@
     "StatisticsTitle": "Some important figures"
   },
   "mainMenu": {
+    "Navigation": "Navigation",
+    "Management": "Management",
+    "System": "System",
     "DrivingJournal": "Driving Journal",
     "DataManagement": "Data Management",
     "GpsTrackers": "Gps Trackers",
@@ -326,3 +329,4 @@
     }
   }
 }
+

@@ -45,6 +45,9 @@
 		"StatisticsTitle": "Irgendwas ganz Wichtiges"
 	},
 	"mainMenu": {
+		"Navigation": "Navigation",
+		"Management": "Verwaltung",
+		"System": "System",
 		"About": "Über",
 		"Account": "Konto",
 		"Admin": "Administrator",
@@ -276,3 +279,4 @@
 		}
 	}
 }
+

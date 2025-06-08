@@ -43,6 +43,7 @@ export class SignalrService {
       this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(this.configurations.baseUrl + '/hubs/geoCoordHub', {
           accessTokenFactory: () => token,
+          withCredentials: false
         })
         .withAutomaticReconnect([0, 2000, 5000, 10000, 15000, 30000]) // Reconnect with increasing delays
         .build();
