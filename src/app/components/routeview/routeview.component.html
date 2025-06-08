@@ -5,6 +5,12 @@
   [center]="center"
   [options]="options"
 >
+  <!-- Show the first dynamic path directly for debugging -->
+  <map-polyline
+    *ngIf="vehiclePathsArray.length > 0"
+    [path]="vehiclePathsArray[0]"
+    [options]="{ strokeColor: '#0000FF', strokeOpacity: 1.0, strokeWeight: 3 }">
+  </map-polyline>
   <!-- Draw a polyline for each vehicle's path -->
   <map-polyline *ngFor="let path of vehiclePathsArray"
     [path]="path"
