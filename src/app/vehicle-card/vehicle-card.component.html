@@ -9,7 +9,7 @@
           <div class="map-container " >
             <google-map [center]="center" [zoom]="zoom" [options]="mapOptions" height="180px"  width="100%">
               <map-marker *ngIf="markerOptions && markerOptions.position" [options]="markerOptions" class="custom-map"></map-marker>
-              <map-polyline [path]="vertices"></map-polyline>
+              <map-polyline [path]="vertices" [options]="polylineOptions"></map-polyline>
             </google-map>
           </div>
           <div id="card_revealed">

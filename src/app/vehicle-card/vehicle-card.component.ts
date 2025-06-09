@@ -56,6 +56,11 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
   center: google.maps.LatLngLiteral;
   markerOptions: google.maps.MarkerOptions = {};
   vertices: google.maps.LatLngLiteral[]  = [];
+  polylineOptions: google.maps.PolylineOptions = {
+    strokeColor: '#4285F4',
+    strokeOpacity: 1.0,
+    strokeWeight: 3
+  };
 
   ngOnInit(): void {
     if (this.vehicle) {
@@ -110,14 +115,12 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
         lng: data.vehicleSummary.longitude,
       };
 
-      if (this.markerOptions.position instanceof google.maps.LatLng) {
-        this.vertices = [...this.vertices, {
-          lat: this.markerOptions.position.lat(),
-          lng: this.markerOptions.position.lng(),
-        }];
-      } else {
-        this.vertices = [...this.vertices, this.markerOptions.position];
-      }
+      // Add the new position to vertices array for polyline
+      const newVertex = {
+        lat: data.vehicleSummary.latitude,
+        lng: data.vehicleSummary.longitude
+      };
+      this.vertices = [...this.vertices, newVertex];
 
       this.status = "Idling";
       if (data.vehicleSummary.speed > 1)

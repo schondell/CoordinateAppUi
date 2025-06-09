@@ -45,6 +45,9 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Instead of a Map, use an array of arrays for vehicle paths
   verticesArray: google.maps.LatLngLiteral[][] = [];
+  
+  // Track vehicle paths that have at least 2 points for polyline rendering
+  vehiclePaths: google.maps.LatLngLiteral[][] = [];
 
   vehicleMarkers: Map<number, google.maps.MarkerOptions> = new Map();
   vehicleLastTimestamps: Map<number, string> = new Map();
@@ -64,7 +67,8 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
       next: vehicleSummaries => {
         // Initialize an empty array for each vehicle
         this.verticesArray = vehicleSummaries.map(() => []);
-        this._vehicleIdList = vehicleSummaries.map(v => v.vehicleId); // Ensure mapping is set
+        this.vehiclePaths = []; // Reset vehicle paths
+        this.vehicleIdList = vehicleSummaries.map(v => v.vehicleId); // Ensure mapping is set
         vehicleSummaries.forEach((summary, idx) => {
           const marker: google.maps.MarkerOptions = {
             position: {
@@ -74,7 +78,16 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
             title: summary.name
           };
           this.markers.push(marker);
+          
+          // Initialize with the current position as first point in path
+          if (summary.latitude && summary.longitude) {
+            this.verticesArray[idx].push({
+              lat: summary.latitude,
+              lng: summary.longitude
+            });
+          }
         });
+        
       },
       error: err => {
         console.error('Error while getting vehicle summaries:', err);
@@ -104,39 +117,54 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   private updateVehiclePath(data: { vehicleId: number; vehicleSummary: VehicleSummary }) {
     const vehicleIndex = this.getVehicleIndexById(data.vehicleId);
     if (vehicleIndex === -1) {
-      console.warn('Vehicle index not found for vehicleId', data.vehicleId, this._vehicleIdList);
+      console.warn('Vehicle index not found for vehicleId', data.vehicleId, this.vehicleIdList);
       return;
     }
     const summary = data.vehicleSummary;
-    // Add the new position to the path
-    this.verticesArray[vehicleIndex].push({ lat: summary.latitude, lng: summary.longitude });
+    
+    // Create new position object
+    const newPosition = { lat: summary.latitude, lng: summary.longitude };
+    
+    // Create a new array for this vehicle's path to ensure reference change
+    const currentPath = [...this.verticesArray[vehicleIndex]];
+    currentPath.push(newPosition);
+    
+    // Update the vertices array with a completely new array structure
+    const newVerticesArray = [...this.verticesArray];
+    newVerticesArray[vehicleIndex] = currentPath;
+    this.verticesArray = newVerticesArray;
+    
+    // Update the vehicle paths for polyline rendering (only paths with 2+ points)
+    this.updateVehiclePaths();
+    
     // Update marker for this vehicle
-    this.markers[vehicleIndex] = {
-      position: { lat: summary.latitude, lng: summary.longitude },
+    const newMarkers = [...this.markers];
+    newMarkers[vehicleIndex] = {
+      position: newPosition,
       title: summary.name
     };
-    // Debug: log the updated path and marker
-    console.log('Updated path for vehicle', data.vehicleId, this.verticesArray[vehicleIndex]);
-    console.log('Updated marker for vehicle', data.vehicleId, this.markers[vehicleIndex]);
-    // Force update of the reference for Angular change detection
-    this.verticesArray = [...this.verticesArray];
-    this.markers = [...this.markers];
-    this.cd.detectChanges();
+    this.markers = newMarkers;
+    
+    // Minimal change detection
+    this.cd.markForCheck();
+  }
+  
+  // Update the vehicle paths array for polyline rendering
+  private updateVehiclePaths() {
+    // Only update if there are meaningful changes
+    const newPaths = this.verticesArray.filter(path => path.length >= 2);
+    if (newPaths.length !== this.vehiclePaths.length || 
+        newPaths.some((path, index) => path.length !== this.vehiclePaths[index]?.length)) {
+      this.vehiclePaths = newPaths.map(path => [...path]);
+    }
   }
 
   // Helper to get the index of a vehicle by its ID
   private getVehicleIndexById(vehicleId: number): number {
-    // Use the cached _vehicleIdList directly
-    return this._vehicleIdList.indexOf(vehicleId);
+    // Use the cached vehicleIdList directly
+    return this.vehicleIdList.indexOf(vehicleId);
   }
-  private _vehicleIdList: number[] = [];
-
-  get verticesArrayFiltered(): google.maps.LatLngLiteral[][] {
-    // Only return paths with at least 2 points
-    const filtered = this.verticesArray.filter(path => path.length > 1);
-    console.log('verticesArrayFiltered:', filtered.map((p, i) => ({ index: i, length: p.length, path: p })));
-    return filtered;
-  }
+  public vehicleIdList: number[] = [];
 
   get vehicleMarkersArray(): google.maps.MarkerOptions[] {
     // Fallback: If vehicleMarkers is empty, use initial markers
@@ -146,10 +174,30 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.markers;
   }
 
-  // Fix: Provide the correct property for the template
-  get vehiclePathsArray(): google.maps.LatLngLiteral[][] {
-    return this.verticesArrayFiltered;
+  // Method to get different colors for different vehicles
+  getVehicleColor(index: number): string {
+    const colors = [
+      '#4285F4', // Blue
+      '#EA4335', // Red  
+      '#FBBC04', // Yellow
+      '#34A853', // Green
+      '#FF6D01', // Orange
+      '#9C27B0', // Purple
+      '#00BCD4', // Cyan
+      '#795548'  // Brown
+    ];
+    return colors[index % colors.length];
   }
+
+  // Method to get polyline options for a vehicle
+  getPolylineOptions(index: number): google.maps.PolylineOptions {
+    return {
+      strokeColor: this.getVehicleColor(index),
+      strokeOpacity: 1.0,
+      strokeWeight: 4
+    };
+  }
+
 
   ngOnDestroy() {
     if (this.vehicleComponentsSubscription) {

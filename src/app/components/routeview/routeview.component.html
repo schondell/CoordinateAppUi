@@ -5,22 +5,38 @@
   [center]="center"
   [options]="options"
 >
-  <!-- Show the first dynamic path directly for debugging -->
-  <map-polyline
-    *ngIf="vehiclePathsArray.length > 0"
-    [path]="vehiclePathsArray[0]"
-    [options]="{ strokeColor: '#0000FF', strokeOpacity: 1.0, strokeWeight: 3 }">
-  </map-polyline>
-  <!-- Draw a polyline for each vehicle's path -->
-  <map-polyline *ngFor="let path of vehiclePathsArray"
+  <!-- Draw a polyline for each vehicle's path with different colors -->
+  <map-polyline *ngFor="let path of vehiclePaths; let i = index"
     [path]="path"
-    [options]="{ strokeColor: '#4285F4', strokeOpacity: 1.0, strokeWeight: 3 }">
+    [options]="getPolylineOptions(i)">
   </map-polyline>
   <!-- Draw a marker for each vehicle at its latest position -->
   <map-marker *ngFor="let marker of vehicleMarkersArray" [options]="marker"></map-marker>
 </google-map>
 
-<div class=>
+
+<!-- Debug information and controls (temporarily removed for build) -->
+<!-- 
+<div class="debug-info" style="margin: 10px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;">
+  <h4>Debug Information</h4>
+  <p>Total Vehicles: {{ vehicleIdList.length }}</p>
+  <p>Vehicle Paths Count: {{ vehiclePaths.length }}</p>
+  <p>Paths with 2+ points: {{ getValidPathsCount() }}</p>
+  <button (click)="forcePolylineUpdate()" class="btn btn-primary">Force Update Polylines</button>
+  
+  <div *ngFor="let path of vehiclePaths; let i = index" style="margin: 5px 0;">
+    <span style="color: {{ getVehicleColor(i) }}; font-weight: bold;">
+      Vehicle {{i}}: {{path.length}} points
+    </span>
+    <span *ngIf="path.length >= 2" style="margin-left: 10px;">
+      From: ({{path[0].lat | number:'1.4-4'}}, {{path[0].lng | number:'1.4-4'}}) 
+      To: ({{path[path.length-1].lat | number:'1.4-4'}}, {{path[path.length-1].lng | number:'1.4-4'}})
+    </span>
+  </div>
+</div>
+-->
+
+<div class="vehicle-cards-container">
   <div class="col-lg-12 control-section card-control-section tile_layout">
     <div class="e-card-layout">
       <div *ngIf="(vehicleComponents$ | async)?.length === 0" class="e-error">
