@@ -58,7 +58,7 @@
           <span class="e-menu-text">{{ 'mainMenu.Vehicles' | translate }}</span>
         </a>
       </li>
-      <li>
+      <li *ngIf="canViewAdminMenu()">
         <a routerLink="/admin" [class.active]="isActive('/admin')">
           <span class="e-menu-icon e-icons e-admin"></span>
           <span class="e-menu-text">Admin</span>

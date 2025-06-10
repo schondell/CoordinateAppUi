@@ -1,43 +1,66 @@
-import { Component, ViewChild, Inject, AfterViewInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ViewChild, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AccountService } from '../../services/account.service';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
-
-import {SharedModule} from "../../shared.module";
-import {RoleEditorComponent} from "../../role-editor.component";
+import { RoleEditorComponent } from '../role-editor/role-editor.component';
 
 @Component({
-    selector: 'app-edit-user-dialog',
+    selector: 'app-edit-role-dialog',
     templateUrl: 'edit-role-dialog.component.html',
+    styleUrls: ['edit-role-dialog.component.scss'],
+    standalone: true,
     imports: [
-        SharedModule,
+        CommonModule,
+        DialogModule,
+        ButtonModule,
+        TranslateModule,
         RoleEditorComponent
-    ],
-    styleUrls: ['edit-role-dialog.component.scss']
+    ]
 })
 export class EditRoleDialogComponent implements AfterViewInit {
   @ViewChild(RoleEditorComponent, { static: true })
   roleEditor: RoleEditorComponent;
 
+  @Input() role: Role | null = null;
+  @Input() allPermissions: Permission[] = [];
+  @Input() visible: boolean = false;
+  @Output() roleSaved = new EventEmitter<Role>();
+  @Output() dialogClosed = new EventEmitter<void>();
+
   get roleName(): any {
-    return this.data.role ? { name: this.data.role.name } : null;
+    return this.role ? { name: this.role.name } : null;
   }
 
-  constructor(
-    public dialogRef: MatDialogRef<RoleEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { role: Role, allPermissions: Permission[] },
-    private accountService: AccountService
-  ) {
+  constructor(private accountService: AccountService) {
   }
 
   ngAfterViewInit() {
-    this.roleEditor.roleSaved$.subscribe(role => this.dialogRef.close(role));
+    if (this.roleEditor) {
+      this.roleEditor.roleSaved$.subscribe(role => {
+        this.roleSaved.emit(role);
+        this.close();
+      });
+    }
+  }
+
+  close(): void {
+    this.visible = false;
+    this.dialogClosed.emit();
+  }
+
+  saveRole(): void {
+    if (this.roleEditor) {
+      this.roleEditor.save();
+    }
   }
 
   cancel(): void {
-    this.dialogRef.close(null);
+    this.close();
   }
 
   get canManageRoles() {

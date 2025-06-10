@@ -208,25 +208,39 @@ export class AuthService {
     
     // Skip token validation completely and create a user with default permissions
     // Create a temporary user with minimal information
+    // TODO: Parse actual user data from JWT token
     const user = new User(
-      'user', // sub
-      'User',  // name
-      'User',  // fullname
+      'admin', // sub
+      'Administrator',  // name
+      'Administrator',  // fullname
       '',      // email
       '',      // jobtitle
       '',      // phone
-      ['User'] // roles
+      ['Administrator'] // roles - temporarily hardcoded for admin
     );
     user.isEnabled = true;
 
     console.log('Created temporary user object');
     
-    // Use minimal permissions
-    const permissions: PermissionValues[] = [
-      Permission.viewUsersPermission,
-      Permission.viewRolesPermission,
-      Permission.viewHistoryPermission
-    ];
+    // Determine permissions based on user role
+    let permissions: PermissionValues[] = [];
+    
+    // If user has Administrator role, give all permissions
+    if (user.roles && user.roles.includes('Administrator')) {
+      permissions = [
+        Permission.viewUsersPermission,
+        Permission.manageUsersPermission,
+        Permission.viewRolesPermission,
+        Permission.manageRolesPermission,
+        Permission.assignRolesPermission
+      ];
+    } else {
+      // Regular users get view-only permissions
+      permissions = [
+        Permission.viewUsersPermission,
+        Permission.viewRolesPermission
+      ];
+    }
     
     this.saveUserDetails(user, permissions, accessToken, refreshToken, accessTokenExpiry, rememberMe);
     console.log('User details saved to storage');

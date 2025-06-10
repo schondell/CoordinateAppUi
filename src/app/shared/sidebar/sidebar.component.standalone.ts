@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 // Syncfusion components
 import { SidebarComponent as EjsSidebarComponent } from '@syncfusion/ej2-angular-navigations';
 import { SyncfusionModules } from '../syncfusion-standalone';
+import { AdminGuard } from '../../services/admin-guard.service';
 
 interface MenuItem {
   text: string;
@@ -62,12 +63,9 @@ export class SidebarStandaloneComponent implements OnInit {
 
   activeMenuItem: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private adminGuard: AdminGuard) {}
 
   ngOnInit() {
-    // Add diagnostic logging
-    console.log('Menu items received in sidebar component:', this.menuItems);
-
     // Set the active menu item based on the current route
     this.setActiveMenuItem(this.router.url);
 
@@ -112,5 +110,10 @@ export class SidebarStandaloneComponent implements OnInit {
   isActive(url: string): boolean {
     if (!url) return false;
     return this.router.url.startsWith(url);
+  }
+
+  // Check if user can view admin menu
+  canViewAdminMenu(): boolean {
+    return this.adminGuard.canViewAdminMenu();
   }
 }

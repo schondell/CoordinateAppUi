@@ -1,0 +1,151 @@
+<div class="machine-account-list-container">
+  <div class="page-header">
+    <h2>Machine Accounts</h2>
+    <p class="page-description">Manage machine-to-machine authentication accounts for automated services and applications.</p>
+  </div>
+
+  <div class="grid-container">
+    <ejs-grid 
+      #grid 
+      [dataSource]="data" 
+      [allowPaging]="true" 
+      [allowSorting]="true" 
+      [allowFiltering]="true"
+      [allowGrouping]="true"
+      [pageSettings]="pageSettings"
+      [editSettings]="editSettings"
+      [toolbar]="toolbarOptions"
+      [filterSettings]="filterSettings"
+      [sortSettings]="sortSettings"
+      [height]="'600'"
+      (toolbarClick)="onToolbarClick($event)"
+      (commandClick)="onCommandClick($event)">
+      
+      <e-columns>
+        <e-column 
+          field="id" 
+          headerText="ID" 
+          width="0"
+          [visible]="false"
+          [isPrimaryKey]="true">
+        </e-column>
+        
+        <e-column 
+          field="machineName" 
+          headerText="Machine Name" 
+          width="200"
+          [allowSorting]="true"
+          [allowFiltering]="true">
+          <ng-template #template let-data>
+            <div class="machine-name-cell">
+              <span class="machine-icon">🤖</span>
+              <div class="machine-details">
+                <span class="machine-name">{{ data.machineName }}</span>
+                <small class="client-id">{{ data.clientId }}</small>
+              </div>
+            </div>
+          </ng-template>
+        </e-column>
+
+        <e-column 
+          field="machineDescription" 
+          headerText="Description" 
+          width="250"
+          [allowSorting]="true"
+          [allowFiltering]="true">
+        </e-column>
+
+        <e-column 
+          field="scopes" 
+          headerText="Scopes" 
+          width="200"
+          [allowSorting]="false"
+          [allowFiltering]="false">
+          <ng-template #template let-data>
+            <div class="scopes-cell">
+              <span class="scope-count">{{ data.scopes?.length || 0 }} scope(s)</span>
+              <div class="scope-tags">
+                <span 
+                  *ngFor="let scope of data.scopes?.slice(0, 2)" 
+                  class="scope-tag"
+                  [title]="scope">
+                  {{ scope.split(':')[0] }}
+                </span>
+                <span 
+                  *ngIf="data.scopes?.length > 2" 
+                  class="scope-tag more"
+                  [title]="'And ' + (data.scopes.length - 2) + ' more...'">
+                  +{{ data.scopes.length - 2 }}
+                </span>
+              </div>
+            </div>
+          </ng-template>
+        </e-column>
+
+        <e-column 
+          field="isActive" 
+          headerText="Status" 
+          width="120"
+          [allowSorting]="true"
+          [allowFiltering]="true">
+          <ng-template #template let-data>
+            <span class="status-badge" [ngClass]="getStatusClass(data)">
+              {{ data.displayStatus }}
+            </span>
+          </ng-template>
+        </e-column>
+
+        <e-column 
+          field="lastAccessTime" 
+          headerText="Last Access" 
+          width="180"
+          [allowSorting]="true"
+          [allowFiltering]="false">
+          <ng-template #template let-data>
+            <span [title]="data.lastAccessDisplayTime">
+              {{ data.lastAccessDisplayTime }}
+            </span>
+          </ng-template>
+        </e-column>
+
+        <e-column 
+          field="createdDate" 
+          headerText="Created" 
+          width="150"
+          [allowSorting]="true"
+          [allowFiltering]="false">
+          <ng-template #template let-data>
+            <span [title]="data.createdDate | date:'full'">
+              {{ data.createdDate | date:'shortDate' }}
+            </span>
+          </ng-template>
+        </e-column>
+
+        <e-column 
+          headerText="Actions" 
+          width="200"
+          [allowSorting]="false"
+          [allowFiltering]="false"
+          [commands]="commands">
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+
+  <!-- Machine Account Dialog -->
+  <app-machine-account-dialog
+    #machineAccountDialog
+    [visible]="showDialog"
+    [title]="dialogTitle"
+    [machineAccount]="editingMachineAccount"
+    (save)="onDialogSave($event)"
+    (cancel)="onDialogCancel()">
+  </app-machine-account-dialog>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="loading-overlay">
+    <div class="loading-spinner">
+      <span>Loading machine accounts...</span>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,6 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { SettingsStandaloneComponent } from './settings/settings.component.standalone';
 import { UserEditorStandaloneComponent } from './admin/user-editor/user-editor.component.standalone';
 import { RoleEditorStandaloneComponent } from './admin/role-editor/role-editor.component.standalone';
-import { UserListStandaloneComponent } from './admin/user-list/user-list.component.standalone';
 
 /**
  * This component is the new root component for our standalone-only application

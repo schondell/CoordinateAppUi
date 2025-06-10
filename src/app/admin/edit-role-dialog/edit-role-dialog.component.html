@@ -1,14 +1,21 @@
-<div class="e-dialog-header">
-  <div *ngIf="canManageRoles" class="e-dialog-title">{{roleName ? ('roles.management.EditRole' | translate:roleName) : ('roles.management.NewRole' | translate)}}</div>
-  <div *ngIf="!canManageRoles" class="e-dialog-title">{{'roles.management.RoleDetails' | translate:roleName}}</div>
-</div>
-<div class="e-dialog-content">
-  <app-role-editor #roleEditor [role]="data.role" [allPermissions]="data.allPermissions"></app-role-editor>
-</div>
-<div class="e-dialog-footer">
-  <div class="e-footer-buttons">
-    <button *ngIf="canManageRoles" ejs-button cssClass="e-primary" (click)="roleEditor.save();">Save</button>
-    <button *ngIf="canManageRoles" ejs-button cssClass="e-danger" (click)="cancel()">Cancel</button>
-    <button *ngIf="!canManageRoles" ejs-button (click)="cancel()">Close</button>
+<ejs-dialog [visible]="visible" width="600px" [isModal]="true" [showCloseIcon]="true">
+  <div class="dialog-content">
+    <h3 class="dialog-title">
+      <span *ngIf="canManageRoles">{{roleName ? ('roles.management.EditRole' | translate:roleName) : ('roles.management.NewRole' | translate)}}</span>
+      <span *ngIf="!canManageRoles">{{'roles.management.RoleDetails' | translate:roleName}}</span>
+    </h3>
+    <app-role-editor #roleEditor [role]="role" [allPermissions]="allPermissions"></app-role-editor>
+    
+    <div class="dialog-footer">
+      <button *ngIf="canManageRoles" ejs-button cssClass="e-primary" (click)="saveRole()">
+        <span class="e-icons e-save"></span>Save
+      </button>
+      <button *ngIf="canManageRoles" ejs-button cssClass="e-flat" (click)="cancel()">
+        Cancel
+      </button>
+      <button *ngIf="!canManageRoles" ejs-button cssClass="e-flat" (click)="cancel()">
+        Close
+      </button>
+    </div>
   </div>
-</div>
+</ejs-dialog>

@@ -1,22 +1,165 @@
+// User List Component Styles - Enhanced for better readability (Syncfusion Only)
+
 .search-box {
   flex-direction: column;
   box-sizing: border-box;
   display: flex;
+  margin-bottom: 20px;
+  
+  .e-input-group {
+    min-height: 48px; /* Increased height */
+    border-radius: 6px;
+    
+    .e-input {
+      font-size: 1.125rem !important; /* 18px - larger font */
+      line-height: 1.5;
+      padding: 12px 16px; /* Better padding */
+    }
+  }
 }
 
-.search-box .mat-mdc-form-field {
-  padding: 0 2em;
+.justify-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px; /* Better spacing */
 }
 
-.flex-grow15 {
-  flex: 1 1 100%;
-  box-sizing: border-box;
-  max-width: 15%;
+.e-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-.flex-170px {
-  flex: 1 1 170px;
-  box-sizing: border-box;
-  max-width: 170px;
-  min-width: 170px;
+.e-progress-container {
+  height: 6px;
+  
+  .loading-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #1976d2 0%, #42a5f5 50%, #1976d2 100%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// Syncfusion Grid Customizations for User List
+::ng-deep {
+  .user-list-container {
+    .e-grid {
+      font-size: 1.125rem !important; /* 18px base font - larger */
+      border: none;
+      
+      .e-gridheader {
+        background: #fafafa;
+        border-bottom: 2px solid #e0e0e0;
+        
+        .e-headercell {
+          font-weight: 600;
+          color: #333;
+          border-right: 1px solid #e0e0e0;
+          font-size: 1.125rem !important; /* 18px */
+          padding: 18px 16px !important; /* Increased padding */
+          min-height: 64px !important; /* Increased header height */
+          line-height: 1.4;
+        }
+      }
+      
+      .e-gridcontent {
+        .e-row {
+          min-height: 64px !important; /* Increased row height */
+          
+          &:hover {
+            background: #f8f9fa;
+          }
+          
+          .e-rowcell {
+            border-right: 1px solid #f0f0f0;
+            padding: 18px 16px !important; /* Increased padding */
+            font-size: 1.125rem !important; /* 18px */
+            line-height: 1.5;
+            color: #333;
+          }
+        }
+      }
+      
+      // Pagination styling
+      .e-pager {
+        min-height: 56px;
+        padding: 12px 16px;
+        
+        .e-pagercontainer {
+          font-size: 1rem; /* 16px */
+          
+          .e-parentmsgbar,
+          .e-pagerdropdown,
+          .e-pagesizes,
+          .e-mfirst,
+          .e-mprev,
+          .e-mnext,
+          .e-mlast {
+            font-size: 1rem !important; /* 16px */
+            min-height: 40px;
+          }
+        }
+      }
+    }
+    
+    // Enhanced button styling
+    .e-btn {
+      min-height: 44px !important; /* Increased button height */
+      font-size: 1rem !important; /* 16px */
+      font-weight: 500;
+      border-radius: 6px;
+      
+      &.e-round {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        
+        .e-icons {
+          font-size: 18px !important; /* Larger icons */
+        }
+      }
+      
+      &.e-primary {
+        padding: 10px 20px;
+        
+        .e-icons {
+          margin-right: 8px;
+          font-size: 16px;
+        }
+      }
+      
+      &.e-info {
+        color: #1976d2;
+        &:hover {
+          background: #e3f2fd;
+        }
+      }
+      
+      &.e-danger {
+        color: #d32f2f;
+        &:hover {
+          background: #ffebee;
+        }
+      }
+    }
+  }
+
+  // Global input group styling for this component
+  .user-list-container .e-input-group {
+    .e-input {
+      font-size: 1.125rem !important; /* 18px */
+      line-height: 1.5 !important;
+      padding: 12px 16px !important;
+    }
+  }
+  
+  .user-list-container .e-progressbar {
+    height: 6px;
+  }
 }

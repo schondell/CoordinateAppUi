@@ -2,12 +2,10 @@ import { Component, OnDestroy, ViewChild, Input, OnChanges, NgZone, CUSTOM_ELEME
 import { CommonModule } from '@angular/common';
 import { NgForm, FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { DropDownListModule, MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { CheckBoxModule, SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AccountService } from '../../services/account.service';
@@ -48,12 +46,12 @@ interface UserProfileForm {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
+    TextBoxModule,
+    DropDownListModule,
+    MultiSelectModule,
+    ButtonModule,
+    CheckBoxModule,
+    SwitchModule,
     TranslateModule
   ]
 })

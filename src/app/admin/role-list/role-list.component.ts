@@ -1,45 +1,57 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { DialogComponent } from '@syncfusion/ej2-angular-popups';
-import { GridComponent, SortService, PageService } from '@syncfusion/ej2-angular-grids';
-import { ToastComponent } from '@syncfusion/ej2-angular-notifications';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { GridComponent, PageSettingsModel, GridModule } from '@syncfusion/ej2-angular-grids';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { fadeInOut } from '../../services/animations';
-import { AlertService, MessageSeverity } from '../../services/alert.service';
+import { AlertService, MessageSeverity, DialogType } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
 import { AccountService } from '../../services/account.service';
 import { Utilities } from '../../services/utilities';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
 import { EditRoleDialogComponent } from '../edit-role-dialog/edit-role-dialog.component';
-import {PageHeaderComponent} from "../../shared/page-header/page-header.component";
-import {SharedModule} from "../../shared.module";
+import { PageHeaderComponent } from "../../shared/page-header/page-header.component";
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.scss'],
+  standalone: true,
   imports: [
+    CommonModule,
+    GridModule,
+    ButtonModule,
+    TextBoxModule,
+    TranslateModule,
     PageHeaderComponent,
-    SharedModule
+    EditRoleDialogComponent
   ],
   animations: [fadeInOut]
 })
-export class RoleListComponent implements OnInit, AfterViewInit {
+export class RoleListComponent implements OnInit {
   @ViewChild('grid') grid: GridComponent;
-  @ViewChild('toast') toast: ToastComponent;
 
-  displayedColumns = ['name', 'description', 'usersCount', 'actions'];
   dataSource: Role[] = [];
   allPermissions: Permission[] = [];
   sourceRole: Role;
-  editingRoleName: { name: string };
   loadingIndicator: boolean;
+  
+  // Dialog properties
+  showEditDialog: boolean = false;
+  editingRole: Role | null = null;
+
+  pageSettings: PageSettingsModel = {
+    pageSize: 10,
+    pageSizes: [10, 20, 50, 100]
+  };
 
   constructor(
     private alertService: AlertService,
     private translationService: AppTranslationService,
-    private accountService: AccountService,
-    private dialog: DialogComponent
+    private accountService: AccountService
   ) { }
 
   get canManageRoles() {
@@ -50,10 +62,6 @@ export class RoleListComponent implements OnInit, AfterViewInit {
     this.loadData();
   }
 
-  ngAfterViewInit() {
-    // Grid is configured with built-in sorting and paging
-  }
-
   public applyFilter(filterValue: string) {
     if (this.grid) {
       this.grid.search(filterValue);
@@ -61,27 +69,30 @@ export class RoleListComponent implements OnInit, AfterViewInit {
   }
 
   private refresh() {
-    if (this.grid) {
-      this.grid.refresh();
+    if (this.grid && this.grid.element) {
+      try {
+        this.grid.refresh();
+      } catch (error) {
+        console.warn('Grid refresh failed, will retry after delay:', error);
+        setTimeout(() => {
+          if (this.grid && this.grid.element) {
+            this.grid.refresh();
+          }
+        }, 100);
+      }
     }
   }
 
   private updateRoles(role: Role) {
     if (this.sourceRole) {
-      // Find and update existing role
-      const index = this.dataSource.findIndex(r => r === this.sourceRole);
-      if (index >= 0) {
-        this.dataSource[index] = role;
-      }
+      Object.assign(this.sourceRole, role);
+      this.alertService.showMessage('Success', `Changes to role "${role.name}" was saved successfully`, MessageSeverity.success);
       this.sourceRole = null;
     } else {
-      // Add new role
       this.dataSource.push(role);
+      setTimeout(() => this.refresh(), 50);
+      this.alertService.showMessage('Success', `Role "${role.name}" was created successfully`, MessageSeverity.success);
     }
-
-    // Update grid data source
-    this.grid.dataSource = [...this.dataSource];
-    this.refresh();
   }
 
   private loadData() {
@@ -96,6 +107,11 @@ export class RoleListComponent implements OnInit, AfterViewInit {
 
           this.dataSource = results[0];
           this.allPermissions = results[1];
+          
+          // Ensure grid refreshes with new data - use timeout to ensure grid is initialized
+          setTimeout(() => {
+            this.refresh();
+          }, 50);
         },
         error: error => {
           this.alertService.stopLoadingMessage();
@@ -109,31 +125,29 @@ export class RoleListComponent implements OnInit, AfterViewInit {
 
   public editRole(role?: Role) {
     this.sourceRole = role;
+    this.editingRole = role || null;
+    this.showEditDialog = true;
+  }
 
-    // Using Syncfusion dialog service
-    const dialogRef = this.dialog.open(EditRoleDialogComponent, {
-      width: '500px',
-      showCloseIcon: true,
-      closeOnEscape: true,
-      data: { role, allPermissions: this.allPermissions }
-    });
-    
-    // Subscribe to dialog result
-    dialogRef.beforeClose.subscribe(r => {
-      if (r && this.canManageRoles) {
-        this.updateRoles(r);
-      }
-    });
+  public onRoleSaved(role: Role) {
+    this.updateRoles(role);
+    this.showEditDialog = false;
+  }
+
+  public onDialogClosed() {
+    this.showEditDialog = false;
+    this.editingRole = null;
+    this.sourceRole = null;
   }
 
   public confirmDelete(role: Role) {
-    // Using Syncfusion toast for confirmation
-    this.toast.content = `Delete ${role.name} role?`;
-    this.toast.buttons = [
-      { model: { content: 'DELETE', cssClass: 'e-danger' }, click: () => this.deleteRole(role) },
-      { model: { content: 'CANCEL' } }
-    ];
-    this.toast.show();
+    this.alertService.showDialog(
+      'Delete Role',
+      `Are you sure you want to delete role "${role.name}"? This action cannot be undone.`,
+      DialogType.confirm,
+      () => this.deleteRole(role),
+      () => {}
+    );
   }
 
   private deleteRole(role: Role) {
@@ -146,7 +160,8 @@ export class RoleListComponent implements OnInit, AfterViewInit {
           this.alertService.stopLoadingMessage();
           this.loadingIndicator = false;
           this.dataSource = this.dataSource.filter(item => item !== role);
-          this.grid.dataSource = [...this.dataSource];
+          setTimeout(() => this.refresh(), 50);
+          this.alertService.showMessage('Success', `Role "${role.name}" was deleted successfully`, MessageSeverity.success);
         },
         error: error => {
           this.alertService.stopLoadingMessage();

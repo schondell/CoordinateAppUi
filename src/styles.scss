@@ -199,8 +199,81 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  font-size: 16px; /* Increased from default 14px */
+  line-height: 1.6; /* Better readability */
   background-color: var(--background);
   color: var(--text-primary);
+}
+
+/* Typography Scale - Enhanced for better readability */
+h1 {
+  font-size: 2.5rem; /* 40px */
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+}
+
+h2 {
+  font-size: 2rem; /* 32px */
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 1.25rem 0;
+  color: var(--text-primary);
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+h4 {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 0.875rem 0;
+  color: var(--text-primary);
+}
+
+h5 {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+}
+
+h6 {
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 0.625rem 0;
+  color: var(--text-primary);
+}
+
+p {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.text-large {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.6;
+}
+
+.text-small {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.5;
+}
+
+.text-xs {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
 }
 
 /* Layout Containers */
@@ -222,28 +295,31 @@ body {
 
 /* Card Component styles */
 .card {
-  padding: 16px;
-  border-radius: 4px;
+  padding: 20px; /* Increased padding */
+  border-radius: 6px; /* Slightly larger radius */
   background-color: var(--background-card);
   color: var(--text-primary);
   box-shadow: var(--elevation-z1);
   
   .card-header {
-    font-size: 18px;
-    margin-bottom: 12px;
-    font-weight: 500;
+    font-size: 1.25rem; /* 20px - increased from 18px */
+    margin-bottom: 16px; /* Increased spacing */
+    font-weight: 600; /* Bolder weight */
     color: var(--text-primary);
+    line-height: 1.4;
   }
   
   .card-content {
-    margin-bottom: 16px;
+    margin-bottom: 20px; /* Increased spacing */
     color: var(--text-secondary);
+    font-size: 1rem; /* 16px */
+    line-height: 1.6;
   }
   
   .card-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 12px; /* Increased gap */
   }
 }
 
@@ -343,42 +419,80 @@ a {
 }
 
 /* Syncfusion Grid Customizations */
-.e-grid .e-row:hover {
-  background-color: var(--primary-light);
-  color: var(--primary-contrast);
-}
-
-.e-grid .e-headercell {
-  background-color: var(--primary);
-  color: var(--primary-contrast);
-}
-
-.e-grid .e-rowcell {
-  color: var(--text-primary);
+.e-grid {
+  font-size: 1rem; /* 16px base font size */
+  
+  .e-row {
+    min-height: 48px; /* Increased row height */
+    
+    &:hover {
+      background-color: var(--primary-light);
+      color: var(--primary-contrast);
+    }
+  }
+  
+  .e-headercell {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+    font-size: 1rem; /* 16px */
+    font-weight: 600;
+    padding: 12px 8px; /* Increased padding */
+    min-height: 48px; /* Increased header height */
+  }
+  
+  .e-rowcell {
+    color: var(--text-primary);
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    padding: 12px 8px; /* Increased padding */
+  }
 }
 
 /* Syncfusion Form Customizations */
-.e-input-group.e-success .e-input {
-  color: var(--accent);
-}
-
 .e-input-group {
   background-color: var(--surface);
+  min-height: 42px; /* Increased input height */
+  
+  &.e-success .e-input {
+    color: var(--accent);
+  }
+  
+  .e-input {
+    color: var(--text-primary);
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    padding: 10px 12px; /* Increased padding */
+  }
+  
+  .e-float-text {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+  }
 }
 
-.e-input-group .e-input {
-  color: var(--text-primary);
-}
-
-.e-btn-primary {
-  background-color: var(--primary);
-  color: var(--primary-contrast);
-  border-color: var(--primary);
-}
-
-.e-btn-primary:hover {
-  background-color: var(--primary-dark);
-  border-color: var(--primary-dark);
+/* Enhanced button styles */
+.e-btn {
+  min-height: 40px; /* Increased button height */
+  padding: 8px 16px; /* Better padding */
+  font-size: 1rem; /* 16px */
+  font-weight: 500;
+  border-radius: 6px; /* Rounded corners */
+  
+  &.e-btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+    border-color: var(--primary);
+    
+    &:hover, &:focus {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+  }
+  
+  &.e-btn-secondary {
+    min-height: 40px;
+    font-size: 1rem;
+  }
 }
 
 /* Custom Icon Classes for Sidebar */

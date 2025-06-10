@@ -1,8 +1,17 @@
-<h1 mat-dialog-title>{{userName ? ('users.management.EditUser' | translate:userName) : ('users.management.NewUser' | translate)}}</h1>
-<div mat-dialog-content>
-  <app-user-editor [user]="data.user" [roles]="data.roles" isEditMode="true"></app-user-editor>
-</div>
-<div mat-dialog-actions>
-  <button mat-raised-button (click)="editUser.save();" color="primary">Save</button>
-  <button mat-raised-button (click)="cancel()" color="warn">Cancel</button>
-</div>
+<ejs-dialog [visible]="visible" width="600px" [isModal]="true" [showCloseIcon]="true">
+  <div class="dialog-content">
+    <h3 class="dialog-title">
+      {{userName ? ('users.management.EditUser' | translate:userName) : ('users.management.NewUser' | translate)}}
+    </h3>
+    <app-user-editor [user]="user" [roles]="roles" isEditMode="true"></app-user-editor>
+    
+    <div class="dialog-footer">
+      <button ejs-button cssClass="e-primary" (click)="saveUser()">
+        <span class="e-icons e-save"></span>Save
+      </button>
+      <button ejs-button cssClass="e-flat" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</ejs-dialog>

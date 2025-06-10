@@ -1,0 +1,171 @@
+// Edit User Dialog Component Styles - Enhanced for better readability
+
+.dialog-content {
+  padding: 20px 0;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  .form-section {
+    margin-bottom: 25px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      color: #333;
+      font-size: 1.125rem; /* 18px */
+      font-weight: 600;
+      margin: 0 0 18px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      line-height: 1.4;
+    }
+  }
+
+  .form-row {
+    margin-bottom: 18px; /* Increased spacing */
+
+    .form-group {
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+        font-size: 1rem; /* 16px */
+        line-height: 1.5;
+      }
+
+      .field-error {
+        color: #d32f2f;
+        font-size: 0.875rem; /* 14px */
+        margin-top: 6px;
+        line-height: 1.4;
+      }
+
+      .field-hint {
+        margin-top: 6px;
+        
+        small {
+          color: #666;
+          font-size: 0.875rem; /* 14px */
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+.dialog-footer {
+  padding: 18px 20px; /* Increased padding */
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px; /* Increased gap */
+}
+
+// Syncfusion component customizations
+::ng-deep {
+  .e-dialog {
+    .e-dlg-header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      min-height: 56px; /* Increased header height */
+      
+      .e-dlg-header-content {
+        font-weight: 600;
+        color: #333;
+        font-size: 1.125rem; /* 18px */
+        line-height: 1.4;
+      }
+    }
+  }
+
+  // Enhanced form controls
+  .e-textbox,
+  .e-input-group {
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    min-height: 42px;
+    font-size: 1rem; /* 16px */
+    
+    .e-input {
+      padding: 10px 12px;
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+    }
+    
+    &.e-error {
+      border-color: #d32f2f;
+    }
+    
+    &:focus-within {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+  }
+
+  .e-dropdown,
+  .e-multiselect {
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    min-height: 42px;
+    font-size: 1rem; /* 16px */
+    
+    .e-input {
+      padding: 10px 12px;
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+    }
+  }
+
+  // Switch styling
+  .e-switch-wrapper {
+    .e-switch {
+      .e-switch-handle {
+        background: #fff;
+      }
+      
+      &.e-switch-active {
+        background: #1976d2;
+      }
+    }
+    
+    .e-label {
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+      margin-left: 12px;
+    }
+  }
+
+  // Button styling
+  .e-btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 10px 20px;
+    min-height: 42px;
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+    
+    &.e-primary {
+      background: #1976d2;
+      border-color: #1976d2;
+      
+      &:hover:not(:disabled) {
+        background: #1565c0;
+        border-color: #1565c0;
+      }
+    }
+    
+    &.e-secondary {
+      color: #666;
+      border-color: #d0d0d0;
+      
+      &:hover:not(:disabled) {
+        background: #f5f5f5;
+        border-color: #bbb;
+      }
+    }
+  }
+}

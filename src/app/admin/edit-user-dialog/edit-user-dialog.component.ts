@@ -1,34 +1,61 @@
-import { Component, ViewChild, Inject, AfterViewInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ViewChild, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DialogModule } from '@syncfusion/ej2-angular-popups';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { User } from '../../models/user.model';
 import { Role } from '../../models/role.model';
-
 import { UserEditorComponent } from '../user-editor/user-editor.component';
 
 @Component({
   selector: 'app-edit-user-dialog',
   templateUrl: 'edit-user-dialog.component.html',
-  styleUrls: ['edit-user-dialog.component.scss']
+  styleUrls: ['edit-user-dialog.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    DialogModule,
+    ButtonModule,
+    TranslateModule,
+    UserEditorComponent
+  ]
 })
 export class EditUserDialogComponent implements AfterViewInit {
   @ViewChild(UserEditorComponent, { static: true })
   editUser: UserEditorComponent;
 
-  get userName(): any {
-    return this.data.user ? { name: this.data.user.userName } : null;
-  }
+  @Input() user: User | null = null;
+  @Input() roles: Role[] = [];
+  @Input() visible: boolean = false;
+  @Output() userSaved = new EventEmitter<User>();
+  @Output() dialogClosed = new EventEmitter<void>();
 
-  constructor(
-    public dialogRef: MatDialogRef<EditUserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { user: User, roles: Role[] }) {
+  get userName(): any {
+    return this.user ? { name: this.user.userName } : null;
   }
 
   ngAfterViewInit() {
-    this.editUser.userSaved$.subscribe(user => this.dialogRef.close(user));
+    if (this.editUser) {
+      this.editUser.userSaved$.subscribe(user => {
+        this.userSaved.emit(user);
+        this.close();
+      });
+    }
+  }
+
+  close(): void {
+    this.visible = false;
+    this.dialogClosed.emit();
+  }
+
+  saveUser(): void {
+    if (this.editUser) {
+      this.editUser.save();
+    }
   }
 
   cancel(): void {
-    this.dialogRef.close(null);
+    this.close();
   }
 }

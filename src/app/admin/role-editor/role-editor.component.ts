@@ -1,14 +1,17 @@
 import { Component, Input, ViewChild, OnChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
-import { NgForm, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { ButtonModule, CheckBoxModule, SwitchModule } from '@syncfusion/ej2-angular-buttons';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AccountService } from '../../services/account.service';
 import { Role } from '../../models/role.model';
 import { Permission } from '../../models/permission.model';
-import {SharedModule} from "../../shared.module";
-import {CoordinateSyncfusionModule} from "../../modules/syncfusion.module";
+import {GroupByPipe} from "../../pipes/group-by.pipe";
 
 interface RoleForm {
   name: FormControl<string>;
@@ -18,11 +21,19 @@ interface RoleForm {
 @Component({
   selector: 'app-role-editor',
   templateUrl: './role-editor.component.html',
-  imports: [
-    SharedModule,
-    CoordinateSyncfusionModule
-  ],
-  styleUrls: ['./role-editor.component.scss']
+  styleUrls: ['./role-editor.component.scss'],
+  standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TextBoxModule,
+        ButtonModule,
+        CheckBoxModule,
+        SwitchModule,
+        TranslateModule,
+        GroupByPipe
+    ]
 })
 export class RoleEditorComponent implements OnChanges {
   @ViewChild('form', { static: true })

@@ -1,58 +1,66 @@
-<app-page-header title="Users" icon="people"></app-page-header>
-<div [@fadeInOut] class="page-content">
+<app-page-header title="Users" icon="users"></app-page-header>
+<div [@fadeInOut] class="page-content user-list-container">
 
   <div class="search-box">
-    <mat-form-field>
-      <mat-label>{{'users.management.Search' | translate}}</mat-label>
-      <input matInput (keyup)="applyFilter($event.target.value)">
-    </mat-form-field>
+    <div class="e-input-group">
+      <input class="e-input" (keyup)="applyFilter($event.target.value)" placeholder="{{'users.management.Search' | translate}}">
+    </div>
   </div>
 
-  <div class="mat-elevation-z8">
-    <mat-progress-bar *ngIf="loadingIndicator" mode="query"></mat-progress-bar>
-    <mat-table [dataSource]="dataSource" matSort>
-
-      <ng-container matColumnDef="jobTitle">
-        <mat-header-cell class="flex-grow15" *matHeaderCellDef mat-sort-header> {{'users.management.Title' | translate}} </mat-header-cell>
-        <mat-cell class="flex-grow15" *matCellDef="let row"> {{row.jobTitle}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="userName">
-        <mat-header-cell class="flex-grow25" *matHeaderCellDef mat-sort-header> {{'users.management.UserName' | translate}} </mat-header-cell>
-        <mat-cell class="flex-grow25" *matCellDef="let row"> {{row.userName}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fullName">
-        <mat-header-cell class="flex-grow40" *matHeaderCellDef mat-sort-header> {{'users.management.FullName' | translate}} </mat-header-cell>
-        <mat-cell class="flex-grow40" *matCellDef="let row"> {{row.fullName}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="email">
-        <mat-header-cell class="flex-grow40" *matHeaderCellDef mat-sort-header> {{'users.management.Email' | translate}} </mat-header-cell>
-        <mat-cell class="flex-grow40" *matCellDef="let row"> {{row.email}} </mat-cell>
-      </ng-container>
-
-      <ng-container *ngIf="canManageUsers" matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef class="flex-170px justify-center">
-          <button *ngIf="canAssignRoles" mat-button color="primary" matTooltip="{{'users.management.NewUser' | translate}}" (click)="editUser()">
-            <mat-icon>person_add</mat-icon>{{'users.management.NewUser' | translate}}
-          </button>
-        </mat-header-cell>
-        <mat-cell *matCellDef="let user" class="flex-170px justify-center">
-          <button mat-icon-button matTooltip="{{'users.management.Edit' | translate}}" (click)="editUser(user)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="{{'users.management.Delete' | translate}}" (click)="confirmDelete(user)">
-            <mat-icon color="warn">delete</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;">
-      </mat-row>
-    </mat-table>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <div class="e-card">
+    <div *ngIf="loadingIndicator" class="e-progress-container">
+      <div class="loading-bar">Loading...</div>
+    </div>
+    
+    <ejs-grid #grid [dataSource]="dataSource" allowPaging="true" allowSorting="true" [pageSettings]="pageSettings">
+      <e-columns>
+        <e-column field="jobTitle" headerText="{{'users.management.Title' | translate}}" width="15%" [allowSorting]="true"></e-column>
+        <e-column field="userName" headerText="{{'users.management.UserName' | translate}}" width="20%" [allowSorting]="true"></e-column>
+        <e-column field="fullName" headerText="{{'users.management.FullName' | translate}}" width="25%" [allowSorting]="true"></e-column>
+        <e-column field="email" headerText="{{'users.management.Email' | translate}}" width="25%" [allowSorting]="true"></e-column>
+        <e-column headerText="Actions" width="15%" [allowSorting]="false">
+          <ng-template #headerTemplate>
+            <div class="justify-center">
+              <button *ngIf="canManageUsers && canAssignRoles" ejs-button cssClass="e-primary" [title]="'users.management.NewUser' | translate" (click)="editUser()">
+                <span class="e-icons e-add"></span>{{'users.management.NewUser' | translate}}
+              </button>
+            </div>
+          </ng-template>
+          <ng-template #template let-user>
+            <div class="justify-center">
+              <!-- Debug info -->
+              <div style="font-size: 10px; color: red; margin-bottom: 5px;">
+                canManage: {{canManageUsers}} | hasPermission: {{accountService.userHasPermission('users.manage')}}
+              </div>
+              
+              <!-- Always visible test buttons -->
+              <button ejs-button cssClass="e-round e-flat e-success" title="Always Visible Edit" (click)="editUser(user)">
+                <span class="e-icons e-edit"></span>
+              </button>
+              <button ejs-button cssClass="e-round e-flat e-warning" title="Always Visible Delete" (click)="confirmDelete(user)">
+                <span class="e-icons e-delete"></span>
+              </button>
+              
+              <!-- Permission-based buttons -->
+              <button *ngIf="canManageUsers" ejs-button cssClass="e-round e-flat e-info" [title]="'users.management.Edit' | translate" (click)="editUser(user)">
+                <span class="e-icons e-edit"></span>
+              </button>
+              <button *ngIf="canManageUsers" ejs-button cssClass="e-round e-flat e-danger" [title]="'users.management.Delete' | translate" (click)="confirmDelete(user)">
+                <span class="e-icons e-delete"></span>
+              </button>
+            </div>
+          </ng-template>
+        </e-column>
+      </e-columns>
+    </ejs-grid>
   </div>
+
+  <!-- Edit User Dialog -->
+  <app-edit-user-dialog 
+    [visible]="showEditDialog"
+    [user]="editingUser"
+    [roles]="allRoles"
+    (userSaved)="onUserSaved($event)"
+    (dialogClosed)="onDialogClosed()">
+  </app-edit-user-dialog>
 </div>

@@ -7,6 +7,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './services/auth-guard.service';
+import { AdminGuard } from './services/admin-guard.service';
 import { HistoryComponent } from "./components/history/history.component";
 import { WorkItemComponent } from "./components/workitem/workitem.component";
 import { LogoutComponent } from "./components/logout/logout.component";
@@ -36,7 +37,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, AdminGuard]
   },
   {
     path: 'settings',

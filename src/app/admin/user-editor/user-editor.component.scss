@@ -1,20 +1,146 @@
 @use 'breakpoints';
 
+// User Editor Component Styles - Enhanced for better readability
+
 .auto-width {
   width: auto;
 }
 
 .send-confirm-email {
   line-height: inherit;
+  font-size: 1rem; /* 16px */
 }
 
 .change-password-button {
   margin-bottom: 22px;
+  font-size: 1rem; /* 16px */
+  min-height: 42px; /* Increased height */
 }
 
 .flex-nogrow50-gtsm {
   @include breakpoints.breakpoint('gt-sm') {
     flex: 0 1 calc(50% - 0.5em);
     box-sizing: border-box;
+  }
+}
+
+// Enhanced form styling
+.form-section {
+  margin-bottom: 25px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    color: #333;
+    font-size: 1.125rem; /* 18px */
+    font-weight: 600;
+    margin: 0 0 18px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    line-height: 1.4;
+  }
+}
+
+.form-row {
+  margin-bottom: 18px; /* Increased spacing */
+
+  .form-group {
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+    }
+
+    .field-error {
+      color: #d32f2f;
+      font-size: 0.875rem; /* 14px */
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .field-hint {
+      margin-top: 6px;
+      
+      small {
+        color: #666;
+        font-size: 0.875rem; /* 14px */
+        line-height: 1.4;
+      }
+    }
+  }
+}
+
+// Angular Material and Syncfusion overrides
+::ng-deep {
+  // Material form fields
+  .mat-mdc-form-field {
+    font-size: 1rem; /* 16px */
+    
+    .mat-mdc-form-field-label {
+      font-size: 1rem; /* 16px */
+    }
+    
+    input, textarea {
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+    }
+    
+    .mat-mdc-select {
+      font-size: 1rem; /* 16px */
+    }
+  }
+
+  // Syncfusion form controls
+  .e-textbox,
+  .e-input-group {
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    min-height: 42px;
+    font-size: 1rem; /* 16px */
+    
+    .e-input {
+      padding: 10px 12px;
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+    }
+    
+    &:focus-within {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+  }
+
+  .e-dropdown,
+  .e-multiselect {
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    min-height: 42px;
+    font-size: 1rem; /* 16px */
+  }
+
+  // Button styling
+  .mat-mdc-button,
+  .e-btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 10px 20px;
+    min-height: 42px;
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+  }
+
+  // Switch/checkbox styling
+  .mat-mdc-slide-toggle,
+  .e-switch-wrapper {
+    .mat-mdc-slide-toggle-label,
+    .e-label {
+      font-size: 1rem; /* 16px */
+      line-height: 1.5;
+    }
   }
 }

@@ -1,5 +1,5 @@
 <app-page-header title="Roles" icon="assignment_ind"></app-page-header>
-<div [@fadeInOut] class="page-content">
+<div [@fadeInOut] class="page-content role-list-container">
 
   <div class="search-box">
     <div class="e-input-group">
@@ -9,10 +9,10 @@
 
   <div class="e-card">
     <div *ngIf="loadingIndicator" class="e-progress-container">
-      <ejs-progressbar type="Linear" height="4" [value]="100" [isIndeterminate]="true"></ejs-progressbar>
+      <div class="loading-bar">Loading...</div>
     </div>
     
-    <ejs-grid [dataSource]="dataSource" allowPaging="true" allowSorting="true">
+    <ejs-grid #grid [dataSource]="dataSource" allowPaging="true" allowSorting="true">
       <e-columns>
         <e-column field="name" headerText="{{'roles.management.Name' | translate}}" width="40%" [allowSorting]="true"></e-column>
         <e-column field="description" headerText="{{'roles.management.Description' | translate}}" [allowSorting]="true"></e-column>
@@ -30,7 +30,7 @@
               <button *ngIf="!canManageRoles" ejs-button cssClass="e-round e-flat" title="{{'roles.management.Details' | translate}}" (click)="editRole(role)">
                 <span class="e-icons e-more-vertical"></span>
               </button>
-              <button *ngIf="canManageRoles" ejs-button cssClass="e-round e-flat" title="{{'roles.management.Edit' | translate}}" (click)="editRole(role)">
+              <button *ngIf="canManageRoles" ejs-button cssClass="e-round e-flat e-info" title="{{'roles.management.Edit' | translate}}" (click)="editRole(role)">
                 <span class="e-icons e-edit"></span>
               </button>
               <button *ngIf="canManageRoles" ejs-button cssClass="e-round e-flat e-danger" title="{{'roles.management.Delete' | translate}}" (click)="confirmDelete(role)">
@@ -43,3 +43,12 @@
     </ejs-grid>
   </div>
 </div>
+
+<!-- Edit Role Dialog -->
+<app-edit-role-dialog 
+  *ngIf="showEditDialog"
+  [role]="editingRole"
+  [allPermissions]="allPermissions"
+  (roleSaved)="onRoleSaved($event)"
+  (dialogClosed)="onDialogClosed()">
+</app-edit-role-dialog>
