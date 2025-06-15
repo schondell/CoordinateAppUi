@@ -65,7 +65,6 @@ export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
   private loadAllVehicles(): void {
     const subscription = this.vehicleSummaryRepository.getAllVehicleSummaries().subscribe({
       next: (vehicles) => {
-        console.log('Loaded vehicles:', vehicles);
         this.vehicles = vehicles;
         if (this.map1) {
           this.displayVehiclesOnMap();
@@ -114,14 +113,29 @@ export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
 
+    console.log(`Processing vehicle ${vehicle.name} with polyline data: ${vehicle.polyLineRoute ? 'YES' : 'NO'}`);
+    console.log(`Vehicle timestamp: ${vehicle.deviceTimestamp}, Today: ${new Date().toDateString()}`);
+
     const existingPolyline = this.vehiclePolylines.get(vehicle.vehicleId);
     if (existingPolyline) {
       existingPolyline.setMap(null);
     }
 
     try {
+      console.log(`Processing polyline for ${vehicle.name}`);
+      console.log(`Polyline data:`, vehicle.polyLineRoute);
+      
       const decodedPath = google.maps.geometry.encoding.decodePath(vehicle.polyLineRoute);
-      console.log(`Decoded ${decodedPath.length} points for vehicle ${vehicle.name}`);
+      console.log(`Successfully decoded ${decodedPath.length} points for vehicle ${vehicle.name}`);
+      
+      if (decodedPath.length === 0) {
+        console.warn(`No points decoded from polyline for vehicle ${vehicle.name}`);
+        return;
+      }
+
+      // Log first and last points to verify coordinates
+      console.log(`First point:`, decodedPath[0]);
+      console.log(`Last point:`, decodedPath[decodedPath.length - 1]);
       
       const polyline = new google.maps.Polyline({
         path: decodedPath,
@@ -133,16 +147,18 @@ export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
 
       polyline.setMap(this.map1);
       this.vehiclePolylines.set(vehicle.vehicleId, polyline);
+      console.log(`Polyline successfully added to map for vehicle ${vehicle.name}`);
       
       // Fit map bounds to include the polyline
       if (decodedPath.length > 0) {
         const bounds = new google.maps.LatLngBounds();
         decodedPath.forEach(point => bounds.extend(point));
         this.map1.fitBounds(bounds);
+        console.log(`Map bounds fitted for vehicle ${vehicle.name}`);
       }
     } catch (error) {
-      console.error(`Error decoding polyline for vehicle ${vehicle.name}:`, error);
-      console.log('Polyline data:', vehicle.polyLineRoute);
+      console.error(`Error processing polyline for vehicle ${vehicle.name}:`, error);
+      console.log('Polyline data that failed:', vehicle.polyLineRoute);
     }
   }
 
