@@ -90,6 +90,7 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
         this.vertices = [];
         this.markerOptions = {};
       }
+
       console.log(`Vehicle Make is: ${data.vehicleSummary.make}`);
       console.log(`Vehicle Model is: ${data.vehicleSummary.model}`);
       console.log(`Vehicle Year is: ${data.vehicleSummary.modelYear}`);
@@ -115,16 +116,23 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
         lng: data.vehicleSummary.longitude,
       };
 
-      // Add the new position to vertices array for polyline
-      const newVertex = {
-        lat: data.vehicleSummary.latitude,
-        lng: data.vehicleSummary.longitude
-      };
-      this.vertices = [...this.vertices, newVertex];
+      // Only add new position if it's for today's date
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      
+      if (newTimestamp >= today && newTimestamp < tomorrow) {
+        // Add the new position to vertices array for polyline
+        const newVertex = {
+          lat: data.vehicleSummary.latitude,
+          lng: data.vehicleSummary.longitude
+        };
+        this.vertices = [...this.vertices, newVertex];
+      }
 
       this.status = "Idling";
-      if (data.vehicleSummary.speed > 1)
-      {
+      if (data.vehicleSummary.speed > 1) {
         this.status = "Driving";
       }
     } else {
@@ -159,6 +167,12 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
       this.updateVehicleCard({vehicleId: this.vehicleId, vehicleSummary: summaryInfo});
     }
   }
+
+  // private initializePolylineFromBackend(summaryInfo: VehicleSummary) {
+  //   // Reset vertices
+  //   this.vertices = [];
+  //   // ... temporarily commented out for debugging
+  // }
 
   getFormattedTimestamp(): string {
     const timestamp = new Date(this.vehicle.deviceTimestamp);

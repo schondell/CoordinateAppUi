@@ -4,6 +4,11 @@
 		"Notifications": "Benachrichtigungen",
 		"Welcome": "Willkommen"
 	},
+	"account": {
+		"Profile": "Profil",
+		"Settings": "Einstellungen",
+		"Logout": "Abmelden"
+	},
 	"commands": {
 		"Cancel": "Stornieren",
 		"Edit": "Bearbeiten",

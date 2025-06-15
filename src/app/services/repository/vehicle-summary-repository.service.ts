@@ -24,4 +24,12 @@ export class VehicleSummaryRepositoryService extends EndpointBase {
       return this.handleError(error, () => this.getAllVehicleSummaries());
     }));
   }
+
+  getTodaysVehicleSummaries(): Observable<VehicleSummary[]> {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+    const endpointUrl = `${this.itemUrl}GetVehicleSummariesByDate?date=${today}`;
+    return this.http.get<VehicleSummary[]>(endpointUrl, this.getRequestHeaders()).pipe(catchError(error => {
+      return this.handleError(error, () => this.getTodaysVehicleSummaries());
+    }));
+  }
 }

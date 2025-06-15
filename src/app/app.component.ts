@@ -26,6 +26,7 @@ import { AppTitleService } from "./services/app-title.service";
 import { AlertCommand, AlertService, MessageSeverity } from "./services/alert.service";
 import { Permission } from "./models/permission.model";
 import { AccountService } from "./services/account.service";
+import { AdminGuard } from "./services/admin-guard.service";
 import { AppDialogComponent } from "./shared/app-dialog/app-dialog.component";
 import { FooterComponent } from './shared/footer/footer.component';
 import { NotificationService } from './services/notification.service';
@@ -81,6 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private appTitleService: AppTitleService,
               private authService: AuthService,
               private accountService: AccountService,
+              private adminGuard: AdminGuard,
               private domSanitizer: DomSanitizer,
               public router: Router,
               public signalRService: SignalrService,
@@ -124,37 +126,31 @@ export class AppComponent implements OnInit, OnDestroy {
 
   items: ItemModel[] = [
     {
-      text: this.translate.instant('Profile'),
-      iconCss: 'e-ddb-icons e-profile',
-      url: '/profile'
+      text: this.gT('account.Profile'),
+      iconCss: 'e-ddb-icons e-profile'
     },
     {
-      text: this.translate.instant('Settings'),
-      iconCss: 'e-ddb-icons e-settings',
-      url: '/settings'
+      text: this.gT('account.Settings'),
+      iconCss: 'e-ddb-icons e-settings'
     },
     {
-      text: this.translate.instant('Logout'),
-      iconCss: 'e-ddb-icons e-logout',
-      url: '/logout'
+      text: this.gT('account.Logout'),
+      iconCss: 'e-ddb-icons e-logout'
     }
   ];
 
   menuSelect(event: any): void {
     const selectedItem = event.item.text;
 
-    switch (selectedItem) {
-      case 'Profile':
-        this.router.navigate(['/profile']);
-        break;
-      case 'Settings':
-        this.router.navigate(['/settings']);
-        break;
-      case 'Logout':
-        this.logout();
-        break;
-      default:
-        console.warn('Unknown menu item selected:', selectedItem);
+    // Use translation keys to identify menu items
+    if (selectedItem === this.gT('account.Profile')) {
+      this.router.navigate(['/settings']); // Navigate to settings for now, until we have a dedicated profile page
+    } else if (selectedItem === this.gT('account.Settings')) {
+      this.router.navigate(['/settings']);
+    } else if (selectedItem === this.gT('account.Logout')) {
+      this.logout();
+    } else {
+      console.warn('Unknown menu item selected:', selectedItem);
     }
   }
 
@@ -457,6 +453,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get canViewRoles() {
     return this.accountService.userHasPermission(Permission.viewRolesPermission);
+  }
+
+  get canViewAdminMenu() {
+    return this.adminGuard.canViewAdminMenu();
   }
 }
 

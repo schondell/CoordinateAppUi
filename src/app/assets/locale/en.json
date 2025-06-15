@@ -16,6 +16,11 @@
     "Notifications": "Notifications",
     "Welcome": "Welcome"
   },
+  "account": {
+    "Profile": "Profile",
+    "Settings": "Settings", 
+    "Logout": "Logout"
+  },
   "commands": {
     "Cancel": "Cancel",
     "Edit": "Edit",
