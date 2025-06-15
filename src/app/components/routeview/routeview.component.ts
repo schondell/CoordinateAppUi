@@ -79,14 +79,38 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
           };
           this.markers.push(marker);
           
-          // Initialize with the current position as first point in path
-          if (summary.latitude && summary.longitude) {
-            this.verticesArray[idx].push({
-              lat: summary.latitude,
-              lng: summary.longitude
-            });
+          // Initialize path from backend polyline if available
+          if (summary.polyLineRoute && summary.polyLineRoute.trim() !== '') {
+            try {
+              const decodedPath = google.maps.geometry.encoding.decodePath(summary.polyLineRoute);
+              this.verticesArray[idx] = decodedPath.map(point => ({
+                lat: point.lat(),
+                lng: point.lng()
+              }));
+              console.log(`Initialized ${decodedPath.length} points from backend polyline for vehicle ${summary.name}`);
+            } catch (error) {
+              console.error(`Error decoding backend polyline for vehicle ${summary.name}:`, error);
+              // Fallback to current position
+              if (summary.latitude && summary.longitude) {
+                this.verticesArray[idx].push({
+                  lat: summary.latitude,
+                  lng: summary.longitude
+                });
+              }
+            }
+          } else {
+            // Initialize with the current position as first point in path
+            if (summary.latitude && summary.longitude) {
+              this.verticesArray[idx].push({
+                lat: summary.latitude,
+                lng: summary.longitude
+              });
+            }
           }
         });
+        
+        // Update vehicle paths for polyline rendering
+        this.updateVehiclePaths();
         
       },
       error: err => {
