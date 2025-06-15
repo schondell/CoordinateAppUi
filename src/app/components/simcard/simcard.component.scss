@@ -1,0 +1,104 @@
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  border-radius: 8px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 8px 8px 0 0;
+}
+
+.card-title {
+  color: #495057;
+  font-weight: 600;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-outline-primary {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+// Syncfusion Grid customizations
+.e-grid .e-gridheader {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.e-grid .e-headercell {
+  border-right: 1px solid #dee2e6;
+}
+
+.e-grid .e-rowcell {
+  border-right: 1px solid #dee2e6;
+  padding: 8px 12px;
+}
+
+.e-grid .e-row:hover {
+  background-color: #f8f9fa;
+}
+
+.e-grid .e-altrow {
+  background-color: #fdfdfd;
+}
+
+.e-grid .e-altrow:hover {
+  background-color: #f8f9fa;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .btn {
+      margin-top: 0.5rem;
+    }
+  }
+  
+  .e-grid .e-gridheader .e-headercell,
+  .e-grid .e-rowcell {
+    font-size: 0.875rem;
+    padding: 6px 8px;
+  }
+}

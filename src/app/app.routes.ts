@@ -18,6 +18,7 @@ import {
 import {
   WorkItemTableComponentComponent
 } from "./components/work-item-table-component/work-item-table-component.component";
+import { SimCardComponent } from "./components/simcard/simcard.component";
 
 export const routes: Routes = [
   {
@@ -29,7 +30,8 @@ export const routes: Routes = [
       { path: '', redirectTo: 'map-overview', pathMatch: 'full' },
       { path: 'map-overview', component: RouteviewComponent },
       { path: 'route-planning', component: CustomerWithWorkItemTableComponentComponent },
-      { path: 'all-workitems', component: WorkItemTableComponentComponent }
+      { path: 'all-workitems', component: WorkItemTableComponentComponent },
+      { path: 'simcards', component: SimCardComponent }
     ]
   },
   

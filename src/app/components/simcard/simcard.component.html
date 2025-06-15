@@ -1,0 +1,137 @@
+<app-page-header [title]="'simcard.TITLE' | translate" [subtitle]="'simcard.SUBTITLE' | translate">
+</app-page-header>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">{{ 'simcard.SIM_CARDS' | translate }}</h5>
+          <div>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="refresh()">
+              <i class="fa fa-refresh"></i> {{ 'simcard.REFRESH' | translate }}
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <ejs-grid 
+            #grid
+            [dataSource]="dataSource" 
+            [allowPaging]="true" 
+            [allowSorting]="true"
+            [allowFiltering]="true"
+            [pageSettings]="pageSettings"
+            [loadingIndicator]="{ indicatorType: 'Spinner' }"
+            (actionBegin)="onPageChange($event)"
+            (sortComplete)="onSort($event)">
+            
+            <e-columns>
+              <e-column 
+                field="simCardId" 
+                headerText="{{ 'simcard.ID' | translate }}" 
+                width="100"
+                [isPrimaryKey]="true"
+                textAlign="Center">
+              </e-column>
+              
+              <e-column 
+                field="name" 
+                headerText="{{ 'simcard.NAME' | translate }}" 
+                width="150">
+              </e-column>
+              
+              <e-column 
+                field="iCCID" 
+                headerText="{{ 'simcard.ICCID' | translate }}" 
+                width="200">
+              </e-column>
+              
+              <e-column 
+                field="iMSI" 
+                headerText="{{ 'simcard.IMSI' | translate }}" 
+                width="150">
+              </e-column>
+              
+              <e-column 
+                field="mobileNumber" 
+                headerText="{{ 'simcard.MOBILE_NUMBER' | translate }}" 
+                width="150">
+              </e-column>
+              
+              <e-column 
+                field="description" 
+                headerText="{{ 'simcard.DESCRIPTION' | translate }}" 
+                width="200">
+              </e-column>
+              
+              <e-column 
+                field="isActive" 
+                headerText="{{ 'simcard.IS_ACTIVE' | translate }}" 
+                width="100"
+                textAlign="Center">
+                <ng-template #template let-data>
+                  <span class="badge" [ngClass]="data.isActive ? 'bg-success' : 'bg-secondary'">
+                    {{ formatBoolean(data.isActive) }}
+                  </span>
+                </ng-template>
+              </e-column>
+              
+              <e-column 
+                field="created" 
+                headerText="{{ 'simcard.CREATED' | translate }}" 
+                width="180"
+                textAlign="Center">
+                <ng-template #template let-data>
+                  {{ formatDate(data.created) }}
+                </ng-template>
+              </e-column>
+              
+              <e-column 
+                field="modified" 
+                headerText="{{ 'simcard.MODIFIED' | translate }}" 
+                width="180"
+                textAlign="Center">
+                <ng-template #template let-data>
+                  {{ formatDate(data.modified) }}
+                </ng-template>
+              </e-column>
+              
+              <e-column 
+                headerText="{{ 'simcard.ACTIONS' | translate }}" 
+                width="120"
+                textAlign="Center"
+                [allowSorting]="false"
+                [allowFiltering]="false">
+                <ng-template #template let-data>
+                  <button type="button" class="btn btn-outline-primary btn-sm me-1" 
+                          title="{{ 'simcard.EDIT' | translate }}">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" 
+                          title="{{ 'simcard.DELETE' | translate }}">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </ng-template>
+              </e-column>
+            </e-columns>
+            
+          </ejs-grid>
+          
+          <!-- Loading indicator -->
+          <div *ngIf="loadingIndicator" class="d-flex justify-content-center mt-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">{{ 'simcard.LOADING' | translate }}</span>
+            </div>
+          </div>
+          
+          <!-- No data message -->
+          <div *ngIf="!loadingIndicator && dataSource.length === 0" class="text-center mt-4">
+            <p class="text-muted">{{ 'simcard.NO_DATA' | translate }}</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
