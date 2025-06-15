@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoogleMapsModule } from '@angular/google-maps';
+import { GoogleMapsModule, GoogleMap } from '@angular/google-maps';
 import { VehicleSummaryRepositoryService } from '../../services/repository/vehicle-summary-repository.service';
 import { SignalrService } from '../../signalr.service';
 import { VehicleSummary } from '../../models/vehicle-summary';
@@ -21,9 +21,11 @@ import { shareReplay } from 'rxjs/operators';
   ]
 })
 export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(GoogleMap) googleMap!: GoogleMap;
+  
   zoom = 12;
   markers: google.maps.MarkerOptions[] = [];
-  center: google.maps.LatLngLiteral;
+  center: google.maps.LatLngLiteral = { lat: 55.6761, lng: 12.5683 }; // Default to Copenhagen
   options: google.maps.MapOptions = {
     mapTypeId: 'roadmap',
     zoomControl: true,
@@ -112,6 +114,9 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update vehicle paths for polyline rendering
         this.updateVehiclePaths();
         
+        // Center map to show all polylines
+        this.fitMapToAllPolylines();
+        
       },
       error: err => {
         console.error('Error while getting vehicle summaries:', err);
@@ -119,13 +124,6 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
       complete: () => {
         console.log('Vehicle summaries processing completed!');
       }
-    });
-
-    navigator.geolocation.getCurrentPosition(position => {
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
     });
   }
 
@@ -220,6 +218,48 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
       strokeOpacity: 1.0,
       strokeWeight: 4
     };
+  }
+
+  // Method to fit map bounds to show all polylines
+  private fitMapToAllPolylines(): void {
+    // Wait a bit for the map to be fully initialized
+    setTimeout(() => {
+      if (!this.googleMap || !this.googleMap.googleMap) {
+        console.log('Google map not ready yet, retrying...');
+        setTimeout(() => this.fitMapToAllPolylines(), 1000);
+        return;
+      }
+
+      if (this.vehiclePaths.length === 0) {
+        console.log('No vehicle paths to fit bounds to');
+        return;
+      }
+
+      const bounds = new google.maps.LatLngBounds();
+      let hasPoints = false;
+
+      // Add all points from all vehicle paths to bounds
+      this.vehiclePaths.forEach((path, index) => {
+        if (path && path.length > 0) {
+          path.forEach(point => {
+            bounds.extend(point);
+            hasPoints = true;
+          });
+          console.log(`Added ${path.length} points from vehicle ${index} to bounds`);
+        }
+      });
+
+      if (hasPoints) {
+        try {
+          this.googleMap.googleMap.fitBounds(bounds);
+          console.log('Map bounds fitted to show all polylines');
+        } catch (error) {
+          console.error('Error fitting bounds:', error);
+        }
+      } else {
+        console.log('No points found to fit bounds to');
+      }
+    }, 2000); // Wait 2 seconds for map to be ready
   }
 
 

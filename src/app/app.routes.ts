@@ -46,10 +46,10 @@ export const routes: Routes = [
     data: { title: 'Settings' }
   },
   {
-    path: 'customers',
+    path: 'management/customers',
     loadComponent: () => import('./components/customers/customers.component').then(c => c.CustomersComponent),
     canActivate: [AuthGuard],
-    data: { title: 'Customers' }
+    data: { title: 'Customer Management' }
   },
   {
     path: 'products',

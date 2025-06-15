@@ -101,8 +101,18 @@ export class SidebarStandaloneComponent implements OnInit {
   }
 
   toggle() {
-    this.sidebarMenuInstance.toggle();
+    // Toggle the collapsed state
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    
+    // Use Syncfusion's toggle method for proper Push behavior
+    if (this.sidebarMenuInstance) {
+      if (this.isSidebarCollapsed) {
+        this.sidebarMenuInstance.hide();
+      } else {
+        this.sidebarMenuInstance.show();
+      }
+    }
+    
     this.collapsedChange.emit(this.isSidebarCollapsed);
   }
 
