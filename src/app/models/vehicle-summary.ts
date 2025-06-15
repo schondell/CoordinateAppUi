@@ -1,3 +1,10 @@
+export interface SinoCastelObd2AlarmTableEntity {
+  messageTypeStrong: number;
+  longitude: number;
+  latitude: number;
+  [key: string]: any;
+}
+
 export class VehicleSummary {
   tenantId: number;
   vehicleId: number;
@@ -5,6 +12,8 @@ export class VehicleSummary {
   model: string;
   modelYear: number;
   make: string;
+  polyLineRoute: string;
+  alarms: SinoCastelObd2AlarmTableEntity[];
   sinoCastelObd2AlarmId: string;
   deviceIdentity: string;
   messageTypeStrong: number;
@@ -25,4 +34,8 @@ export class VehicleSummary {
   day: number;
   month: number;
   year: number;
+
+  constructor() {
+    this.alarms = [];
+  }
 }

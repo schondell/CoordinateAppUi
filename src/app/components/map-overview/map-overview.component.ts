@@ -1,6 +1,11 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader';
-import {MapsFeaturesComponent} from "../maps-features/maps-features.component";
+import { MapsFeaturesComponent } from "../maps-features/maps-features.component";
+import { VehicleSummaryRepositoryService } from '../../services/repository/vehicle-summary-repository.service';
+import { VehicleSummary } from '../../models/vehicle-summary';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'map-overview',
@@ -11,14 +16,65 @@ import {MapsFeaturesComponent} from "../maps-features/maps-features.component";
   ],
   styleUrls: ['./map-overview.component.css']
 })
-export class MapOverviewComponent implements AfterViewInit {
+export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('map1ElementRef', { static: false }) map1ElementRef!: ElementRef;
   private map1!: google.maps.Map;
+  private vehicles: VehicleSummary[] = [];
+  private vehiclePolylines: Map<number, google.maps.Polyline> = new Map();
+  private vehicleMarkers: Map<number, google.maps.Marker> = new Map();
+  private subscriptions: Subscription = new Subscription();
+  private routerSubscription: Subscription;
+  private hasLeftMap: boolean = false;
 
-  constructor() {}
+  constructor(
+    private vehicleSummaryRepository: VehicleSummaryRepositoryService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loadAllVehicles();
+    this.setupRouterEventHandling();
+  }
+
+  private setupRouterEventHandling(): void {
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd || event instanceof NavigationStart)
+    ).subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if (event.url && !event.url.includes('map-overview')) {
+          this.hasLeftMap = true;
+        }
+      } else if (event instanceof NavigationEnd) {
+        if (event.url.includes('map-overview') && this.hasLeftMap) {
+          this.hasLeftMap = false;
+          this.refreshVehicleData();
+        }
+      }
+    });
+    this.subscriptions.add(this.routerSubscription);
+  }
 
   ngAfterViewInit(): void {
     this.initializeMap();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  private loadAllVehicles(): void {
+    const subscription = this.vehicleSummaryRepository.getAllVehicleSummaries().subscribe({
+      next: (vehicles) => {
+        this.vehicles = vehicles;
+        if (this.map1) {
+          this.displayVehiclesOnMap();
+        }
+      },
+      error: (error) => {
+        console.error('Error loading vehicles:', error);
+      }
+    });
+    this.subscriptions.add(subscription);
   }
 
   private initializeMap(): void {
@@ -35,7 +91,91 @@ export class MapOverviewComponent implements AfterViewInit {
       };
 
       this.map1 = new google.maps.Map(this.map1ElementRef.nativeElement, mapOptions);
+      
+      if (this.vehicles.length > 0) {
+        this.displayVehiclesOnMap();
+      }
     });
+  }
+
+  private displayVehiclesOnMap(): void {
+    if (!this.map1) return;
+
+    this.vehicles.forEach(vehicle => {
+      this.displayVehiclePolyline(vehicle);
+      this.displayVehicleMarker(vehicle);
+    });
+  }
+
+  private displayVehiclePolyline(vehicle: VehicleSummary): void {
+    if (!vehicle.polyLineRoute || vehicle.polyLineRoute.trim() === '') return;
+
+    const today = new Date();
+    const vehicleDate = new Date(vehicle.deviceTimestamp);
+    
+    if (vehicleDate.toDateString() !== today.toDateString()) {
+      return;
+    }
+
+    const existingPolyline = this.vehiclePolylines.get(vehicle.vehicleId);
+    if (existingPolyline) {
+      existingPolyline.setMap(null);
+    }
+
+    const decodedPath = google.maps.geometry.encoding.decodePath(vehicle.polyLineRoute);
+    
+    const polyline = new google.maps.Polyline({
+      path: decodedPath,
+      geodesic: true,
+      strokeColor: this.getVehicleColor(vehicle.vehicleId),
+      strokeOpacity: 1.0,
+      strokeWeight: 3
+    });
+
+    polyline.setMap(this.map1);
+    this.vehiclePolylines.set(vehicle.vehicleId, polyline);
+  }
+
+  private displayVehicleMarker(vehicle: VehicleSummary): void {
+    const existingMarker = this.vehicleMarkers.get(vehicle.vehicleId);
+    if (existingMarker) {
+      existingMarker.setMap(null);
+    }
+
+    const marker = new google.maps.Marker({
+      position: { lat: vehicle.latitude, lng: vehicle.longitude },
+      map: this.map1,
+      title: vehicle.name,
+      icon: {
+        url: 'assets/vehicle-marker.png',
+        scaledSize: new google.maps.Size(32, 32)
+      }
+    });
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `
+        <div>
+          <h3>${vehicle.name}</h3>
+          <p>Speed: ${vehicle.speed} km/h</p>
+          <p>Updated: ${new Date(vehicle.deviceTimestamp).toLocaleString()}</p>
+        </div>
+      `
+    });
+
+    marker.addListener('click', () => {
+      infoWindow.open(this.map1, marker);
+    });
+
+    this.vehicleMarkers.set(vehicle.vehicleId, marker);
+  }
+
+  private getVehicleColor(vehicleId: number): string {
+    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+    return colors[vehicleId % colors.length];
+  }
+
+  public refreshVehicleData(): void {
+    this.loadAllVehicles();
   }
 
   async syncBounds(): Promise<void> {
