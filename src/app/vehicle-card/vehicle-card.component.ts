@@ -71,10 +71,11 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
   private updateVehicleCard(data: { vehicleId: number; vehicleSummary: VehicleSummary }) {
     if (data && data.vehicleSummary) {  // Check if data and vehicleSummary are not null or undefined
       // Check if the deviceTimestamp is a new day in the user's timezone
-      const newTimestamp = new Date(data.vehicleSummary.deviceTimestamp);
+      const deviceTimestamp = data.vehicleSummary.deviceTimestamp;
+      const newTimestamp = deviceTimestamp ? new Date(deviceTimestamp) : null;
       const lastVertex = this.vertices.length > 0 ? this.vertices[this.vertices.length - 1] : null;
       let shouldReset = false;
-      if (lastVertex && this.vehicle && this.vehicle.deviceTimestamp) {
+      if (lastVertex && this.vehicle && this.vehicle.deviceTimestamp && newTimestamp) {
         const lastTimestamp = new Date(this.vehicle.deviceTimestamp);
         // Compare the local date parts (year, month, day)
         if (
@@ -98,7 +99,7 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
       this.name = data.vehicleSummary.name;
       this.speed = formatNumber(data.vehicleSummary.speed, this.currentLocale, "1.0-0");
       this.distance = formatNumber(this.toKilometers(data.vehicleSummary.currentTripMileage), this.currentLocale, "1.0-0");
-      this.timeStamp = formatDate(data.vehicleSummary.deviceTimestamp, "HH:MM", this.currentLocale, this.userTimezone);
+      this.timeStamp = deviceTimestamp ? formatDate(deviceTimestamp, "HH:MM", this.currentLocale, this.userTimezone) : '';
 
       // update the markerOptions position
       this.markerOptions = {
