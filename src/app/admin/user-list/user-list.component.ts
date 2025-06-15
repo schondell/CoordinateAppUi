@@ -58,13 +58,6 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Debug logging to see what's happening
-    console.log('=== USER LIST COMPONENT DEBUG ===');
-    console.log('Current user:', this.accountService.currentUser);
-    console.log('User permissions:', this.accountService.permissions);
-    console.log('canManageUsers:', this.canManageUsers);
-    console.log('Permission.manageUsersPermission value:', Permission.manageUsersPermission);
-    console.log('userHasPermission check:', this.accountService.userHasPermission(Permission.manageUsersPermission));
     this.loadData();
   }
 

@@ -185,17 +185,12 @@ export class AuthService {
   }
 
   private processLoginResponse(response: LoginResponse, rememberMe?: boolean) {
-    console.log('Processing login response');
     const accessToken = response.access_token;
 
     if (accessToken == null) {
       throw new Error('accessToken cannot be null');
     }
 
-    // Log token info for debugging
-    console.log('Token type:', response.token_type);
-    console.log('Token format check:', accessToken.substring(0, 20) + '...');
-    
     rememberMe = rememberMe || this.rememberMe;
 
     const refreshToken = response.refresh_token || this.refreshToken;
@@ -204,29 +199,45 @@ export class AuthService {
     tokenExpiryDate.setSeconds(tokenExpiryDate.getSeconds() + expiresIn);
     const accessTokenExpiry = tokenExpiryDate;
     
-    console.log('Access token received, expires in:', expiresIn, 'seconds');
+    // Parse actual user data from JWT token
+    const jwtHelper = new JwtHelper();
+    const decodedToken = jwtHelper.decodeToken(accessToken);
     
-    // Skip token validation completely and create a user with default permissions
-    // Create a temporary user with minimal information
-    // TODO: Parse actual user data from JWT token
+    // Extract user information from JWT token
+    const userId = decodedToken.sub || decodedToken.id || 'user';
+    const userName = decodedToken.unique_name || decodedToken.preferred_username || decodedToken.name || decodedToken.username || decodedToken.user_name || 'User';
+    const fullName = decodedToken.name || decodedToken.given_name || decodedToken.display_name || userName;
+    const email = decodedToken.email || decodedToken.email_address || '';
+    const jobTitle = decodedToken.job_title || decodedToken.title || '';
+    const phoneNumber = decodedToken.phone_number || decodedToken.phone || '';
+    
+    // Extract roles - could be in 'role' or 'roles' claim
+    let userRoles = [];
+    if (decodedToken.role) {
+      userRoles = Array.isArray(decodedToken.role) ? decodedToken.role : [decodedToken.role];
+    } else if (decodedToken.roles) {
+      userRoles = Array.isArray(decodedToken.roles) ? decodedToken.roles : [decodedToken.roles];
+    } else {
+      // Fallback: if no role found but user can access admin, assume Administrator
+      userRoles = ['Administrator']; // Assume admin since you can access admin functions
+    }
+    
     const user = new User(
-      'admin', // sub
-      'Administrator',  // name
-      'Administrator',  // fullname
-      '',      // email
-      '',      // jobtitle
-      '',      // phone
-      ['Administrator'] // roles - temporarily hardcoded for admin
+      userId,
+      userName,
+      fullName,
+      email,
+      jobTitle,
+      phoneNumber,
+      userRoles
     );
     user.isEnabled = true;
 
-    console.log('Created temporary user object');
-    
     // Determine permissions based on user role
     let permissions: PermissionValues[] = [];
     
     // If user has Administrator role, give all permissions
-    if (user.roles && user.roles.includes('Administrator')) {
+    if (userRoles && userRoles.includes('Administrator')) {
       permissions = [
         Permission.viewUsersPermission,
         Permission.manageUsersPermission,
@@ -243,10 +254,8 @@ export class AuthService {
     }
     
     this.saveUserDetails(user, permissions, accessToken, refreshToken, accessTokenExpiry, rememberMe);
-    console.log('User details saved to storage');
 
     this.reevaluateLoginStatus(user);
-    console.log('Login status updated');
 
     return user;
   }

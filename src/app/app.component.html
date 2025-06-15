@@ -9,13 +9,19 @@
             <span class="app-title">{{ 'app.Welcome' | translate }}</span>
           </ng-template>
         </e-item>
-        <e-item *ngIf="isUserLoggedIn" align="Right">
-          <ng-template #template>
-            <ejs-splitbutton content="{{ userName }}" [items]="items" (select)="menuSelect($event)"></ejs-splitbutton>
-          </ng-template>
-        </e-item>
       </e-items>
     </ejs-toolbar>
+    
+    <!-- Account dropdown positioned outside the Syncfusion toolbar -->
+    <div class="account-menu">
+      <!-- Account dropdown -->
+      <ejs-splitbutton *ngIf="isUserLoggedIn" 
+                       content="{{ userName }}" 
+                       [items]="items" 
+                       (select)="menuSelect($event)"
+                       cssClass="account-dropdown">
+      </ejs-splitbutton>
+    </div>
   </div>
 
   <!-- Layout container -->
@@ -40,8 +46,9 @@
       </div>
       <!-- Menu sections -->
       <div class="menu-container">
-        <div class="menu-header" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Navigation' | translate }}</div>
-        <div class="menu-items">
+        <!-- Navigation section - only show when logged in -->
+        <div *ngIf="isUserLoggedIn && !sidebarCollapsed" class="menu-header">{{ 'mainMenu.Navigation' | translate }}</div>
+        <div *ngIf="isUserLoggedIn" class="menu-items">
           <a routerLink="/" class="menu-item" [class.active]="router.url === '/'">
             <span class="menu-icon e-icons e-home"></span>
             <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Home' | translate }}</span>
@@ -59,22 +66,22 @@
             <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.History' | translate }}</span>
           </a>
         </div>
-        <!-- Management -->
-        <div class="menu-header" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Management' | translate }}</div>
-        <div class="menu-items">
+        <!-- Management section - only show when logged in -->
+        <div *ngIf="isUserLoggedIn && !sidebarCollapsed" class="menu-header">{{ 'mainMenu.Management' | translate }}</div>
+        <div *ngIf="isUserLoggedIn" class="menu-items">
           <a routerLink="/vehicle" class="menu-item" [class.active]="router.url.includes('/vehicle')">
             <span class="menu-icon e-icons e-menu"></span>
             <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Vehicles' | translate }}</span>
           </a>
-          <a routerLink="/admin" class="menu-item" [class.active]="router.url.includes('/admin')">
+          <a *ngIf="canViewAdminMenu" routerLink="/admin" class="menu-item" [class.active]="router.url.includes('/admin')">
             <span class="menu-icon e-icons e-admin"></span>
             <span class="menu-text" *ngIf="!sidebarCollapsed">Admin</span>
           </a>
         </div>
-        <!-- System -->
+        <!-- System section - show settings only when logged in, but always show About -->
         <div class="menu-header" *ngIf="!sidebarCollapsed">{{ 'mainMenu.System' | translate }}</div>
         <div class="menu-items">
-          <a routerLink="/settings" class="menu-item" [class.active]="router.url.includes('/settings')">
+          <a *ngIf="isUserLoggedIn" routerLink="/settings" class="menu-item" [class.active]="router.url.includes('/settings')">
             <span class="menu-icon e-icons e-settings"></span>
             <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Settings' | translate }}</span>
           </a>
