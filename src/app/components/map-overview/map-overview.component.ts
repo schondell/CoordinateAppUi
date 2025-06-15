@@ -65,6 +65,7 @@ export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
   private loadAllVehicles(): void {
     const subscription = this.vehicleSummaryRepository.getAllVehicleSummaries().subscribe({
       next: (vehicles) => {
+        console.log('Loaded vehicles:', vehicles);
         this.vehicles = vehicles;
         if (this.map1) {
           this.displayVehiclesOnMap();
@@ -108,12 +109,8 @@ export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private displayVehiclePolyline(vehicle: VehicleSummary): void {
-    if (!vehicle.polyLineRoute || vehicle.polyLineRoute.trim() === '') return;
-
-    const today = new Date();
-    const vehicleDate = new Date(vehicle.deviceTimestamp);
-    
-    if (vehicleDate.toDateString() !== today.toDateString()) {
+    if (!vehicle.polyLineRoute || vehicle.polyLineRoute.trim() === '') {
+      console.log(`No polyline data for vehicle ${vehicle.name} (ID: ${vehicle.vehicleId})`);
       return;
     }
 
@@ -122,18 +119,31 @@ export class MapOverviewComponent implements AfterViewInit, OnInit, OnDestroy {
       existingPolyline.setMap(null);
     }
 
-    const decodedPath = google.maps.geometry.encoding.decodePath(vehicle.polyLineRoute);
-    
-    const polyline = new google.maps.Polyline({
-      path: decodedPath,
-      geodesic: true,
-      strokeColor: this.getVehicleColor(vehicle.vehicleId),
-      strokeOpacity: 1.0,
-      strokeWeight: 3
-    });
+    try {
+      const decodedPath = google.maps.geometry.encoding.decodePath(vehicle.polyLineRoute);
+      console.log(`Decoded ${decodedPath.length} points for vehicle ${vehicle.name}`);
+      
+      const polyline = new google.maps.Polyline({
+        path: decodedPath,
+        geodesic: true,
+        strokeColor: this.getVehicleColor(vehicle.vehicleId),
+        strokeOpacity: 1.0,
+        strokeWeight: 3
+      });
 
-    polyline.setMap(this.map1);
-    this.vehiclePolylines.set(vehicle.vehicleId, polyline);
+      polyline.setMap(this.map1);
+      this.vehiclePolylines.set(vehicle.vehicleId, polyline);
+      
+      // Fit map bounds to include the polyline
+      if (decodedPath.length > 0) {
+        const bounds = new google.maps.LatLngBounds();
+        decodedPath.forEach(point => bounds.extend(point));
+        this.map1.fitBounds(bounds);
+      }
+    } catch (error) {
+      console.error(`Error decoding polyline for vehicle ${vehicle.name}:`, error);
+      console.log('Polyline data:', vehicle.polyLineRoute);
+    }
   }
 
   private displayVehicleMarker(vehicle: VehicleSummary): void {
