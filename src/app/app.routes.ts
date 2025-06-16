@@ -52,6 +52,12 @@ export const routes: Routes = [
     data: { title: 'Customer Management' }
   },
   {
+    path: 'management/workorders',
+    loadComponent: () => import('./components/workorders/workorders.component').then(c => c.WorkOrdersComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'Work Order Management' }
+  },
+  {
     path: 'products',
     loadComponent: () => import('./components/products/products.component').then(c => c.ProductsComponent),
     canActivate: [AuthGuard],

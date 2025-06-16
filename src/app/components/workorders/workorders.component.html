@@ -1,0 +1,265 @@
+<div class="workorder-management" [@fadeInOut]>
+  <app-page-header 
+    [title]="'workOrders.title' | translate"
+    [breadcrumbs]="[
+      { label: 'mainMenu.Management' | translate, url: '/management' },
+      { label: 'workOrders.title' | translate, url: '/management/workorders' }
+    ]">
+    <ng-container slot="actions">
+      <button type="button" 
+              class="e-btn e-primary e-flat" 
+              (click)="refreshData()">
+        <span class="e-btn-icon e-icons e-refresh"></span>
+        {{ 'common.Refresh' | translate }}
+      </button>
+    </ng-container>
+  </app-page-header>
+
+  <div class="page-content">
+    <div class="grid-container">
+      <ejs-grid #grid
+                [dataSource]="workOrders"
+                [allowPaging]="true"
+                [allowSorting]="true"
+                [allowFiltering]="true"
+                [allowExcelExport]="true"
+                [allowPdfExport]="true"
+                [allowSelection]="true"
+                [editSettings]="editSettings"
+                [toolbar]="toolbar"
+                [pageSettings]="pageSettings"
+                [filterSettings]="filterSettings"
+                [sortSettings]="sortSettings"
+                [searchSettings]="searchSettings"
+                [columns]="columns"
+                [height]="'calc(100vh - 280px)'"
+                (actionBegin)="onActionBegin($event)"
+                (commandClick)="onCommandClick($event)"
+                (toolbarClick)="onToolbarClick($event)"
+                class="workorder-grid">
+                
+        <!-- Custom toolbar template -->
+        <ng-template #toolbarTemplate let-data>
+          <div class="custom-toolbar">
+            <div class="toolbar-left">
+              <button class="e-btn e-primary" (click)="grid.startEdit()">
+                <span class="e-btn-icon e-icons e-add"></span>
+                {{ 'common.Add' | translate }}
+              </button>
+              <button class="e-btn e-secondary" (click)="exportToExcel()">
+                <span class="e-btn-icon e-icons e-export-excel"></span>
+                {{ 'common.ExportExcel' | translate }}
+              </button>
+              <button class="e-btn e-secondary" (click)="exportToPdf()">
+                <span class="e-btn-icon e-icons e-export-pdf"></span>
+                {{ 'common.ExportPDF' | translate }}
+              </button>
+            </div>
+            <div class="toolbar-right">
+              <ejs-textbox 
+                placeholder="{{ 'common.Search' | translate }}"
+                [showClearButton]="true"
+                (input)="onSearch($event)">
+              </ejs-textbox>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Loading indicator -->
+        <div *ngIf="loading" class="loading-overlay">
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <span>{{ 'common.Loading' | translate }}...</span>
+          </div>
+        </div>
+      </ejs-grid>
+    </div>
+  </div>
+
+  <!-- Work Order Dialog -->
+  <ejs-dialog #workOrderDialog
+              [header]="isEditing ? ('workOrders.edit' | translate) : ('workOrders.add' | translate)"
+              [visible]="showDialog"
+              [width]="'600px'"
+              [height]="'auto'"
+              [isModal]="true"
+              [showCloseIcon]="true"
+              [animationSettings]="{ effect: 'FadeZoom' }"
+              (beforeClose)="onDialogClose()">
+              
+    <ng-template #content>
+      <form #workOrderForm="ngForm" class="workorder-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orderNumber">{{ 'workOrders.fields.OrderNumber' | translate }} *</label>
+            <ejs-textbox id="orderNumber" 
+                         name="orderNumber"
+                         [(ngModel)]="selectedWorkOrder.orderNumber"
+                         required
+                         [placeholder]="'workOrders.placeholders.OrderNumber' | translate">
+            </ejs-textbox>
+          </div>
+          <div class="form-group">
+            <label for="status">{{ 'workOrders.fields.Status' | translate }} *</label>
+            <ejs-dropdownlist id="status"
+                              name="status"
+                              [(ngModel)]="selectedWorkOrder.status"
+                              [dataSource]="statusOptions"
+                              [fields]="{ text: 'text', value: 'value' }"
+                              required>
+            </ejs-dropdownlist>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="title">{{ 'workOrders.fields.Title' | translate }} *</label>
+            <ejs-textbox id="title" 
+                         name="title"
+                         [(ngModel)]="selectedWorkOrder.title"
+                         required
+                         [placeholder]="'workOrders.placeholders.Title' | translate">
+            </ejs-textbox>
+          </div>
+          <div class="form-group">
+            <label for="priority">{{ 'workOrders.fields.Priority' | translate }} *</label>
+            <ejs-dropdownlist id="priority"
+                              name="priority"
+                              [(ngModel)]="selectedWorkOrder.priority"
+                              [dataSource]="priorityOptions"
+                              [fields]="{ text: 'text', value: 'value' }"
+                              required>
+            </ejs-dropdownlist>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label for="description">{{ 'workOrders.fields.Description' | translate }}</label>
+            <ejs-textbox id="description" 
+                         name="description"
+                         [(ngModel)]="selectedWorkOrder.description"
+                         [multiline]="true"
+                         [placeholder]="'workOrders.placeholders.Description' | translate">
+            </ejs-textbox>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="customerId">{{ 'workOrders.fields.Customer' | translate }} *</label>
+            <ejs-dropdownlist id="customerId"
+                              name="customerId"
+                              [(ngModel)]="selectedWorkOrder.customerId"
+                              [dataSource]="customerOptions"
+                              [fields]="{ text: 'text', value: 'value' }"
+                              required>
+            </ejs-dropdownlist>
+          </div>
+          <div class="form-group">
+            <label for="vehicleId">{{ 'workOrders.fields.Vehicle' | translate }}</label>
+            <ejs-dropdownlist id="vehicleId"
+                              name="vehicleId"
+                              [(ngModel)]="selectedWorkOrder.vehicleId"
+                              [dataSource]="vehicleOptions"
+                              [fields]="{ text: 'text', value: 'value' }">
+            </ejs-dropdownlist>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="estimatedHours">{{ 'workOrders.fields.EstimatedHours' | translate }}</label>
+            <ejs-numerictextbox id="estimatedHours"
+                                name="estimatedHours"
+                                [(ngModel)]="selectedWorkOrder.estimatedHours"
+                                [min]="0"
+                                [step]="0.5"
+                                [format]="'n1'">
+            </ejs-numerictextbox>
+          </div>
+          <div class="form-group">
+            <label for="estimatedCost">{{ 'workOrders.fields.EstimatedCost' | translate }}</label>
+            <ejs-numerictextbox id="estimatedCost"
+                                name="estimatedCost"
+                                [(ngModel)]="selectedWorkOrder.estimatedCost"
+                                [min]="0"
+                                [step]="10"
+                                [format]="'c2'">
+            </ejs-numerictextbox>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="scheduledDate">{{ 'workOrders.fields.ScheduledDate' | translate }}</label>
+            <ejs-datepicker id="scheduledDate"
+                            name="scheduledDate"
+                            [(ngModel)]="selectedWorkOrder.scheduledDate"
+                            [format]="'dd/MM/yyyy'">
+            </ejs-datepicker>
+          </div>
+          <div class="form-group">
+            <label for="location">{{ 'workOrders.fields.Location' | translate }}</label>
+            <ejs-textbox id="location" 
+                         name="location"
+                         [(ngModel)]="selectedWorkOrder.location"
+                         [placeholder]="'workOrders.placeholders.Location' | translate">
+            </ejs-textbox>
+          </div>
+        </div>
+
+        <div class="form-row" *ngIf="isEditing">
+          <div class="form-group">
+            <label for="actualHours">{{ 'workOrders.fields.ActualHours' | translate }}</label>
+            <ejs-numerictextbox id="actualHours"
+                                name="actualHours"
+                                [(ngModel)]="selectedWorkOrder.actualHours"
+                                [min]="0"
+                                [step]="0.5"
+                                [format]="'n1'">
+            </ejs-numerictextbox>
+          </div>
+          <div class="form-group">
+            <label for="actualCost">{{ 'workOrders.fields.ActualCost' | translate }}</label>
+            <ejs-numerictextbox id="actualCost"
+                                name="actualCost"
+                                [(ngModel)]="selectedWorkOrder.actualCost"
+                                [min]="0"
+                                [step]="10"
+                                [format]="'c2'">
+            </ejs-numerictextbox>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label for="notes">{{ 'workOrders.fields.Notes' | translate }}</label>
+            <ejs-textbox id="notes" 
+                         name="notes"
+                         [(ngModel)]="selectedWorkOrder.notes"
+                         [multiline]="true"
+                         [placeholder]="'workOrders.placeholders.Notes' | translate">
+            </ejs-textbox>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #footerTemplate>
+      <div class="dialog-buttons">
+        <button type="button" 
+                class="e-btn e-secondary" 
+                (click)="onDialogClose()">
+          {{ 'common.Cancel' | translate }}
+        </button>
+        <button type="button" 
+                class="e-btn e-primary" 
+                (click)="onSaveWorkOrder()"
+                [disabled]="!workOrderForm?.valid">
+          {{ 'common.Save' | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </ejs-dialog>
+</div>
