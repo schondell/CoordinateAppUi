@@ -82,7 +82,7 @@ export class WorkOrderService {
         
         this.alertService.showMessage(
           'Work Order Created',
-          `Work order ${newWorkOrder.orderNumber} has been created successfully`,
+          `Work order "${newWorkOrder.title}" has been created successfully`,
           MessageSeverity.success
         );
       }),
@@ -116,7 +116,7 @@ export class WorkOrderService {
         
         this.alertService.showMessage(
           'Work Order Updated',
-          `Work order ${updatedWorkOrder.orderNumber} has been updated successfully`,
+          `Work order "${updatedWorkOrder.title}" has been updated successfully`,
           MessageSeverity.success
         );
       }),
@@ -174,18 +174,18 @@ export class WorkOrderService {
    * Search work orders with filters
    */
   searchWorkOrders(filters: {
-    orderNumber?: string;
-    customerId?: number;
-    status?: WorkOrderStatus;
-    priority?: WorkOrderPriority;
-    assignedTo?: number;
-    dateFrom?: Date;
-    dateTo?: Date;
+    search?: string;
+    title?: string;
+    description?: string;
+    sortBy?: string;
+    sortDirection?: string;
+    page?: number;
+    pageSize?: number;
   }): Observable<WorkOrder[]> {
     this.loadingSubject.next(true);
     
     return this.workOrderRepository.searchWorkOrders(filters).pipe(
-      map(response => response.workOrders),
+      map(response => response.data),
       tap(workOrders => {
         this.workOrdersSubject.next(workOrders);
         this.loadingSubject.next(false);
@@ -202,71 +202,6 @@ export class WorkOrderService {
     );
   }
 
-  /**
-   * Update work order status
-   */
-  updateWorkOrderStatus(id: number, status: WorkOrderStatus): Observable<WorkOrder> {
-    this.loadingSubject.next(true);
-    
-    return this.workOrderRepository.updateWorkOrderStatus(id, status).pipe(
-      tap(updatedWorkOrder => {
-        const currentWorkOrders = this.workOrdersSubject.value;
-        const updatedWorkOrders = currentWorkOrders.map(wo => 
-          wo.id === id ? updatedWorkOrder : wo
-        );
-        this.workOrdersSubject.next(updatedWorkOrders);
-        this.loadingSubject.next(false);
-        
-        this.alertService.showMessage(
-          'Status Updated',
-          `Work order status changed to ${status}`,
-          MessageSeverity.success
-        );
-      }),
-      catchError(error => {
-        this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Updating Status',
-          error.message || 'Failed to update work order status',
-          MessageSeverity.error
-        );
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Assign work order to user
-   */
-  assignWorkOrder(id: number, assignedTo: number): Observable<WorkOrder> {
-    this.loadingSubject.next(true);
-    
-    return this.workOrderRepository.assignWorkOrder(id, assignedTo).pipe(
-      tap(updatedWorkOrder => {
-        const currentWorkOrders = this.workOrdersSubject.value;
-        const updatedWorkOrders = currentWorkOrders.map(wo => 
-          wo.id === id ? updatedWorkOrder : wo
-        );
-        this.workOrdersSubject.next(updatedWorkOrders);
-        this.loadingSubject.next(false);
-        
-        this.alertService.showMessage(
-          'Work Order Assigned',
-          `Work order has been assigned successfully`,
-          MessageSeverity.success
-        );
-      }),
-      catchError(error => {
-        this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Assigning Work Order',
-          error.message || 'Failed to assign work order',
-          MessageSeverity.error
-        );
-        return throwError(() => error);
-      })
-    );
-  }
 
   /**
    * Select work order

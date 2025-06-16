@@ -32,33 +32,27 @@ export class WorkOrderRepositoryService {
   }
 
   /**
-   * Search work orders with filters
+   * Search work orders with filters - matches the backend API
    */
   searchWorkOrders(params: {
-    orderNumber?: string;
-    customerId?: number;
-    status?: string;
-    priority?: string;
-    assignedTo?: number;
-    dateFrom?: Date;
-    dateTo?: Date;
+    search?: string;
+    title?: string;
+    description?: string;
+    sortBy?: string;
+    sortDirection?: string;
     page?: number;
     pageSize?: number;
-  }): Observable<{ workOrders: WorkOrder[], totalCount: number }> {
+  }): Observable<{ data: WorkOrder[], totalCount: number, page: number, pageSize: number, totalPages: number, hasNextPage: boolean, hasPreviousPage: boolean }> {
     let httpParams = new HttpParams();
     
     Object.keys(params).forEach(key => {
       const value = params[key as keyof typeof params];
       if (value !== undefined && value !== null && value !== '') {
-        if (value instanceof Date) {
-          httpParams = httpParams.set(key, value.toISOString());
-        } else {
-          httpParams = httpParams.set(key, value.toString());
-        }
+        httpParams = httpParams.set(key, value.toString());
       }
     });
 
-    return this.http.get<{ workOrders: WorkOrder[], totalCount: number }>(
+    return this.http.get<{ data: WorkOrder[], totalCount: number, page: number, pageSize: number, totalPages: number, hasNextPage: boolean, hasPreviousPage: boolean }>(
       `${this.apiUrl}/search`, 
       { params: httpParams }
     );
@@ -86,37 +80,9 @@ export class WorkOrderRepositoryService {
   }
 
   /**
-   * Get work orders by customer
+   * Syncfusion Grid Data Manager endpoint for server-side operations
    */
-  getWorkOrdersByCustomer(customerId: number): Observable<WorkOrder[]> {
-    return this.http.get<WorkOrder[]>(`${this.apiUrl}/customer/${customerId}`);
-  }
-
-  /**
-   * Get work orders by vehicle
-   */
-  getWorkOrdersByVehicle(vehicleId: number): Observable<WorkOrder[]> {
-    return this.http.get<WorkOrder[]>(`${this.apiUrl}/vehicle/${vehicleId}`);
-  }
-
-  /**
-   * Get work orders assigned to user
-   */
-  getAssignedWorkOrders(userId: number): Observable<WorkOrder[]> {
-    return this.http.get<WorkOrder[]>(`${this.apiUrl}/assigned/${userId}`);
-  }
-
-  /**
-   * Update work order status
-   */
-  updateWorkOrderStatus(id: number, status: string): Observable<WorkOrder> {
-    return this.http.patch<WorkOrder>(`${this.apiUrl}/${id}/status`, { status });
-  }
-
-  /**
-   * Assign work order to user
-   */
-  assignWorkOrder(id: number, assignedTo: number): Observable<WorkOrder> {
-    return this.http.patch<WorkOrder>(`${this.apiUrl}/${id}/assign`, { assignedTo });
+  getGridData(dataManagerRequest: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/UrlDatasource`, dataManagerRequest);
   }
 }

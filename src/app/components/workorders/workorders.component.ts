@@ -8,7 +8,7 @@ import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
-import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { DatePickerModule, DateTimePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { fadeInOut } from '../../services/animations';
 import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
 import { WorkOrder, WorkOrderCreateRequest, WorkOrderUpdateRequest, WorkOrderStatus, WorkOrderPriority } from '../../models/workorder.model';
@@ -45,6 +45,7 @@ import { AppTranslationService } from '../../services/app-translation.service';
     TextBoxModule,
     NumericTextBoxModule,
     DatePickerModule,
+    DateTimePickerModule,
     PageHeaderComponent
   ]
 })
@@ -89,11 +90,11 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   };
 
   public sortSettings = {
-    columns: [{ field: 'orderNumber', direction: 'Ascending' }]
+    columns: [{ field: 'title', direction: 'Ascending' }]
   };
 
   public searchSettings = {
-    fields: ['orderNumber', 'title', 'customerName', 'status', 'priority'],
+    fields: ['title', 'description'],
     operator: 'contains',
     key: '',
     ignoreCase: true
@@ -143,71 +144,38 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   private initializeColumns(): void {
     this.columns = [
       {
-        field: 'orderNumber',
-        headerText: this.translationService.getTranslation('workOrders.fields.OrderNumber'),
-        width: 140,
-        isPrimaryKey: false,
-        validationRules: { required: true },
-        type: 'string'
+        field: 'id',
+        headerText: 'ID',
+        width: 80,
+        isPrimaryKey: true,
+        type: 'number'
       },
       {
         field: 'title',
         headerText: this.translationService.getTranslation('workOrders.fields.Title'),
         width: 200,
+        validationRules: { required: true },
         type: 'string'
       },
       {
-        field: 'customerName',
-        headerText: this.translationService.getTranslation('workOrders.fields.Customer'),
+        field: 'description',
+        headerText: this.translationService.getTranslation('workOrders.fields.Description'),
+        width: 250,
+        type: 'string'
+      },
+      {
+        field: 'started',
+        headerText: this.translationService.getTranslation('workOrders.fields.Started'),
         width: 150,
-        type: 'string'
+        type: 'datetime',
+        format: 'dd/MM/yyyy HH:mm'
       },
       {
-        field: 'vehicleRegistration',
-        headerText: this.translationService.getTranslation('workOrders.fields.Vehicle'),
-        width: 120,
-        type: 'string'
-      },
-      {
-        field: 'status',
-        headerText: this.translationService.getTranslation('workOrders.fields.Status'),
-        width: 100,
-        type: 'string',
-        template: '<div class="status-badge status-${status.toLowerCase()}">${status}</div>'
-      },
-      {
-        field: 'priority',
-        headerText: this.translationService.getTranslation('workOrders.fields.Priority'),
-        width: 100,
-        type: 'string',
-        template: '<div class="priority-badge priority-${priority.toLowerCase()}">${priority}</div>'
-      },
-      {
-        field: 'estimatedHours',
-        headerText: this.translationService.getTranslation('workOrders.fields.EstimatedHours'),
-        width: 120,
-        type: 'number',
-        format: 'n1'
-      },
-      {
-        field: 'estimatedCost',
-        headerText: this.translationService.getTranslation('workOrders.fields.EstimatedCost'),
-        width: 120,
-        type: 'number',
-        format: 'c2'
-      },
-      {
-        field: 'scheduledDate',
-        headerText: this.translationService.getTranslation('workOrders.fields.ScheduledDate'),
-        width: 130,
-        type: 'date',
-        format: 'dd/MM/yyyy'
-      },
-      {
-        field: 'assignedToName',
-        headerText: this.translationService.getTranslation('workOrders.fields.AssignedTo'),
-        width: 140,
-        type: 'string'
+        field: 'ended',
+        headerText: this.translationService.getTranslation('workOrders.fields.Ended'),
+        width: 150,
+        type: 'datetime',
+        format: 'dd/MM/yyyy HH:mm'
       },
       {
         field: 'created',
@@ -292,9 +260,8 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     if (args.requestType === 'add') {
       this.isEditing = false;
       this.selectedWorkOrder = {
-        orderNumber: this.generateOrderNumber(),
-        status: WorkOrderStatus.Draft,
-        priority: WorkOrderPriority.Medium
+        title: '',
+        description: ''
       };
       this.showDialog = true;
     } else if (args.requestType === 'beginEdit') {
@@ -358,27 +325,12 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     }
   }
 
-  private generateOrderNumber(): string {
-    const prefix = 'WO';
-    const timestamp = Date.now().toString().slice(-6);
-    return `${prefix}${timestamp}`;
-  }
-
   private createWorkOrder(workOrderData: any): void {
     const createRequest: WorkOrderCreateRequest = {
-      orderNumber: workOrderData.orderNumber,
       title: workOrderData.title,
       description: workOrderData.description,
-      customerId: workOrderData.customerId,
-      vehicleId: workOrderData.vehicleId,
-      assignedTo: workOrderData.assignedTo,
-      status: workOrderData.status,
-      priority: workOrderData.priority,
-      estimatedHours: workOrderData.estimatedHours,
-      estimatedCost: workOrderData.estimatedCost,
-      scheduledDate: workOrderData.scheduledDate,
-      location: workOrderData.location,
-      notes: workOrderData.notes
+      started: workOrderData.started,
+      ended: workOrderData.ended
     };
 
     this.workOrderService.createWorkOrder(createRequest).subscribe({
@@ -404,23 +356,10 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   private updateWorkOrder(workOrderData: any): void {
     const updateRequest: WorkOrderUpdateRequest = {
       id: workOrderData.id,
-      orderNumber: workOrderData.orderNumber,
       title: workOrderData.title,
       description: workOrderData.description,
-      customerId: workOrderData.customerId,
-      vehicleId: workOrderData.vehicleId,
-      assignedTo: workOrderData.assignedTo,
-      status: workOrderData.status,
-      priority: workOrderData.priority,
-      estimatedHours: workOrderData.estimatedHours,
-      actualHours: workOrderData.actualHours,
-      estimatedCost: workOrderData.estimatedCost,
-      actualCost: workOrderData.actualCost,
-      scheduledDate: workOrderData.scheduledDate,
-      startDate: workOrderData.startDate,
-      completedDate: workOrderData.completedDate,
-      location: workOrderData.location,
-      notes: workOrderData.notes
+      started: workOrderData.started,
+      ended: workOrderData.ended
     };
 
     this.workOrderService.updateWorkOrder(workOrderData.id, updateRequest).subscribe({
