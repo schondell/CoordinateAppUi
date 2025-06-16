@@ -11,7 +11,7 @@ import { TextBoxModule, NumericTextBoxModule } from '@syncfusion/ej2-angular-inp
 import { DatePickerModule, DateTimePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { fadeInOut } from '../../services/animations';
 import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
-import { WorkOrder, WorkOrderCreateRequest, WorkOrderUpdateRequest, WorkOrderStatus, WorkOrderPriority } from '../../models/workorder.model';
+import { WorkOrder, WorkOrderCreateRequest, WorkOrderUpdateRequest } from '../../models/workorder.model';
 import { WorkOrderService } from '../../services/workorder.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
@@ -102,26 +102,6 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
 
   public columns: any[] = [];
 
-  // Dropdown options
-  public statusOptions = [
-    { text: 'Draft', value: WorkOrderStatus.Draft },
-    { text: 'Pending', value: WorkOrderStatus.Pending },
-    { text: 'Assigned', value: WorkOrderStatus.Assigned },
-    { text: 'In Progress', value: WorkOrderStatus.InProgress },
-    { text: 'On Hold', value: WorkOrderStatus.OnHold },
-    { text: 'Completed', value: WorkOrderStatus.Completed },
-    { text: 'Cancelled', value: WorkOrderStatus.Cancelled }
-  ];
-
-  public priorityOptions = [
-    { text: 'Low', value: WorkOrderPriority.Low },
-    { text: 'Medium', value: WorkOrderPriority.Medium },
-    { text: 'High', value: WorkOrderPriority.High },
-    { text: 'Critical', value: WorkOrderPriority.Critical }
-  ];
-
-  public customerOptions: any[] = [];
-  public vehicleOptions: any[] = [];
 
   constructor(
     private workOrderService: WorkOrderService,
@@ -133,7 +113,6 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     this.initializeColumns();
     this.loadWorkOrders();
     this.setupSubscriptions();
-    this.loadDropdownData();
   }
 
   ngOnDestroy(): void {
@@ -244,17 +223,6 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadDropdownData(): void {
-    // TODO: Load customers and vehicles for dropdown options
-    // This would typically come from customer and vehicle services
-    this.customerOptions = [
-      { text: 'Select Customer', value: null }
-    ];
-
-    this.vehicleOptions = [
-      { text: 'Select Vehicle', value: null }
-    ];
-  }
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
