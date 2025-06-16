@@ -1,0 +1,39 @@
+<app-page-header [title]="'gpsTrackers.management.Title' | translate" icon="location"></app-page-header>
+<div [@fadeInOut] class="page-content">
+  <div class="gpstracker-management">
+    <div class="grid-container">
+      <ejs-grid
+        #grid
+        [dataSource]="gpsTrackers"
+        [allowPaging]="true"
+        [allowSorting]="true"
+        [allowFiltering]="true"
+        [allowGrouping]="false"
+        [allowExcelExport]="true"
+        [allowPdfExport]="true"
+        [editSettings]="editSettings"
+        [toolbar]="toolbar"
+        [pageSettings]="pageSettings"
+        [filterSettings]="filterSettings"
+        [sortSettings]="sortSettings"
+        [searchSettings]="searchSettings"
+        [columns]="columns"
+        (actionBegin)="onActionBegin($event)"
+        (commandClick)="onCommandClick($event)"
+        (toolbarClick)="onToolbarClick($event)"
+        height="100%"
+        [loadingIndicator]="{ indicatorType: 'Shimmer' }"
+        [showColumnChooser]="true"
+        [showColumnMenu]="true">
+      </ejs-grid>
+    </div>
+
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading GPS trackers...</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -56,12 +56,6 @@
       <div class="menu-section" *ngIf="!isSidebarCollapsed">{{ 'mainMenu.Management' | translate }}</div>
 
       <li>
-        <a routerLink="/vehicle" [class.active]="isActive('/vehicle')">
-          <span class="e-menu-icon e-icons e-menu"></span>
-          <span class="e-menu-text">{{ 'mainMenu.Vehicles' | translate }}</span>
-        </a>
-      </li>
-      <li>
         <a routerLink="/management/customers" [class.active]="isActive('/management/customers')">
           <span class="e-menu-icon e-icons e-group"></span>
           <span class="e-menu-text">{{ 'mainMenu.Customers' | translate }}</span>
@@ -71,6 +65,30 @@
         <a routerLink="/management/workorders" [class.active]="isActive('/management/workorders')">
           <span class="e-menu-icon e-icons e-tasks"></span>
           <span class="e-menu-text">{{ 'mainMenu.WorkOrders' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/management/vehicles" [class.active]="isActive('/management/vehicles')">
+          <span class="e-menu-icon e-icons e-car"></span>
+          <span class="e-menu-text">{{ 'mainMenu.Vehicles' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/management/simcards" [class.active]="isActive('/management/simcards')">
+          <span class="e-menu-icon e-icons e-sim"></span>
+          <span class="e-menu-text">{{ 'mainMenu.SimCards' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/management/gpstrackers" [class.active]="isActive('/management/gpstrackers')">
+          <span class="e-menu-icon e-icons e-location"></span>
+          <span class="e-menu-text">{{ 'mainMenu.GpsTrackers' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/management/networkoperators" [class.active]="isActive('/management/networkoperators')">
+          <span class="e-menu-icon e-icons e-network"></span>
+          <span class="e-menu-text">{{ 'mainMenu.NetworkOperators' | translate }}</span>
         </a>
       </li>
       <li *ngIf="canViewAdminMenu()">

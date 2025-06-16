@@ -104,6 +104,10 @@
     "Customer": "Customer",
     "Customers": "Customers",
     "WorkOrders": "Work Orders",
+    "Vehicles": "Vehicles", 
+    "SimCards": "SIM Cards",
+    "GpsTrackers": "GPS Trackers",
+    "NetworkOperators": "Network Operators",
     "GpsTracker": "Gps-Trackers",
     "History": "History",
     "Home": "Home",
@@ -431,6 +435,270 @@
       "DeleteSuccess": "Work order deleted successfully",
       "DeleteError": "Failed to delete work order",
       "DeleteConfirm": "Are you sure you want to delete this work order?"
+    }
+  },
+  "vehicles": {
+    "management": {
+      "Title": "Vehicle Management",
+      "Description": "Manage vehicle information and details",
+      "Add": "Add Vehicle",
+      "Edit": "Edit Vehicle",
+      "Delete": "Delete Vehicle",
+      "Search": "Search vehicles...",
+      "Export": "Export",
+      "Import": "Import",
+      "Refresh": "Refresh",
+      "NoData": "No vehicles found",
+      "Loading": "Loading vehicles...",
+      "TotalRecords": "Total {{count}} vehicles"
+    },
+    "fields": {
+      "Name": "Name",
+      "LicensePlateNumber": "License Plate Number",
+      "VIN": "VIN",
+      "Make": "Make",
+      "Model": "Model",
+      "VehicleYear": "Vehicle Year",
+      "IsActive": "Active",
+      "Created": "Created Date",
+      "Modified": "Modified Date",
+      "Actions": "Actions"
+    },
+    "editor": {
+      "NewVehicle": "New Vehicle",
+      "EditVehicle": "Edit Vehicle",
+      "VehicleDetails": "Vehicle Details",
+      "BasicInfo": "Basic Information",
+      "TechnicalInfo": "Technical Information",
+      "Save": "Save Vehicle",
+      "Cancel": "Cancel",
+      "Delete": "Delete Vehicle",
+      "Close": "Close"
+    },
+    "validation": {
+      "NameRequired": "Vehicle name is required",
+      "LicensePlateRequired": "License plate number is required",
+      "VINInvalid": "Please enter a valid VIN",
+      "MakeRequired": "Vehicle make is required",
+      "ModelRequired": "Vehicle model is required",
+      "YearInvalid": "Please enter a valid year"
+    },
+    "messages": {
+      "CreateSuccess": "Vehicle created successfully",
+      "UpdateSuccess": "Vehicle updated successfully",
+      "DeleteSuccess": "Vehicle deleted successfully",
+      "CreateError": "Failed to create vehicle",
+      "UpdateError": "Failed to update vehicle",
+      "DeleteError": "Failed to delete vehicle",
+      "LoadError": "Failed to load vehicles",
+      "DeleteConfirm": "Are you sure you want to delete this vehicle?",
+      "DeleteWarning": "This action cannot be undone"
+    },
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search",
+      "Refresh": "Refresh"
+    }
+  },
+  "simCards": {
+    "management": {
+      "Title": "SIM Card Management",
+      "Description": "Manage SIM card information and configurations",
+      "Add": "Add SIM Card",
+      "Edit": "Edit SIM Card",
+      "Delete": "Delete SIM Card",
+      "Search": "Search SIM cards...",
+      "Export": "Export",
+      "Import": "Import",
+      "Refresh": "Refresh",
+      "NoData": "No SIM cards found",
+      "Loading": "Loading SIM cards...",
+      "TotalRecords": "Total {{count}} SIM cards"
+    },
+    "fields": {
+      "Name": "Name",
+      "ICCID": "ICCID",
+      "IMSI": "IMSI",
+      "MobileNumber": "Mobile Number",
+      "Description": "Description",
+      "IsActive": "Active",
+      "Created": "Created Date",
+      "Modified": "Modified Date",
+      "Actions": "Actions"
+    },
+    "editor": {
+      "NewSimCard": "New SIM Card",
+      "EditSimCard": "Edit SIM Card",
+      "SimCardDetails": "SIM Card Details",
+      "BasicInfo": "Basic Information",
+      "TechnicalInfo": "Technical Information",
+      "Save": "Save SIM Card",
+      "Cancel": "Cancel",
+      "Delete": "Delete SIM Card",
+      "Close": "Close"
+    },
+    "validation": {
+      "NameRequired": "SIM card name is required",
+      "ICCIDRequired": "ICCID is required",
+      "ICCIDInvalid": "Please enter a valid ICCID",
+      "IMSIInvalid": "Please enter a valid IMSI",
+      "MobileNumberInvalid": "Please enter a valid mobile number"
+    },
+    "messages": {
+      "CreateSuccess": "SIM card created successfully",
+      "UpdateSuccess": "SIM card updated successfully",
+      "DeleteSuccess": "SIM card deleted successfully",
+      "CreateError": "Failed to create SIM card",
+      "UpdateError": "Failed to update SIM card",
+      "DeleteError": "Failed to delete SIM card",
+      "LoadError": "Failed to load SIM cards",
+      "DeleteConfirm": "Are you sure you want to delete this SIM card?",
+      "DeleteWarning": "This action cannot be undone"
+    },
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search",
+      "Refresh": "Refresh"
+    }
+  },
+  "gpsTrackers": {
+    "management": {
+      "Title": "GPS Tracker Management",
+      "Description": "Manage GPS tracker devices and configurations",
+      "Add": "Add GPS Tracker",
+      "Edit": "Edit GPS Tracker",
+      "Delete": "Delete GPS Tracker",
+      "Search": "Search GPS trackers...",
+      "Export": "Export",
+      "Import": "Import",
+      "Refresh": "Refresh",
+      "NoData": "No GPS trackers found",
+      "Loading": "Loading GPS trackers...",
+      "TotalRecords": "Total {{count}} GPS trackers"
+    },
+    "fields": {
+      "Name": "Name",
+      "TrackerIdentification": "Tracker Identification",
+      "ImeNumber": "IME Number",
+      "TrackerPassword": "Tracker Password",
+      "IsActive": "Active",
+      "Created": "Created Date",
+      "Modified": "Modified Date",
+      "Actions": "Actions"
+    },
+    "editor": {
+      "NewGpsTracker": "New GPS Tracker",
+      "EditGpsTracker": "Edit GPS Tracker",
+      "GpsTrackerDetails": "GPS Tracker Details",
+      "BasicInfo": "Basic Information",
+      "TechnicalInfo": "Technical Information",
+      "Save": "Save GPS Tracker",
+      "Cancel": "Cancel",
+      "Delete": "Delete GPS Tracker",
+      "Close": "Close"
+    },
+    "validation": {
+      "NameRequired": "GPS tracker name is required",
+      "TrackerIdRequired": "Tracker identification is required",
+      "TrackerIdInvalid": "Please enter a valid tracker identification",
+      "ImeNumberInvalid": "Please enter a valid IME number",
+      "PasswordRequired": "Tracker password is required"
+    },
+    "messages": {
+      "CreateSuccess": "GPS tracker created successfully",
+      "UpdateSuccess": "GPS tracker updated successfully",
+      "DeleteSuccess": "GPS tracker deleted successfully",
+      "CreateError": "Failed to create GPS tracker",
+      "UpdateError": "Failed to update GPS tracker",
+      "DeleteError": "Failed to delete GPS tracker",
+      "LoadError": "Failed to load GPS trackers",
+      "DeleteConfirm": "Are you sure you want to delete this GPS tracker?",
+      "DeleteWarning": "This action cannot be undone"
+    },
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search",
+      "Refresh": "Refresh"
+    }
+  },
+  "networkOperators": {
+    "management": {
+      "Title": "Network Operator Management",
+      "Description": "Manage network operator information and configurations",
+      "Add": "Add Network Operator",
+      "Edit": "Edit Network Operator",
+      "Delete": "Delete Network Operator",
+      "Search": "Search network operators...",
+      "Export": "Export",
+      "Import": "Import",
+      "Refresh": "Refresh",
+      "NoData": "No network operators found",
+      "Loading": "Loading network operators...",
+      "TotalRecords": "Total {{count}} network operators"
+    },
+    "fields": {
+      "Name": "Name",
+      "Email": "Email",
+      "Phone": "Phone",
+      "Contact": "Contact Person",
+      "VatNo": "VAT Number",
+      "Apn": "APN",
+      "WebUrl": "Website URL",
+      "Created": "Created Date",
+      "Modified": "Modified Date",
+      "Actions": "Actions"
+    },
+    "editor": {
+      "NewNetworkOperator": "New Network Operator",
+      "EditNetworkOperator": "Edit Network Operator",
+      "NetworkOperatorDetails": "Network Operator Details",
+      "BasicInfo": "Basic Information",
+      "TechnicalInfo": "Technical Information",
+      "Save": "Save Network Operator",
+      "Cancel": "Cancel",
+      "Delete": "Delete Network Operator",
+      "Close": "Close"
+    },
+    "validation": {
+      "NameRequired": "Network operator name is required",
+      "EmailRequired": "Email address is required",
+      "EmailInvalid": "Please enter a valid email address",
+      "PhoneInvalid": "Please enter a valid phone number",
+      "VatNoInvalid": "Please enter a valid VAT number",
+      "ApnInvalid": "Please enter a valid APN",
+      "WebUrlInvalid": "Please enter a valid website URL"
+    },
+    "messages": {
+      "CreateSuccess": "Network operator created successfully",
+      "UpdateSuccess": "Network operator updated successfully",
+      "DeleteSuccess": "Network operator deleted successfully",
+      "CreateError": "Failed to create network operator",
+      "UpdateError": "Failed to update network operator",
+      "DeleteError": "Failed to delete network operator",
+      "LoadError": "Failed to load network operators",
+      "DeleteConfirm": "Are you sure you want to delete this network operator?",
+      "DeleteWarning": "This action cannot be undone"
+    },
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search",
+      "Refresh": "Refresh"
     }
   }
 }

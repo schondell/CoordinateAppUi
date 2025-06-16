@@ -202,11 +202,6 @@ export class AppComponent implements OnInit, OnDestroy {
           url: '/address'
         },
         {
-          text: 'mainMenu.Vehicles',
-          iconCss: 'e-icons e-menu',
-          url: '/vehicle'
-        },
-        {
           text: 'mainMenu.GpsTrackers',
           iconCss: 'e-icons e-menu',
           url: '/gpstracker'

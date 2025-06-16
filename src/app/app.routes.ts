@@ -58,6 +58,30 @@ export const routes: Routes = [
     data: { title: 'Work Order Management' }
   },
   {
+    path: 'management/vehicles',
+    loadComponent: () => import('./features/management/vehicles/vehicles.component').then(c => c.VehiclesComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'Vehicle Management' }
+  },
+  {
+    path: 'management/simcards',
+    loadComponent: () => import('./features/management/simcards/simcards.component').then(c => c.SimCardsComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'SIM Card Management' }
+  },
+  {
+    path: 'management/gpstrackers',
+    loadComponent: () => import('./features/management/gpstrackers/gpstrackers.component').then(c => c.GpsTrackersComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'GPS Tracker Management' }
+  },
+  {
+    path: 'management/networkoperators',
+    loadComponent: () => import('./features/management/networkoperators/networkoperators.component').then(c => c.NetworkOperatorsComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'Network Operator Management' }
+  },
+  {
     path: 'products',
     loadComponent: () => import('./components/products/products.component').then(c => c.ProductsComponent),
     canActivate: [AuthGuard],
