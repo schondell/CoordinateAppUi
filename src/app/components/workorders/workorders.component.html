@@ -90,29 +90,7 @@
     <ng-template #content>
       <form #workOrderForm="ngForm" class="workorder-form">
         <div class="form-row">
-          <div class="form-group">
-            <label for="orderNumber">{{ 'workOrders.fields.OrderNumber' | translate }} *</label>
-            <ejs-textbox id="orderNumber" 
-                         name="orderNumber"
-                         [(ngModel)]="selectedWorkOrder.orderNumber"
-                         required
-                         [placeholder]="'workOrders.placeholders.OrderNumber' | translate">
-            </ejs-textbox>
-          </div>
-          <div class="form-group">
-            <label for="status">{{ 'workOrders.fields.Status' | translate }} *</label>
-            <ejs-dropdownlist id="status"
-                              name="status"
-                              [(ngModel)]="selectedWorkOrder.status"
-                              [dataSource]="statusOptions"
-                              [fields]="{ text: 'text', value: 'value' }"
-                              required>
-            </ejs-dropdownlist>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
+          <div class="form-group full-width">
             <label for="title">{{ 'workOrders.fields.Title' | translate }} *</label>
             <ejs-textbox id="title" 
                          name="title"
@@ -120,16 +98,6 @@
                          required
                          [placeholder]="'workOrders.placeholders.Title' | translate">
             </ejs-textbox>
-          </div>
-          <div class="form-group">
-            <label for="priority">{{ 'workOrders.fields.Priority' | translate }} *</label>
-            <ejs-dropdownlist id="priority"
-                              name="priority"
-                              [(ngModel)]="selectedWorkOrder.priority"
-                              [dataSource]="priorityOptions"
-                              [fields]="{ text: 'text', value: 'value' }"
-                              required>
-            </ejs-dropdownlist>
           </div>
         </div>
 
@@ -147,100 +115,20 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="customerId">{{ 'workOrders.fields.Customer' | translate }} *</label>
-            <ejs-dropdownlist id="customerId"
-                              name="customerId"
-                              [(ngModel)]="selectedWorkOrder.customerId"
-                              [dataSource]="customerOptions"
-                              [fields]="{ text: 'text', value: 'value' }"
-                              required>
-            </ejs-dropdownlist>
+            <label for="started">{{ 'workOrders.fields.Started' | translate }}</label>
+            <ejs-datetimepicker id="started"
+                                name="started"
+                                [(ngModel)]="selectedWorkOrder.started"
+                                [format]="'dd/MM/yyyy HH:mm'">
+            </ejs-datetimepicker>
           </div>
           <div class="form-group">
-            <label for="vehicleId">{{ 'workOrders.fields.Vehicle' | translate }}</label>
-            <ejs-dropdownlist id="vehicleId"
-                              name="vehicleId"
-                              [(ngModel)]="selectedWorkOrder.vehicleId"
-                              [dataSource]="vehicleOptions"
-                              [fields]="{ text: 'text', value: 'value' }">
-            </ejs-dropdownlist>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="estimatedHours">{{ 'workOrders.fields.EstimatedHours' | translate }}</label>
-            <ejs-numerictextbox id="estimatedHours"
-                                name="estimatedHours"
-                                [(ngModel)]="selectedWorkOrder.estimatedHours"
-                                [min]="0"
-                                [step]="0.5"
-                                [format]="'n1'">
-            </ejs-numerictextbox>
-          </div>
-          <div class="form-group">
-            <label for="estimatedCost">{{ 'workOrders.fields.EstimatedCost' | translate }}</label>
-            <ejs-numerictextbox id="estimatedCost"
-                                name="estimatedCost"
-                                [(ngModel)]="selectedWorkOrder.estimatedCost"
-                                [min]="0"
-                                [step]="10"
-                                [format]="'c2'">
-            </ejs-numerictextbox>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="scheduledDate">{{ 'workOrders.fields.ScheduledDate' | translate }}</label>
-            <ejs-datepicker id="scheduledDate"
-                            name="scheduledDate"
-                            [(ngModel)]="selectedWorkOrder.scheduledDate"
-                            [format]="'dd/MM/yyyy'">
-            </ejs-datepicker>
-          </div>
-          <div class="form-group">
-            <label for="location">{{ 'workOrders.fields.Location' | translate }}</label>
-            <ejs-textbox id="location" 
-                         name="location"
-                         [(ngModel)]="selectedWorkOrder.location"
-                         [placeholder]="'workOrders.placeholders.Location' | translate">
-            </ejs-textbox>
-          </div>
-        </div>
-
-        <div class="form-row" *ngIf="isEditing">
-          <div class="form-group">
-            <label for="actualHours">{{ 'workOrders.fields.ActualHours' | translate }}</label>
-            <ejs-numerictextbox id="actualHours"
-                                name="actualHours"
-                                [(ngModel)]="selectedWorkOrder.actualHours"
-                                [min]="0"
-                                [step]="0.5"
-                                [format]="'n1'">
-            </ejs-numerictextbox>
-          </div>
-          <div class="form-group">
-            <label for="actualCost">{{ 'workOrders.fields.ActualCost' | translate }}</label>
-            <ejs-numerictextbox id="actualCost"
-                                name="actualCost"
-                                [(ngModel)]="selectedWorkOrder.actualCost"
-                                [min]="0"
-                                [step]="10"
-                                [format]="'c2'">
-            </ejs-numerictextbox>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group full-width">
-            <label for="notes">{{ 'workOrders.fields.Notes' | translate }}</label>
-            <ejs-textbox id="notes" 
-                         name="notes"
-                         [(ngModel)]="selectedWorkOrder.notes"
-                         [multiline]="true"
-                         [placeholder]="'workOrders.placeholders.Notes' | translate">
-            </ejs-textbox>
+            <label for="ended">{{ 'workOrders.fields.Ended' | translate }}</label>
+            <ejs-datetimepicker id="ended"
+                                name="ended"
+                                [(ngModel)]="selectedWorkOrder.ended"
+                                [format]="'dd/MM/yyyy HH:mm'">
+            </ejs-datetimepicker>
           </div>
         </div>
       </form>

@@ -103,6 +103,7 @@
     "Appointments": "Appointments",
     "Customer": "Customer",
     "Customers": "Customers",
+    "WorkOrders": "Work Orders",
     "GpsTracker": "Gps-Trackers",
     "History": "History",
     "Home": "Home",
@@ -400,6 +401,49 @@
       "PdfExport": "PDF Export",
       "Search": "Search",
       "Refresh": "Refresh"
+    }
+  },
+  "workOrders": {
+    "title": "Work Order Management",
+    "add": "Add Work Order",
+    "edit": "Edit Work Order",
+    "fields": {
+      "OrderNumber": "Order Number",
+      "Title": "Title", 
+      "Description": "Description",
+      "Customer": "Customer",
+      "Vehicle": "Vehicle",
+      "AssignedTo": "Assigned To",
+      "Status": "Status",
+      "Priority": "Priority",
+      "EstimatedHours": "Estimated Hours",
+      "ActualHours": "Actual Hours",
+      "EstimatedCost": "Estimated Cost",
+      "ActualCost": "Actual Cost",
+      "ScheduledDate": "Scheduled Date",
+      "StartDate": "Start Date",
+      "CompletedDate": "Completed Date",
+      "Location": "Location",
+      "Notes": "Notes",
+      "Created": "Created",
+      "Actions": "Actions"
+    },
+    "placeholders": {
+      "OrderNumber": "Enter order number",
+      "Title": "Enter work order title",
+      "Description": "Enter description",
+      "Location": "Enter location",
+      "Notes": "Enter additional notes"
+    },
+    "messages": {
+      "LoadError": "Failed to load work orders",
+      "CreateSuccess": "Work order created successfully",
+      "CreateError": "Failed to create work order",
+      "UpdateSuccess": "Work order updated successfully", 
+      "UpdateError": "Failed to update work order",
+      "DeleteSuccess": "Work order deleted successfully",
+      "DeleteError": "Failed to delete work order",
+      "DeleteConfirm": "Are you sure you want to delete this work order?"
     }
   }
 }
