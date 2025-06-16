@@ -332,6 +332,75 @@
     "pageHeader": {
       "address": "Addresses"
     }
+  },
+  "customers": {
+    "management": {
+      "Title": "Customer Management",
+      "Description": "Manage customer information and contacts",
+      "Add": "Add Customer",
+      "Edit": "Edit Customer",
+      "Delete": "Delete Customer",
+      "Search": "Search customers...",
+      "Export": "Export",
+      "Import": "Import",
+      "Refresh": "Refresh",
+      "NoData": "No customers found",
+      "Loading": "Loading customers...",
+      "TotalRecords": "Total {{count}} customers"
+    },
+    "fields": {
+      "Email": "Email",
+      "Contact": "Contact Person",
+      "Phone": "Phone Number",
+      "CompanyNo": "Company Number",
+      "VatNo": "VAT Number",
+      "WebUrl": "Website",
+      "Address": "Address",
+      "Created": "Created Date",
+      "Modified": "Modified Date",
+      "Actions": "Actions"
+    },
+    "editor": {
+      "NewCustomer": "New Customer",
+      "EditCustomer": "Edit Customer",
+      "CustomerDetails": "Customer Details",
+      "BasicInfo": "Basic Information",
+      "ContactInfo": "Contact Information",
+      "AddressInfo": "Address Information",
+      "Save": "Save Customer",
+      "Cancel": "Cancel",
+      "Delete": "Delete Customer",
+      "Close": "Close"
+    },
+    "validation": {
+      "EmailRequired": "Email address is required",
+      "EmailInvalid": "Please enter a valid email address",
+      "ContactRequired": "Contact person name is required",
+      "PhoneInvalid": "Please enter a valid phone number",
+      "CompanyNoInvalid": "Please enter a valid company number",
+      "VatNoInvalid": "Please enter a valid VAT number",
+      "WebUrlInvalid": "Please enter a valid website URL"
+    },
+    "messages": {
+      "CreateSuccess": "Customer created successfully",
+      "UpdateSuccess": "Customer updated successfully",
+      "DeleteSuccess": "Customer deleted successfully",
+      "CreateError": "Failed to create customer",
+      "UpdateError": "Failed to update customer",
+      "DeleteError": "Failed to delete customer",
+      "LoadError": "Failed to load customers",
+      "DeleteConfirm": "Are you sure you want to delete this customer?",
+      "DeleteWarning": "This action cannot be undone"
+    },
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit",
+      "Delete": "Delete", 
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search",
+      "Refresh": "Refresh"
+    }
   }
 }
 
