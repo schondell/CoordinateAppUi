@@ -1,12 +1,15 @@
 <ejs-sidebar id="menuSidebar" 
              [class]="'sidebar-menu ' + (isSidebarCollapsed ? 'collapsed' : 'expanded')" 
              #sidebarMenuInstance
-             [enableDock]='enableDock'
-             [dockSize]="dockSize" 
-             [width]="width" 
-             [target]="target" 
-             [isOpen]="isOpen" 
-             type="Auto">
+             [enableDock]='true'
+             [dockSize]="'60px'" 
+             [width]="'250px'" 
+             [target]="'.layout-container'" 
+             [isOpen]="!isSidebarCollapsed" 
+             [showBackdrop]="false"
+             [closeOnDocumentClick]="false"
+             position="Left"
+             type="Push">
              
   <!-- User profile section -->
   <div class="user-profile">
@@ -56,6 +59,12 @@
         <a routerLink="/vehicle" [class.active]="isActive('/vehicle')">
           <span class="e-menu-icon e-icons e-menu"></span>
           <span class="e-menu-text">{{ 'mainMenu.Vehicles' | translate }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/management/customers" [class.active]="isActive('/management/customers')">
+          <span class="e-menu-icon e-icons e-group"></span>
+          <span class="e-menu-text">{{ 'mainMenu.Customers' | translate }}</span>
         </a>
       </li>
       <li *ngIf="canViewAdminMenu()">

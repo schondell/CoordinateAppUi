@@ -1,1 +1,295 @@
-﻿
+// Override default page width constraints to use full width
+:host {
+  .page-content {
+    max-width: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+  }
+}
+
+.customer-management {
+  padding: 20px;
+  width: 100%;
+  height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  
+  .grid-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    ejs-grid {
+      flex: 1;
+      height: 100%;
+      
+      .e-grid {
+        border: none;
+        height: 100%;
+        
+        .e-gridheader {
+          background-color: #f8f9fa;
+          border-bottom: 1px solid #dee2e6;
+          
+          .e-headercell {
+            font-weight: 600;
+            color: #495057;
+          }
+        }
+        
+        .e-row {
+          &:hover {
+            background-color: #f8f9fa;
+          }
+          
+          &.e-altrow {
+            background-color: #fbfbfb;
+          }
+          
+          .e-rowcell {
+            border-right: 1px solid #e9ecef;
+            padding: 12px 8px;
+            
+            &:last-child {
+              border-right: none;
+            }
+          }
+        }
+        
+        .e-toolbar {
+          background-color: #fff;
+          border-bottom: 1px solid #dee2e6;
+          padding: 8px 16px;
+          
+          .e-toolbar-item {
+            margin-right: 8px;
+            
+            .e-btn {
+              border-radius: 4px;
+              font-size: 13px;
+              
+              &.e-primary {
+                background-color: #007bff;
+                border-color: #007bff;
+                
+                &:hover {
+                  background-color: #0056b3;
+                  border-color: #0056b3;
+                }
+              }
+              
+              &.e-success {
+                background-color: #28a745;
+                border-color: #28a745;
+                
+                &:hover {
+                  background-color: #218838;
+                  border-color: #218838;
+                }
+              }
+              
+              &.e-danger {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                
+                &:hover {
+                  background-color: #c82333;
+                  border-color: #c82333;
+                }
+              }
+            }
+          }
+          
+          .e-search {
+            .e-input-group {
+              border-radius: 4px;
+              
+              .e-input {
+                border: 1px solid #ced4da;
+                
+                &:focus {
+                  border-color: #007bff;
+                  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                }
+              }
+            }
+          }
+        }
+        
+        .e-pager {
+          background-color: #f8f9fa;
+          border-top: 1px solid #dee2e6;
+          padding: 8px 16px;
+          
+          .e-pagercontainer {
+            .e-parentmsgbar {
+              color: #6c757d;
+              font-size: 13px;
+            }
+            
+            .e-numericcontainer {
+              .e-link {
+                color: #007bff;
+                
+                &:hover {
+                  color: #0056b3;
+                }
+                
+                &.e-currentitem {
+                  background-color: #007bff;
+                  color: white;
+                  border-radius: 4px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    
+    .loading-spinner {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+      
+      p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Dialog styling
+.e-dialog {
+  .e-dlg-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    
+    .e-dlg-header-content {
+      font-weight: 600;
+      color: #495057;
+    }
+  }
+  
+  .e-dlg-content {
+    padding: 1.5rem;
+    
+    .e-form-row {
+      margin-bottom: 1rem;
+      
+      .e-float-input {
+        margin-bottom: 0.5rem;
+        
+        .e-input {
+          border: 1px solid #ced4da;
+          border-radius: 4px;
+          
+          &:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          }
+        }
+        
+        .e-float-text {
+          color: #6c757d;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  .e-footer-content {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    
+    .e-btn {
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      
+      &.e-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        
+        &:hover {
+          background-color: #0056b3;
+          border-color: #0056b3;
+        }
+      }
+      
+      &.e-flat {
+        color: #6c757d;
+        
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+    }
+  }
+}
+
+// Command column button styling
+.e-grid .e-row .e-rowcell .e-unboundcell {
+  .e-control.e-btn {
+    margin: 0 2px;
+    border-radius: 4px;
+    font-size: 12px;
+    
+    &.e-flat {
+      border: 1px solid transparent;
+      
+      &:hover {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+      }
+    }
+    
+    .e-icons {
+      &.e-edit {
+        color: #007bff;
+      }
+      
+      &.e-delete {
+        color: #dc3545;
+      }
+    }
+  }
+}

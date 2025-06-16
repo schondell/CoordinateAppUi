@@ -102,19 +102,24 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
       this.timeStamp = deviceTimestamp ? formatDate(deviceTimestamp, "HH:MM", this.currentLocale, this.userTimezone) : '';
 
       // update the markerOptions position
+      const lat = data.vehicleSummary.latitude || 0;
+      const lng = data.vehicleSummary.longitude || 0;
+      
+      console.log(`Vehicle ${data.vehicleSummary.name} coordinates: lat=${lat}, lng=${lng}`);
+      
       this.markerOptions = {
         ...this.markerOptions, // spread to preserve other properties
         position: {
-          lat: data.vehicleSummary.latitude,
-          lng: data.vehicleSummary.longitude
+          lat: lat,
+          lng: lng
         },
         title: data.vehicleSummary.name,
       };
 
       // Update the center
       this.center = {
-        lat: data.vehicleSummary.latitude,
-        lng: data.vehicleSummary.longitude,
+        lat: lat,
+        lng: lng,
       };
 
       // Only add new position if it's for today's date
@@ -165,15 +170,34 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
           this.updateVehicleCard(data);
         });
 
+      // Initialize polyline from backend data if available
+      this.initializePolylineFromBackend(summaryInfo);
+      
       this.updateVehicleCard({vehicleId: this.vehicleId, vehicleSummary: summaryInfo});
     }
   }
 
-  // private initializePolylineFromBackend(summaryInfo: VehicleSummary) {
-  //   // Reset vertices
-  //   this.vertices = [];
-  //   // ... temporarily commented out for debugging
-  // }
+  private initializePolylineFromBackend(summaryInfo: VehicleSummary) {
+    // Reset vertices
+    this.vertices = [];
+    
+    if (summaryInfo.polyLineRoute && summaryInfo.polyLineRoute.trim() !== '') {
+      try {
+        // Decode the polyline route from backend
+        const decodedPath = google.maps.geometry.encoding.decodePath(summaryInfo.polyLineRoute);
+        this.vertices = decodedPath.map(point => ({
+          lat: point.lat(),
+          lng: point.lng()
+        }));
+        console.log(`Vehicle card: Initialized ${this.vertices.length} vertices from backend polyline for vehicle ${summaryInfo.name}`);
+      } catch (error) {
+        console.error(`Vehicle card: Error decoding backend polyline for vehicle ${summaryInfo.name}:`, error);
+        this.vertices = [];
+      }
+    } else {
+      console.log(`Vehicle card: No polyline data available for vehicle ${summaryInfo.name}`);
+    }
+  }
 
   getFormattedTimestamp(): string {
     const timestamp = new Date(this.vehicle.deviceTimestamp);

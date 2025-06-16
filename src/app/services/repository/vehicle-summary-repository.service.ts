@@ -31,6 +31,8 @@ export class VehicleSummaryRepositoryService extends EndpointBase {
   private mapApiResponseToVehicleSummary(apiResponse: any): VehicleSummary {
     const vehicle = new VehicleSummary();
     
+    console.log('Mapping API response:', apiResponse);
+    
     // Copy basic properties
     vehicle.tenantId = apiResponse.tenantId;
     vehicle.vehicleId = apiResponse.vehicleId;
@@ -64,6 +66,10 @@ export class VehicleSummaryRepositoryService extends EndpointBase {
       vehicle.day = firstAlarm.day;
       vehicle.month = firstAlarm.month;
       vehicle.year = firstAlarm.year;
+      
+      console.log(`Mapped vehicle ${vehicle.name}: lat=${vehicle.latitude}, lng=${vehicle.longitude}`);
+    } else {
+      console.log(`No alarms found for vehicle ${vehicle.name}`);
     }
     
     return vehicle;

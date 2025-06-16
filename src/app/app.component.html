@@ -24,77 +24,26 @@
     </div>
   </div>
 
-  <!-- Layout container -->
+  <!-- Layout container - target for Syncfusion sidebar -->
   <div class="layout-container">
-    <!-- Syncfusion Sidebar -->
-    <ejs-sidebar #sidebar
+    <!-- Use standalone sidebar component -->
+    <app-sidebar-standalone
+      #sidebarComponent
       [enableDock]="true"
       [dockSize]="'60px'"
       [width]="'250px'"
       [isOpen]="!sidebarCollapsed"
-      [showBackdrop]="false"
-      position="Left">
-      <!-- User profile -->
-      <div class="profile-section">
-        <div class="user-avatar">
-          <span>{{ userDisplayName?.charAt(0) || 'U' }}</span>
-        </div>
-        <div class="user-info" *ngIf="!sidebarCollapsed">
-          <div class="user-name">{{ userDisplayName || 'User' }}</div>
-          <div class="user-role">{{ userRole || 'User' }}</div>
-        </div>
-      </div>
-      <!-- Menu sections -->
-      <div class="menu-container">
-        <!-- Navigation section - only show when logged in -->
-        <div *ngIf="isUserLoggedIn && !sidebarCollapsed" class="menu-header">{{ 'mainMenu.Navigation' | translate }}</div>
-        <div *ngIf="isUserLoggedIn" class="menu-items">
-          <a routerLink="/" class="menu-item" [class.active]="router.url === '/'">
-            <span class="menu-icon e-icons e-home"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Home' | translate }}</span>
-          </a>
-          <a routerLink="/job-overview" class="menu-item" [class.active]="router.url.includes('/job-overview')">
-            <span class="menu-icon e-icons e-dashboard"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.OverView' | translate }}</span>
-          </a>
-          <a routerLink="/journal" class="menu-item" [class.active]="router.url.includes('/journal')">
-            <span class="menu-icon e-icons e-book"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.DrivingJournal' | translate }}</span>
-          </a>
-          <a routerLink="/history" class="menu-item" [class.active]="router.url.includes('/history')">
-            <span class="menu-icon e-icons e-history"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.History' | translate }}</span>
-          </a>
-        </div>
-        <!-- Management section - only show when logged in -->
-        <div *ngIf="isUserLoggedIn && !sidebarCollapsed" class="menu-header">{{ 'mainMenu.Management' | translate }}</div>
-        <div *ngIf="isUserLoggedIn" class="menu-items">
-          <a routerLink="/vehicle" class="menu-item" [class.active]="router.url.includes('/vehicle')">
-            <span class="menu-icon e-icons e-menu"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Vehicles' | translate }}</span>
-          </a>
-          <a *ngIf="canViewAdminMenu" routerLink="/admin" class="menu-item" [class.active]="router.url.includes('/admin')">
-            <span class="menu-icon e-icons e-admin"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">Admin</span>
-          </a>
-        </div>
-        <!-- System section - show settings only when logged in, but always show About -->
-        <div class="menu-header" *ngIf="!sidebarCollapsed">{{ 'mainMenu.System' | translate }}</div>
-        <div class="menu-items">
-          <a *ngIf="isUserLoggedIn" routerLink="/settings" class="menu-item" [class.active]="router.url.includes('/settings')">
-            <span class="menu-icon e-icons e-settings"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.Settings' | translate }}</span>
-          </a>
-          <a routerLink="/about" class="menu-item" [class.active]="router.url.includes('/about')">
-            <span class="menu-icon e-icons e-info"></span>
-            <span class="menu-text" *ngIf="!sidebarCollapsed">{{ 'mainMenu.About' | translate }}</span>
-          </a>
-        </div>
-      </div>
-    </ejs-sidebar>
+      [isSidebarCollapsed]="sidebarCollapsed"
+      [userName]="userDisplayName || 'User'"
+      [userRole]="userRole || 'User'"
+      (collapsedChange)="onSidebarCollapsedChange($event)">
+    </app-sidebar-standalone>
+    
     <!-- Main content -->
-    <div class="content">
-      <router-outlet></router-outlet>
+    <div class="main-content">
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 </div>

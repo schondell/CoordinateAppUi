@@ -29,6 +29,7 @@ import { AccountService } from "./services/account.service";
 import { AdminGuard } from "./services/admin-guard.service";
 import { AppDialogComponent } from "./shared/app-dialog/app-dialog.component";
 import { FooterComponent } from './shared/footer/footer.component';
+import { SidebarStandaloneComponent } from './shared/sidebar/sidebar.component.standalone';
 import { NotificationService } from './services/notification.service';
 
 @Component({
@@ -47,15 +48,16 @@ import { NotificationService } from './services/notification.service';
     
     // App components
     AppDialogComponent,
-    FooterComponent
+    FooterComponent,
+    SidebarStandaloneComponent
   ]
 })
 
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('appDialog')
   public appDialog!: AppDialogComponent;
-  @ViewChild('sidebar')
-  public sidebar!: SidebarComponent;
+  @ViewChild('sidebarComponent')
+  public sidebarComponent!: SidebarStandaloneComponent;
 
   // Simple sidebar toggle state
   public sidebarCollapsed = false;
@@ -121,7 +123,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Simple sidebar toggle
   toggleSidebar() {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
+    if (this.sidebarComponent) {
+      this.sidebarComponent.toggle();
+    } else {
+      // Fallback if component not yet initialized
+      this.sidebarCollapsed = !this.sidebarCollapsed;
+    }
+    console.log('Sidebar toggled:', this.sidebarCollapsed ? 'collapsed' : 'expanded');
   }
 
   items: ItemModel[] = [

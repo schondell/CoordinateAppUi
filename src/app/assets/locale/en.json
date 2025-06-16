@@ -332,26 +332,6 @@
     "pageHeader": {
       "address": "Addresses"
     }
-  },
-  "simcard": {
-    "TITLE": "SIM Card Management",
-    "SUBTITLE": "Manage and monitor SIM cards",
-    "SIM_CARDS": "SIM Cards",
-    "REFRESH": "Refresh",
-    "ID": "ID",
-    "NAME": "Name",
-    "ICCID": "ICCID",
-    "IMSI": "IMSI",
-    "MOBILE_NUMBER": "Mobile Number",
-    "DESCRIPTION": "Description",
-    "IS_ACTIVE": "Active",
-    "CREATED": "Created",
-    "MODIFIED": "Modified",
-    "ACTIONS": "Actions",
-    "EDIT": "Edit",
-    "DELETE": "Delete",
-    "LOADING": "Loading...",
-    "NO_DATA": "No SIM cards found"
   }
 }
 
