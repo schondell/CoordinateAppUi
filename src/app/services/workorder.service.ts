@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
-import { WorkOrder, WorkOrderCreateRequest, WorkOrderUpdateRequest, WorkOrderStatus, WorkOrderPriority } from '../models/workorder.model';
-import { WorkOrderRepositoryService } from './workorder-repository.service';
-import { AlertService, MessageSeverity } from './alert.service';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
+import { WorkOrder, WorkOrderCreateRequest, WorkOrderUpdateRequest, WorkOrderSearchResponse, DataManagerRequest, DataManagerResponse } from '../models/workorder.model';
+import { WorkOrderRepositoryService } from './repository/workorder-repository.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkOrderService {
   private workOrdersSubject = new BehaviorSubject<WorkOrder[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  private selectedWorkOrderSubject = new BehaviorSubject<WorkOrder | null>(null);
-
   public workOrders$ = this.workOrdersSubject.asObservable();
-  public loading$ = this.loadingSubject.asObservable();
+
+  private selectedWorkOrderSubject = new BehaviorSubject<WorkOrder | null>(null);
   public selectedWorkOrder$ = this.selectedWorkOrderSubject.asObservable();
 
-  constructor(
-    private workOrderRepository: WorkOrderRepositoryService,
-    private alertService: AlertService
-  ) {}
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public loading$ = this.loadingSubject.asObservable();
+
+  constructor(private workOrderRepository: WorkOrderRepositoryService) {}
 
   /**
-   * Load all work orders
+   * Get all work orders and update the local cache
    */
   loadAllWorkOrders(): Observable<WorkOrder[]> {
     this.loadingSubject.next(true);
@@ -34,207 +32,191 @@ export class WorkOrderService {
       }),
       catchError(error => {
         this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Loading Work Orders',
-          error.message || 'Failed to load work orders',
-          MessageSeverity.error
-        );
+        console.error('Error loading work orders:', error);
         return throwError(() => error);
       })
     );
   }
 
   /**
-   * Get work order by ID
+   * Get work orders for Syncfusion DataGrid with server-side operations
+   */
+  getWorkOrdersForDataGrid(request: DataManagerRequest): Observable<DataManagerResponse<WorkOrder>> {
+    return this.workOrderRepository.getWorkOrdersForDataGrid(request).pipe(
+      catchError(error => {
+        console.error('Error getting work orders for DataGrid:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Advanced search with filters, sorting, and pagination
+   */
+  searchWorkOrders(
+    search?: string,
+    title?: string,
+    description?: string,
+    sortBy: string = 'title',
+    sortDirection: string = 'asc',
+    page: number = 1,
+    pageSize: number = 20
+  ): Observable<WorkOrderSearchResponse> {
+    return this.workOrderRepository.searchWorkOrders(
+      search, title, description, sortBy, sortDirection, page, pageSize
+    ).pipe(
+      catchError(error => {
+        console.error('Error searching work orders:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Get a specific work order by ID
    */
   getWorkOrderById(id: number): Observable<WorkOrder> {
-    this.loadingSubject.next(true);
-    
     return this.workOrderRepository.getWorkOrderById(id).pipe(
       tap(workOrder => {
         this.selectedWorkOrderSubject.next(workOrder);
-        this.loadingSubject.next(false);
       }),
       catchError(error => {
-        this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Loading Work Order',
-          error.message || 'Failed to load work order details',
-          MessageSeverity.error
-        );
+        console.error(`Error getting work order ${id}:`, error);
         return throwError(() => error);
       })
     );
   }
 
   /**
-   * Create new work order
+   * Create a new work order
    */
-  createWorkOrder(workOrderData: WorkOrderCreateRequest): Observable<WorkOrder> {
+  createWorkOrder(workOrderRequest: WorkOrderCreateRequest): Observable<WorkOrder> {
     this.loadingSubject.next(true);
-    
-    return this.workOrderRepository.createWorkOrder(workOrderData).pipe(
+
+    return this.workOrderRepository.createWorkOrder(workOrderRequest).pipe(
       tap(newWorkOrder => {
+        // Add the new work order to the local cache
         const currentWorkOrders = this.workOrdersSubject.value;
         this.workOrdersSubject.next([...currentWorkOrders, newWorkOrder]);
         this.selectedWorkOrderSubject.next(newWorkOrder);
         this.loadingSubject.next(false);
-        
-        this.alertService.showMessage(
-          'Work Order Created',
-          `Work order "${newWorkOrder.title}" has been created successfully`,
-          MessageSeverity.success
-        );
       }),
       catchError(error => {
         this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Creating Work Order',
-          error.message || 'Failed to create work order',
-          MessageSeverity.error
-        );
+        console.error('Error creating work order:', error);
         return throwError(() => error);
       })
     );
   }
 
   /**
-   * Update existing work order
+   * Update an existing work order
    */
-  updateWorkOrder(id: number, workOrderData: WorkOrderUpdateRequest): Observable<WorkOrder> {
+  updateWorkOrder(id: number, workOrderRequest: WorkOrderUpdateRequest): Observable<void> {
     this.loadingSubject.next(true);
-    
-    return this.workOrderRepository.updateWorkOrder(id, workOrderData).pipe(
-      tap(updatedWorkOrder => {
+
+    return this.workOrderRepository.updateWorkOrder(id, workOrderRequest).pipe(
+      tap(() => {
+        // Update the work order in the local cache
         const currentWorkOrders = this.workOrdersSubject.value;
-        const updatedWorkOrders = currentWorkOrders.map(wo => 
-          wo.id === id ? updatedWorkOrder : wo
+        const updatedWorkOrders = currentWorkOrders.map(workOrder => 
+          workOrder.id === id ? { ...workOrder, ...workOrderRequest } : workOrder
         );
         this.workOrdersSubject.next(updatedWorkOrders);
-        this.selectedWorkOrderSubject.next(updatedWorkOrder);
-        this.loadingSubject.next(false);
         
-        this.alertService.showMessage(
-          'Work Order Updated',
-          `Work order "${updatedWorkOrder.title}" has been updated successfully`,
-          MessageSeverity.success
-        );
+        // Update selected work order if it's the one being updated
+        const selectedWorkOrder = this.selectedWorkOrderSubject.value;
+        if (selectedWorkOrder && selectedWorkOrder.id === id) {
+          this.selectedWorkOrderSubject.next({ ...selectedWorkOrder, ...workOrderRequest });
+        }
+        
+        this.loadingSubject.next(false);
       }),
       catchError(error => {
         this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Updating Work Order',
-          error.message || 'Failed to update work order',
-          MessageSeverity.error
-        );
+        console.error(`Error updating work order ${id}:`, error);
         return throwError(() => error);
       })
     );
   }
 
   /**
-   * Delete work order
+   * Delete a work order
    */
   deleteWorkOrder(id: number): Observable<void> {
     this.loadingSubject.next(true);
-    
+
     return this.workOrderRepository.deleteWorkOrder(id).pipe(
       tap(() => {
+        // Remove the work order from the local cache
         const currentWorkOrders = this.workOrdersSubject.value;
-        const filteredWorkOrders = currentWorkOrders.filter(wo => wo.id !== id);
+        const filteredWorkOrders = currentWorkOrders.filter(workOrder => workOrder.id !== id);
         this.workOrdersSubject.next(filteredWorkOrders);
         
-        // Clear selected work order if it was deleted
+        // Clear selected work order if it's the one being deleted
         const selectedWorkOrder = this.selectedWorkOrderSubject.value;
         if (selectedWorkOrder && selectedWorkOrder.id === id) {
           this.selectedWorkOrderSubject.next(null);
         }
         
         this.loadingSubject.next(false);
-        
-        this.alertService.showMessage(
-          'Work Order Deleted',
-          'Work order has been deleted successfully',
-          MessageSeverity.success
-        );
       }),
       catchError(error => {
         this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Deleting Work Order',
-          error.message || 'Failed to delete work order',
-          MessageSeverity.error
-        );
+        console.error(`Error deleting work order ${id}:`, error);
         return throwError(() => error);
       })
     );
   }
 
   /**
-   * Search work orders with filters
+   * Set the currently selected work order
    */
-  searchWorkOrders(filters: {
-    search?: string;
-    title?: string;
-    description?: string;
-    sortBy?: string;
-    sortDirection?: string;
-    page?: number;
-    pageSize?: number;
-  }): Observable<WorkOrder[]> {
-    this.loadingSubject.next(true);
-    
-    return this.workOrderRepository.searchWorkOrders(filters).pipe(
-      map(response => response.data),
-      tap(workOrders => {
-        this.workOrdersSubject.next(workOrders);
-        this.loadingSubject.next(false);
-      }),
-      catchError(error => {
-        this.loadingSubject.next(false);
-        this.alertService.showMessage(
-          'Error Searching Work Orders',
-          error.message || 'Failed to search work orders',
-          MessageSeverity.error
-        );
-        return throwError(() => error);
-      })
-    );
-  }
-
-
-  /**
-   * Select work order
-   */
-  selectWorkOrder(workOrder: WorkOrder | null): void {
+  setSelectedWorkOrder(workOrder: WorkOrder | null): void {
     this.selectedWorkOrderSubject.next(workOrder);
   }
 
   /**
-   * Clear selected work order
+   * Get the currently selected work order (synchronous)
    */
-  clearSelection(): void {
-    this.selectedWorkOrderSubject.next(null);
-  }
-
-  /**
-   * Get current work orders snapshot
-   */
-  getCurrentWorkOrders(): WorkOrder[] {
-    return this.workOrdersSubject.value;
-  }
-
-  /**
-   * Get current selected work order snapshot
-   */
-  getCurrentSelectedWorkOrder(): WorkOrder | null {
+  getSelectedWorkOrder(): WorkOrder | null {
     return this.selectedWorkOrderSubject.value;
   }
 
   /**
-   * Refresh work orders
+   * Clear all cached data
+   */
+  clearCache(): void {
+    this.workOrdersSubject.next([]);
+    this.selectedWorkOrderSubject.next(null);
+  }
+
+  /**
+   * Refresh work orders data
    */
   refreshWorkOrders(): Observable<WorkOrder[]> {
     return this.loadAllWorkOrders();
+  }
+
+  /**
+   * Get work orders count
+   */
+  getWorkOrdersCount(): number {
+    return this.workOrdersSubject.value.length;
+  }
+
+  /**
+   * Filter work orders by search term (local cache)
+   */
+  filterWorkOrdersLocal(searchTerm: string): WorkOrder[] {
+    if (!searchTerm.trim()) {
+      return this.workOrdersSubject.value;
+    }
+
+    const term = searchTerm.toLowerCase();
+    return this.workOrdersSubject.value.filter(workOrder =>
+      workOrder.title.toLowerCase().includes(term) ||
+      workOrder.description?.toLowerCase().includes(term)
+    );
   }
 }

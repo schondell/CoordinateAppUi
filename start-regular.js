@@ -8,7 +8,7 @@ const { spawn } = require('child_process');
 console.log('Starting Angular application...');
 
 // Start Angular dev server with the quickapp-pro project
-const angularProcess = spawn('ng', ['serve', 'quickapp-pro', '--port', '44450', '--configuration=development'], {
+const angularProcess = spawn('ng', ['serve', 'CoordinateUi', '--port', '44450', '--configuration=development'], {
   cwd: process.cwd(),
   stdio: 'inherit',
   shell: true

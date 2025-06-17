@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { Observable, Subject, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 import { LocalStoreManager } from './local-store-manager.service';
 import { OidcHelperService } from './oidc-helper.service';
@@ -28,6 +28,9 @@ export class AuthService {
 
   private previousIsLoggedInCheck = false;
   private loginStatus = new Subject<boolean>();
+  private tokenRefreshInProgress = false;
+  private lastRefreshAttempt = 0;
+  private readonly REFRESH_COOLDOWN = 30000; // 30 seconds cooldown between refresh attempts
 
   constructor(
     private router: Router,
@@ -108,8 +111,43 @@ export class AuthService {
   }
 
   refreshLogin() {
+    // Prevent multiple simultaneous refresh attempts
+    const now = Date.now();
+    if (this.tokenRefreshInProgress || (now - this.lastRefreshAttempt) < this.REFRESH_COOLDOWN) {
+      console.log('🔄 Token refresh already in progress or in cooldown period');
+      return throwError(() => new Error('Token refresh already in progress'));
+    }
+
+    // Check if we have a valid refresh token
+    if (!this.refreshToken) {
+      console.log('❌ No refresh token available');
+      return throwError(() => new Error('No refresh token available'));
+    }
+
+    this.tokenRefreshInProgress = true;
+    this.lastRefreshAttempt = now;
+    console.log('🔄 Starting token refresh...');
+
     return this.oidcHelperService.refreshLogin()
-      .pipe(map(resp => this.processLoginResponse(resp, this.rememberMe)));
+      .pipe(
+        map(resp => {
+          this.tokenRefreshInProgress = false;
+          console.log('✅ Token refresh successful');
+          return this.processLoginResponse(resp, this.rememberMe);
+        }),
+        catchError(error => {
+          this.tokenRefreshInProgress = false;
+          console.error('❌ Token refresh failed:', error);
+          
+          // If refresh fails with 401 or invalid_grant, the refresh token is invalid
+          if (error.status === 401 || (error.error && error.error.error === 'invalid_grant')) {
+            console.log('🚪 Refresh token invalid, clearing session');
+            this.logout();
+          }
+          
+          return throwError(() => error);
+        })
+      );
   }
 
   loginWithPassword(user: UserLogin) {
@@ -279,6 +317,13 @@ export class AuthService {
   }
 
   logout(): void {
+    console.log('🚪 Logging out user');
+    
+    // Clear authentication state
+    this.tokenRefreshInProgress = false;
+    this.lastRefreshAttempt = 0;
+    
+    // Clear stored data
     this.localStorage.deleteData(DBkeys.ACCESS_TOKEN);
     this.localStorage.deleteData(DBkeys.REFRESH_TOKEN);
     this.localStorage.deleteData(DBkeys.TOKEN_EXPIRES_IN);
@@ -332,11 +377,22 @@ export class AuthService {
   }
 
   get isSessionExpired(): boolean {
-    return this.oidcHelperService.isSessionExpired;
+    if (!this.accessToken || !this.accessTokenExpiryDate) {
+      return true;
+    }
+    
+    // Add a small buffer (30 seconds) to account for clock skew
+    const bufferTime = 30 * 1000; // 30 seconds in milliseconds
+    const expiryWithBuffer = this.accessTokenExpiryDate.getTime() - bufferTime;
+    
+    return expiryWithBuffer <= Date.now();
   }
 
   get isLoggedIn(): boolean {
-    return this.currentUser != null;
+    const user = this.currentUser;
+    const hasValidToken = this.accessToken && !this.isSessionExpired;
+    
+    return user != null && hasValidToken;
   }
 
   get rememberMe(): boolean {

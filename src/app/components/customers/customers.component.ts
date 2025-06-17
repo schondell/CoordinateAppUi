@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService } from '@syncfusion/ej2-angular-grids';
+import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
@@ -14,6 +15,8 @@ import { Customer, CustomerCreateRequest, CustomerUpdateRequest } from '../../mo
 import { CustomerService } from '../../services/customer.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
+import { ConfigurationService } from '../../services/configuration.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-customers',
@@ -50,7 +53,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public customers: Customer[] = [];
+  public dataManager!: DataManager;
   public loading = false;
   public selectedCustomer: Customer | null = null;
   public isEditing = false;
@@ -64,16 +67,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     template: ''
   };
 
-  public toolbar = [
-    'Add',
-    'Edit',
-    'Delete',
-    'Update',
-    'Cancel',
-    'ExcelExport',
-    'PdfExport',
-    'Search'
-  ];
+  public toolbar: any[] = [];
 
   public pageSettings = {
     pageSize: 20,
@@ -86,11 +80,11 @@ export class CustomersComponent implements OnInit, OnDestroy {
   };
 
   public sortSettings = {
-    columns: [{ field: 'email', direction: 'Ascending' }]
+    columns: [{ field: 'name', direction: 'Ascending' }]
   };
 
   public searchSettings = {
-    fields: ['email', 'contact', 'companyNo', 'phone'],
+    fields: ['name', 'email', 'contact', 'companyNo', 'phone'],
     operator: 'contains',
     key: '',
     ignoreCase: true
@@ -101,12 +95,15 @@ export class CustomersComponent implements OnInit, OnDestroy {
   constructor(
     private customerService: CustomerService,
     private alertService: AlertService,
-    private translationService: AppTranslationService
+    private translationService: AppTranslationService,
+    private configurationService: ConfigurationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.initializeToolbar();
     this.initializeColumns();
-    this.loadCustomers();
+    this.initializeDataManager();
     this.setupSubscriptions();
   }
 
@@ -115,13 +112,41 @@ export class CustomersComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private initializeToolbar(): void {
+    this.toolbar = [
+      'Add',
+      'Edit',
+      'Delete',
+      'Update',
+      'Cancel',
+      'ExcelExport',
+      'PdfExport',
+      'Search'
+    ];
+  }
+
   private initializeColumns(): void {
     this.columns = [
+      {
+        field: 'id',
+        headerText: this.translationService.getTranslation('common.fields.ID'),
+        width: 80,
+        isPrimaryKey: true,
+        type: 'number',
+        allowEditing: false
+      },
+      {
+        field: 'name',
+        headerText: this.translationService.getTranslation('customers.fields.Name'),
+        width: 200,
+        isPrimaryKey: false,
+        validationRules: { required: true },
+        type: 'string'
+      },
       {
         field: 'email',
         headerText: this.translationService.getTranslation('customers.fields.Email'),
         width: 200,
-        isPrimaryKey: false,
         validationRules: { required: true, email: true },
         type: 'string'
       },
@@ -160,7 +185,8 @@ export class CustomersComponent implements OnInit, OnDestroy {
         headerText: this.translationService.getTranslation('customers.fields.Created'),
         width: 140,
         type: 'datetime',
-        format: 'dd/MM/yyyy HH:mm'
+        format: 'dd/MM/yyyy HH:mm',
+        allowEditing: false
       },
       {
         headerText: this.translationService.getTranslation('customers.fields.Actions'),
@@ -185,13 +211,21 @@ export class CustomersComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private setupSubscriptions(): void {
-    this.customerService.customers$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(customers => {
-        this.customers = customers;
-      });
+  private initializeDataManager(): void {
+    const baseUrl = this.configurationService.baseUrl;
+    this.dataManager = new DataManager({
+      url: `${baseUrl}/api/Customer/UrlDatasource`,
+      adaptor: new UrlAdaptor(),
+      headers: [
+        { 'Authorization': `Bearer ${this.authService.accessToken}` },
+        { 'Content-Type': 'application/json' },
+        { 'Accept': 'application/json, text/plain, */*' }
+      ],
+      crossDomain: true
+    });
+  }
 
+  private setupSubscriptions(): void {
     this.customerService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
@@ -205,20 +239,6 @@ export class CustomersComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadCustomers(): void {
-    this.customerService.loadAllCustomers().subscribe({
-      next: () => {
-        console.log('Customers loaded successfully');
-      },
-      error: (error) => {
-        this.alertService.showMessage(
-          this.translationService.getTranslation('customers.messages.LoadError'),
-          error.message,
-          MessageSeverity.error
-        );
-      }
-    });
-  }
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
@@ -263,7 +283,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
 
   private createCustomer(customerData: any): void {
     const createRequest: CustomerCreateRequest = {
-      name: customerData.email, // Using email as name for now
+      name: customerData.name,
       email: customerData.email,
       phone: customerData.phone,
       contact: customerData.contact,
@@ -295,7 +315,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
   private updateCustomer(customerData: any): void {
     const updateRequest: CustomerUpdateRequest = {
       id: customerData.id,
-      name: customerData.email, // Using email as name for now
+      name: customerData.name,
       email: customerData.email,
       phone: customerData.phone,
       contact: customerData.contact,
@@ -345,7 +365,9 @@ export class CustomersComponent implements OnInit, OnDestroy {
   }
 
   refreshData(): void {
-    this.loadCustomers();
+    if (this.grid) {
+      this.grid.refresh();
+    }
   }
 
   exportToExcel(): void {

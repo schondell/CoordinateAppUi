@@ -4,7 +4,7 @@ const http = require('http');
 console.log('Running test to verify Angular application with Google Maps and Syncfusion...');
 
 // Check if app builds successfully
-const buildProcess = spawn('npx', ['ng', 'build', 'quickapp-pro', '--configuration=development'], {
+const buildProcess = spawn('npx', ['ng', 'build', 'CoordinateUi', '--configuration=development'], {
   stdio: 'inherit',
   shell: true
 });
@@ -14,7 +14,7 @@ buildProcess.on('exit', (code) => {
     console.log('✅ Build successful');
     
     // Try to serve the app
-    const serveProcess = spawn('npx', ['ng', 'serve', 'quickapp-pro', '--port=4200'], {
+    const serveProcess = spawn('npx', ['ng', 'serve', 'CoordinateUi', '--port=4200'], {
       stdio: 'inherit',
       shell: true
     });

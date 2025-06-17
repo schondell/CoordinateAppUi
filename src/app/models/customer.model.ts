@@ -7,7 +7,6 @@ export interface CustomerAddress {
   createdByUserId: number;
   modifiedByUserId?: number;
   isDeleted: boolean;
-  tenantId: number;
   address1: string;
   address2?: string;
   address3?: string;
@@ -46,7 +45,6 @@ export interface Customer {
   createdByUserId: number;
   modifiedByUserId?: number;
   isDeleted: boolean;
-  tenantId: number;
   comment?: string;
 }
 

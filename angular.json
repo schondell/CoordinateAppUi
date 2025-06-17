@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "quickapp-pro": {
+    "CoordinateUi": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -81,10 +81,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "quickapp-pro:build:production"
+              "buildTarget": "CoordinateUi:build:production"
             },
             "development": {
-              "buildTarget": "quickapp-pro:build:development"
+              "buildTarget": "CoordinateUi:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,7 +92,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "quickapp-pro:build"
+            "buildTarget": "CoordinateUi:build"
           }
         },
         "test": {

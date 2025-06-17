@@ -28,7 +28,7 @@ cleanCache.on('exit', () => {
   console.log('Cache cleaned, running ng build...');
   
   // Try to build the app with full configuration
-  const buildProcess = spawn('npx', ['ng', 'build', 'quickapp-pro', '--delete-output-path=false', '--verbose'], {
+  const buildProcess = spawn('npx', ['ng', 'build', 'CoordinateUi', '--delete-output-path=false', '--verbose'], {
     stdio: 'inherit',
     shell: true
   });
@@ -38,7 +38,7 @@ cleanCache.on('exit', () => {
       console.log('Standard build failed, trying development configuration...');
       
       // Try development build configuration
-      const devBuildProcess = spawn('npx', ['ng', 'build', 'quickapp-pro', '--configuration=development', '--delete-output-path=false', '--verbose'], {
+      const devBuildProcess = spawn('npx', ['ng', 'build', 'CoordinateUi', '--configuration=development', '--delete-output-path=false', '--verbose'], {
         stdio: 'inherit',
         shell: true
       });
@@ -48,7 +48,7 @@ cleanCache.on('exit', () => {
           console.log('Development build failed, trying to serve directly...');
           
           // If build fails, try serving directly
-          const serveProcess = spawn('npx', ['ng', 'serve', 'quickapp-pro', '--port=4200', '--disable-host-check', '--verbose'], {
+          const serveProcess = spawn('npx', ['ng', 'serve', 'CoordinateUi', '--port=4200', '--disable-host-check', '--verbose'], {
             stdio: 'inherit',
             shell: true
           });
@@ -70,7 +70,7 @@ cleanCache.on('exit', () => {
       console.log('Build successful, starting server...');
       
       // Start server after successful build
-      const serveProcess = spawn('npx', ['ng', 'serve', 'quickapp-pro', '--port=4200', '--disable-host-check'], {
+      const serveProcess = spawn('npx', ['ng', 'serve', 'CoordinateUi', '--port=4200', '--disable-host-check'], {
         stdio: 'inherit',
         shell: true
       });

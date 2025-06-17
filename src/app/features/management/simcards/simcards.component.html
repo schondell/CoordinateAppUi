@@ -1,0 +1,39 @@
+<app-page-header [title]="'simCards.management.Title' | translate" icon="sim"></app-page-header>
+<div [@fadeInOut] class="page-content">
+  <div class="simcard-management">
+    <div class="grid-container">
+      <ejs-grid
+        #grid
+        [dataSource]="dataManager"
+        [allowPaging]="true"
+        [allowSorting]="true"
+        [allowFiltering]="true"
+        [allowGrouping]="false"
+        [allowExcelExport]="true"
+        [allowPdfExport]="true"
+        [editSettings]="editSettings"
+        [toolbar]="toolbar"
+        [pageSettings]="pageSettings"
+        [filterSettings]="filterSettings"
+        [sortSettings]="sortSettings"
+        [searchSettings]="searchSettings"
+        [columns]="columns"
+        (actionBegin)="onActionBegin($event)"
+        (commandClick)="onCommandClick($event)"
+        (toolbarClick)="onToolbarClick($event)"
+        height="100%"
+        [loadingIndicator]="{ indicatorType: 'Shimmer' }"
+        [showColumnChooser]="true"
+        [showColumnMenu]="true">
+      </ejs-grid>
+    </div>
+
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>{{ 'simCards.management.Loading' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</div>

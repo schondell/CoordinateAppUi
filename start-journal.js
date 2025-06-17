@@ -8,7 +8,7 @@ const path = require('path');
 console.log('Starting Coordinate App with focus on Journal route...');
 
 // Determine project to use based on environment
-const projectName = 'quickapp-pro'; // Use the main project
+const projectName = 'CoordinateUi'; // Use the main project
 const port = 4200;
 
 // Start the Angular application
