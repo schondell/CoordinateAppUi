@@ -31,7 +31,7 @@ cleanProcess.on('exit', () => {
   console.log('🏗️ Building application...');
   
   // Build in development mode for faster builds and better debugging
-  const buildProcess = spawn('npx', ['ng', 'build', 'quickapp-pro', '--configuration=development'], {
+  const buildProcess = spawn('npx', ['ng', 'build', 'CoordinateUi', '--configuration=development'], {
     stdio: 'inherit',
     shell: true
   });
@@ -41,7 +41,7 @@ cleanProcess.on('exit', () => {
       console.log('🚀 Starting development server...');
       
       // Start Angular dev server
-      const serveProcess = spawn('npx', ['ng', 'serve', 'quickapp-pro', '--port=4200'], {
+      const serveProcess = spawn('npx', ['ng', 'serve', 'CoordinateUi', '--port=4200'], {
         stdio: 'inherit',
         shell: true
       });
@@ -56,7 +56,7 @@ cleanProcess.on('exit', () => {
       // If build fails, try to serve directly
       console.log('🔄 Attempting to serve directly...');
       
-      const serveProcess = spawn('npx', ['ng', 'serve', 'quickapp-pro', '--port=4200'], {
+      const serveProcess = spawn('npx', ['ng', 'serve', 'CoordinateUi', '--port=4200'], {
         stdio: 'inherit',
         shell: true
       });

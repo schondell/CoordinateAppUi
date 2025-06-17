@@ -49,6 +49,6 @@
 }
 
 /* Use this mixin in the global styles.scss if component-specific themes are needed */
-@mixin quickapp-pro-app-theme() {
+@mixin coordinate-ui-app-theme() {
   @include apply-theme();
 }

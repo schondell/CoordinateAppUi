@@ -3,10 +3,10 @@
  */
 const { spawn } = require('child_process');
 
-console.log('Starting Coordinate App (quickapp-pro)...');
+console.log('Starting Coordinate App (CoordinateUi)...');
 
 // Start the QuickApp Pro project
-const server = spawn('npx', ['ng', 'serve', '--project=quickapp-pro', '--port=4200'], {
+const server = spawn('npx', ['ng', 'serve', '--project=CoordinateUi', '--port=4200'], {
   stdio: 'inherit',
   shell: true
 });

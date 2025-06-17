@@ -11,20 +11,17 @@ import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { fadeInOut } from '../../../services/animations';
 import { PageHeaderComponent } from '../../../shared/page-header/page-header.component';
-import { Vehicle, VehicleCreateRequest, VehicleUpdateRequest } from '../../../models/vehicle.model';
-import { VehicleService } from '../../../services/vehicle.service';
+import { Address, AddressCreateRequest, AddressUpdateRequest } from '../../../models/address.model';
+import { AddressService } from '../../../services/address.service';
 import { AlertService, MessageSeverity } from '../../../services/alert.service';
 import { AppTranslationService } from '../../../services/app-translation.service';
-import { ReferenceDataService } from '../../../services/reference-data.service';
-import { Address } from '../../../models/address.model';
-import { GpsTracker } from '../../../models/gpstracker.model';
 import { ConfigurationService } from '../../../services/configuration.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-vehicles',
-  templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.scss'],
+  selector: 'app-addresses',
+  templateUrl: './addresses.component.html',
+  styleUrls: ['./addresses.component.scss'],
   animations: [fadeInOut],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -51,18 +48,16 @@ import { AuthService } from '../../../services/auth.service';
     PageHeaderComponent
   ]
 })
-export class VehiclesComponent implements OnInit, OnDestroy {
+export class AddressesComponent implements OnInit, OnDestroy {
   @ViewChild('grid', { static: false }) public grid!: GridComponent;
 
   private destroy$ = new Subject<void>();
 
   public dataManager!: DataManager;
   public loading = false;
-  public selectedVehicle: Vehicle | null = null;
+  public selectedAddress: Address | null = null;
   public isEditing = false;
   public showDialog = false;
-  public addresses: Address[] = [];
-  public gpsTrackers: GpsTracker[] = [];
   
   public editSettings = {
     allowEditing: true,
@@ -98,7 +93,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   };
 
   public searchSettings = {
-    fields: ['name', 'licensePlateNumber', 'vin', 'make', 'model'],
+    fields: ['name', 'address1', 'address2', 'city', 'state', 'country', 'zip'],
     operator: 'contains',
     key: '',
     ignoreCase: true
@@ -107,16 +102,14 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   public columns: any[] = [];
 
   constructor(
-    private vehicleService: VehicleService,
+    private addressService: AddressService,
     private alertService: AlertService,
     private translationService: AppTranslationService,
-    private referenceDataService: ReferenceDataService,
     private configurationService: ConfigurationService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.loadReferenceData();
     this.initializeColumns();
     this.initializeDataManager();
     this.setupSubscriptions();
@@ -125,24 +118,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private loadReferenceData(): void {
-    // Load addresses for future use
-    this.referenceDataService.getAddresses()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(addresses => {
-        this.addresses = addresses;
-      });
-
-    // Load SIM cards for GPS tracker assignments
-    this.referenceDataService.getSimCards()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        // GPS trackers will be loaded when needed
-      });
-    
-    // Note: Groups are not implemented in backend yet, so we skip loading them
   }
 
   private initializeColumns(): void {
@@ -157,59 +132,81 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       },
       {
         field: 'name',
-        headerText: this.translationService.getTranslation('vehicles.fields.Name'),
+        headerText: this.translationService.getTranslation('addresses.fields.Name'),
         width: 150,
         isPrimaryKey: false,
         validationRules: { required: true },
         type: 'string'
       },
       {
-        field: 'licensePlateNumber',
-        headerText: this.translationService.getTranslation('vehicles.fields.LicensePlateNumber'),
-        width: 160,
+        field: 'address1',
+        headerText: this.translationService.getTranslation('addresses.fields.Address1'),
+        width: 200,
+        validationRules: { required: true },
         type: 'string'
       },
       {
-        field: 'vin',
-        headerText: this.translationService.getTranslation('vehicles.fields.VIN'),
-        width: 180,
+        field: 'address2',
+        headerText: this.translationService.getTranslation('addresses.fields.Address2'),
+        width: 150,
         type: 'string'
       },
       {
-        field: 'make',
-        headerText: this.translationService.getTranslation('vehicles.fields.Make'),
+        field: 'city',
+        headerText: this.translationService.getTranslation('addresses.fields.City'),
+        width: 120,
+        validationRules: { required: true },
+        type: 'string'
+      },
+      {
+        field: 'state',
+        headerText: this.translationService.getTranslation('addresses.fields.State'),
+        width: 100,
+        type: 'string'
+      },
+      {
+        field: 'zip',
+        headerText: this.translationService.getTranslation('addresses.fields.Zip'),
+        width: 100,
+        validationRules: { required: true },
+        type: 'string'
+      },
+      {
+        field: 'country',
+        headerText: this.translationService.getTranslation('addresses.fields.Country'),
         width: 120,
         type: 'string'
       },
       {
-        field: 'model',
-        headerText: this.translationService.getTranslation('vehicles.fields.Model'),
-        width: 120,
+        field: 'longitude',
+        headerText: this.translationService.getTranslation('addresses.fields.Longitude'),
+        width: 110,
+        type: 'number',
+        format: 'N6'
+      },
+      {
+        field: 'latitude',
+        headerText: this.translationService.getTranslation('addresses.fields.Latitude'),
+        width: 110,
+        type: 'number',
+        format: 'N6'
+      },
+      {
+        field: 'description',
+        headerText: this.translationService.getTranslation('addresses.fields.Description'),
+        width: 200,
         type: 'string'
-      },
-      {
-        field: 'vehicleYear',
-        headerText: this.translationService.getTranslation('vehicles.fields.VehicleYear'),
-        width: 100,
-        type: 'number'
-      },
-      {
-        field: 'isActive',
-        headerText: this.translationService.getTranslation('vehicles.fields.IsActive'),
-        width: 100,
-        type: 'boolean',
-        displayAsCheckBox: true
       },
       {
         field: 'created',
-        headerText: this.translationService.getTranslation('vehicles.fields.Created'),
+        headerText: this.translationService.getTranslation('addresses.fields.Created'),
         width: 140,
         type: 'datetime',
         format: 'dd/MM/yyyy HH:mm',
         allowEditing: false
       },
       {
-        headerText: this.translationService.getTranslation('vehicles.fields.Actions'),
+        headerText: this.translationService.getTranslation('addresses.fields.Actions'),
         width: 120,
         commands: [
           {
@@ -236,7 +233,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     const accessToken = this.authService.accessToken;
     
     this.dataManager = new DataManager({
-      url: `${baseUrl}/api/Vehicle/UrlDatasource`,
+      url: `${baseUrl}/api/Address/UrlDatasource`,
       adaptor: new UrlAdaptor(),
       crossDomain: true,
       headers: [
@@ -248,46 +245,45 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   }
 
   private setupSubscriptions(): void {
-    this.vehicleService.loading$
+    this.addressService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
         this.loading = loading;
       });
 
-    this.vehicleService.selectedVehicle$
+    this.addressService.selectedAddress$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(vehicle => {
-        this.selectedVehicle = vehicle;
+      .subscribe(address => {
+        this.selectedAddress = address;
       });
   }
-
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
       this.isEditing = false;
-      this.selectedVehicle = null;
+      this.selectedAddress = null;
     } else if (args.requestType === 'beginEdit') {
       this.isEditing = true;
-      this.selectedVehicle = args.rowData;
+      this.selectedAddress = args.rowData;
     } else if (args.requestType === 'save') {
       if (args.action === 'add') {
-        this.createVehicle(args.data);
+        this.createAddress(args.data);
       } else if (args.action === 'edit') {
-        this.updateVehicle(args.data);
+        this.updateAddress(args.data);
       }
     } else if (args.requestType === 'delete') {
-      this.deleteVehicle(args.data[0]);
+      this.deleteAddress(args.data[0]);
     }
   }
 
   onCommandClick(args: CommandClickEventArgs): void {
     if (args.commandColumn?.type === 'Edit') {
       this.isEditing = true;
-      this.selectedVehicle = args.rowData as Vehicle;
+      this.selectedAddress = args.rowData as Address;
       this.grid.startEdit();
     } else if (args.commandColumn?.type === 'Delete') {
-      if (confirm(this.translationService.getTranslation('vehicles.messages.DeleteConfirm'))) {
-        this.deleteVehicle(args.rowData as Vehicle);
+      if (confirm(this.translationService.getTranslation('addresses.messages.DeleteConfirm'))) {
+        this.deleteAddress(args.rowData as Address);
       }
     }
   }
@@ -303,22 +299,27 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createVehicle(vehicleData: any): void {
-    const createRequest: VehicleCreateRequest = {
-      name: vehicleData.name,
-      licensePlateNumber: vehicleData.licensePlateNumber,
-      vin: vehicleData.vin,
-      make: vehicleData.make,
-      model: vehicleData.model,
-      vehicleYear: vehicleData.vehicleYear,
-      isActive: vehicleData.isActive !== undefined ? vehicleData.isActive : true
-      // Note: groupId not included as Groups are not implemented in backend yet
+  private createAddress(addressData: any): void {
+    const createRequest: AddressCreateRequest = {
+      name: addressData.name,
+      address1: addressData.address1,
+      address2: addressData.address2,
+      address3: addressData.address3,
+      city: addressData.city,
+      state: addressData.state,
+      zip: addressData.zip,
+      country: addressData.country,
+      longitude: addressData.longitude,
+      latitude: addressData.latitude,
+      description: addressData.description,
+      timeZone: addressData.timeZone,
+      comment: addressData.comment
     };
 
-    this.vehicleService.createVehicle(createRequest).subscribe({
-      next: (vehicle) => {
+    this.addressService.createAddress(createRequest).subscribe({
+      next: (address) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.CreateSuccess'),
+          this.translationService.getTranslation('addresses.messages.CreateSuccess'),
           '',
           MessageSeverity.success
         );
@@ -326,7 +327,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.CreateError'),
+          this.translationService.getTranslation('addresses.messages.CreateError'),
           error.message,
           MessageSeverity.error
         );
@@ -334,23 +335,28 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateVehicle(vehicleData: any): void {
-    const updateRequest: VehicleUpdateRequest = {
-      id: vehicleData.id,
-      name: vehicleData.name,
-      licensePlateNumber: vehicleData.licensePlateNumber,
-      vin: vehicleData.vin,
-      make: vehicleData.make,
-      model: vehicleData.model,
-      vehicleYear: vehicleData.vehicleYear,
-      isActive: vehicleData.isActive
-      // Note: groupId not included as Groups are not implemented in backend yet
+  private updateAddress(addressData: any): void {
+    const updateRequest: AddressUpdateRequest = {
+      id: addressData.id,
+      name: addressData.name,
+      address1: addressData.address1,
+      address2: addressData.address2,
+      address3: addressData.address3,
+      city: addressData.city,
+      state: addressData.state,
+      zip: addressData.zip,
+      country: addressData.country,
+      longitude: addressData.longitude,
+      latitude: addressData.latitude,
+      description: addressData.description,
+      timeZone: addressData.timeZone,
+      comment: addressData.comment
     };
 
-    this.vehicleService.updateVehicle(vehicleData.id, updateRequest).subscribe({
+    this.addressService.updateAddress(addressData.id, updateRequest).subscribe({
       next: () => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.UpdateSuccess'),
+          this.translationService.getTranslation('addresses.messages.UpdateSuccess'),
           '',
           MessageSeverity.success
         );
@@ -358,7 +364,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.UpdateError'),
+          this.translationService.getTranslation('addresses.messages.UpdateError'),
           error.message,
           MessageSeverity.error
         );
@@ -366,11 +372,11 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private deleteVehicle(vehicle: Vehicle): void {
-    this.vehicleService.deleteVehicle(vehicle.id).subscribe({
+  private deleteAddress(address: Address): void {
+    this.addressService.deleteAddress(address.id).subscribe({
       next: () => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.DeleteSuccess'),
+          this.translationService.getTranslation('addresses.messages.DeleteSuccess'),
           '',
           MessageSeverity.success
         );
@@ -378,7 +384,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.DeleteError'),
+          this.translationService.getTranslation('addresses.messages.DeleteError'),
           error.message,
           MessageSeverity.error
         );

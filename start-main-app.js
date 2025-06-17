@@ -8,7 +8,7 @@ console.log('Starting main Coordinate App with full Syncfusion UI...');
 
 // Run ng serve with the updated project configuration
 const server = spawn('npx', ['ng', 'serve', 
-                            '--project=quickapp-pro',
+                            '--project=CoordinateUi',
                             '--configuration=development',
                             '--port=4200'], {
   stdio: 'inherit',

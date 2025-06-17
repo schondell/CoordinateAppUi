@@ -31,6 +31,7 @@ import { AppDialogComponent } from "./shared/app-dialog/app-dialog.component";
 import { FooterComponent } from './shared/footer/footer.component';
 import { SidebarStandaloneComponent } from './shared/sidebar/sidebar.component.standalone';
 import { NotificationService } from './services/notification.service';
+import { SessionMonitorService } from './services/session-monitor.service';
 
 @Component({
   selector: 'app-root',
@@ -90,6 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
               public signalRService: SignalrService,
               private alertService: AlertService,
               private notificationService: NotificationService,
+              private sessionMonitor: SessionMonitorService,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher)  {
     translate.setDefaultLang('fr');
@@ -289,11 +291,25 @@ export class AppComponent implements OnInit, OnDestroy {
           console.log('Restarting SignalR connection with new auth token');
           this.signalRService.startConnection(this.authService.accessToken);
         }
+
+        // Start session monitoring
+        this.sessionMonitor.startMonitoring({
+          refreshBeforeExpiry: 5,      // Refresh 5 minutes before expiry
+          inactivityWarningTime: 25,   // Warn after 25 minutes of inactivity  
+          inactivityLogoutTime: 30,    // Logout after 30 minutes of inactivity
+          checkInterval: 30,           // Check every 30 seconds
+          showWarnings: true           // Show session expiry warnings
+        });
+        console.log('🔐 Session monitoring started');
       } else {
         // Clear user display name on logout
         this.userDisplayName = '';
         this.userRole = 'User';
-          }
+        
+        // Stop session monitoring
+        this.sessionMonitor.stopMonitoring();
+        console.log('🔐 Session monitoring stopped');
+      }
 
       setTimeout(() => {
         if (!this.isUserLoggedIn) {
@@ -306,6 +322,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // tslint:disable-next-line:deprecation
     this.mobileQuery.removeListener(this._mobileQueryListener); // https://github.com/mdn/sprints/issues/858
+    
+    // Stop session monitoring
+    this.sessionMonitor.stopMonitoring();
   }
 
   mainNav = {

@@ -91,6 +91,12 @@
           <span class="e-menu-text">{{ 'mainMenu.NetworkOperators' | translate }}</span>
         </a>
       </li>
+      <li>
+        <a routerLink="/management/addresses" [class.active]="isActive('/management/addresses')">
+          <span class="e-menu-icon e-icons e-marker"></span>
+          <span class="e-menu-text">{{ 'mainMenu.Addresses' | translate }}</span>
+        </a>
+      </li>
       <li *ngIf="canViewAdminMenu()">
         <a routerLink="/admin" [class.active]="isActive('/admin')">
           <span class="e-menu-icon e-icons e-admin"></span>

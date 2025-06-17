@@ -1,16 +1,16 @@
 export interface Address {
   id: number;
-  name: string;
+  name?: string;
   groupId?: number;
-  address1: string;
+  address1?: string;
   address2?: string;
   address3?: string;
-  city: string;
-  zip: string;
+  city?: string;
+  zip?: string;
   state?: string;
   country?: string;
-  longitude: number;
-  latitude: number;
+  longitude?: number;
+  latitude?: number;
   normalizedAddress?: string;
   timeZone?: string;
   geoHash?: string;
@@ -19,11 +19,56 @@ export interface Address {
   createdForVehicleId?: number;
   firstTime?: Date;
   comment?: string;
-  created: Date;
-  modified: Date;
-  createdByUserId: number;
+  created?: Date;
+  modified?: Date;
+  createdByUserId?: number;
   modifiedByUserId?: number;
-  isDeleted: boolean;
+  isDeleted?: boolean;
+}
+
+export interface AddressCreateRequest {
+  name?: string;
+  groupId?: number;
+  address1?: string;
+  address2?: string;
+  address3?: string;
+  city?: string;
+  zip?: string;
+  state?: string;
+  country?: string;
+  longitude?: number;
+  latitude?: number;
+  normalizedAddress?: string;
+  timeZone?: string;
+  geoHash?: string;
+  description?: string;
+  providerId?: number;
+  createdForVehicleId?: number;
+  firstTime?: Date;
+  comment?: string;
+}
+
+export interface AddressUpdateRequest {
+  id: number;
+  name?: string;
+  groupId?: number;
+  address1?: string;
+  address2?: string;
+  address3?: string;
+  city?: string;
+  zip?: string;
+  state?: string;
+  country?: string;
+  longitude?: number;
+  latitude?: number;
+  normalizedAddress?: string;
+  timeZone?: string;
+  geoHash?: string;
+  description?: string;
+  providerId?: number;
+  createdForVehicleId?: number;
+  firstTime?: Date;
+  comment?: string;
 }
 
 export interface AddressSearchResponse {

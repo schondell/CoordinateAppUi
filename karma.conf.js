@@ -30,7 +30,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/quickapp-pro'),
+      dir: require('path').join(__dirname, './coverage/CoordinateUi'),
       subdir: '.',
       reporters: [
         { type: 'html' },

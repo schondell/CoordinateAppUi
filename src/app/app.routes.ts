@@ -82,6 +82,12 @@ export const routes: Routes = [
     data: { title: 'Network Operator Management' }
   },
   {
+    path: 'management/addresses',
+    loadComponent: () => import('./features/management/addresses/addresses.component').then(c => c.AddressesComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'Address Management' }
+  },
+  {
     path: 'products',
     loadComponent: () => import('./components/products/products.component').then(c => c.ProductsComponent),
     canActivate: [AuthGuard],
