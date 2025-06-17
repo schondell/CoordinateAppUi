@@ -11,17 +11,17 @@ import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { fadeInOut } from '../../../services/animations';
 import { PageHeaderComponent } from '../../../shared/page-header/page-header.component';
-import { Address, AddressCreateRequest, AddressUpdateRequest } from '../../../models/address.model';
-import { AddressService } from '../../../services/address.service';
+import { Resource, ResourceCreateRequest, ResourceUpdateRequest } from '../../../models/resource.model';
+import { ResourceService } from '../../../services/resource.service';
 import { AlertService, MessageSeverity } from '../../../services/alert.service';
 import { AppTranslationService } from '../../../services/app-translation.service';
 import { ConfigurationService } from '../../../services/configuration.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-addresses',
-  templateUrl: './addresses.component.html',
-  styleUrls: ['./addresses.component.scss'],
+  selector: 'app-resources',
+  templateUrl: './resources.component.html',
+  styleUrls: ['./resources.component.scss'],
   animations: [fadeInOut],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -51,14 +51,14 @@ import { AuthService } from '../../../services/auth.service';
     PageHeaderComponent
   ]
 })
-export class AddressesComponent implements OnInit, OnDestroy {
+export class ResourcesComponent implements OnInit, OnDestroy {
   @ViewChild('grid', { static: false }) public grid!: GridComponent;
 
   private destroy$ = new Subject<void>();
 
   public dataManager!: DataManager;
   public loading = false;
-  public selectedAddress: Address | null = null;
+  public selectedResource: Resource | null = null;
   public isEditing = false;
   public showDialog = false;
   
@@ -96,7 +96,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
   };
 
   public searchSettings = {
-    fields: ['name', 'address1', 'address2', 'city', 'state', 'country', 'zip'],
+    fields: ['name', 'description', 'resourceType', 'category', 'location', 'serialNumber', 'barcode', 'manufacturer', 'model', 'status'],
     operator: 'contains',
     key: '',
     ignoreCase: true
@@ -105,7 +105,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
   public columns: any[] = [];
 
   constructor(
-    private addressService: AddressService,
+    private resourceService: ResourceService,
     private alertService: AlertService,
     private translationService: AppTranslationService,
     private configurationService: ConfigurationService,
@@ -135,81 +135,128 @@ export class AddressesComponent implements OnInit, OnDestroy {
       },
       {
         field: 'name',
-        headerText: this.translationService.getTranslation('addresses.fields.Name'),
+        headerText: this.translationService.getTranslation('resources.fields.Name'),
         width: 150,
         isPrimaryKey: false,
         validationRules: { required: true },
         type: 'string'
       },
       {
-        field: 'address1',
-        headerText: this.translationService.getTranslation('addresses.fields.Address1'),
-        width: 200,
-        validationRules: { required: true },
-        type: 'string'
-      },
-      {
-        field: 'address2',
-        headerText: this.translationService.getTranslation('addresses.fields.Address2'),
-        width: 150,
-        type: 'string'
-      },
-      {
-        field: 'city',
-        headerText: this.translationService.getTranslation('addresses.fields.City'),
-        width: 120,
-        validationRules: { required: true },
-        type: 'string'
-      },
-      {
-        field: 'state',
-        headerText: this.translationService.getTranslation('addresses.fields.State'),
-        width: 100,
-        type: 'string'
-      },
-      {
-        field: 'zip',
-        headerText: this.translationService.getTranslation('addresses.fields.Zip'),
-        width: 100,
-        validationRules: { required: true },
-        type: 'string'
-      },
-      {
-        field: 'country',
-        headerText: this.translationService.getTranslation('addresses.fields.Country'),
-        width: 120,
-        type: 'string'
-      },
-      {
-        field: 'longitude',
-        headerText: this.translationService.getTranslation('addresses.fields.Longitude'),
-        width: 110,
-        type: 'number',
-        format: 'N6'
-      },
-      {
-        field: 'latitude',
-        headerText: this.translationService.getTranslation('addresses.fields.Latitude'),
-        width: 110,
-        type: 'number',
-        format: 'N6'
-      },
-      {
         field: 'description',
-        headerText: this.translationService.getTranslation('addresses.fields.Description'),
+        headerText: this.translationService.getTranslation('resources.fields.Description'),
         width: 200,
         type: 'string'
+      },
+      {
+        field: 'resourceType',
+        headerText: this.translationService.getTranslation('resources.fields.ResourceType'),
+        width: 130,
+        type: 'string'
+      },
+      {
+        field: 'category',
+        headerText: this.translationService.getTranslation('resources.fields.Category'),
+        width: 120,
+        type: 'string'
+      },
+      {
+        field: 'unit',
+        headerText: this.translationService.getTranslation('resources.fields.Unit'),
+        width: 80,
+        type: 'string'
+      },
+      {
+        field: 'unitPrice',
+        headerText: this.translationService.getTranslation('resources.fields.UnitPrice'),
+        width: 100,
+        type: 'number',
+        format: 'C2'
+      },
+      {
+        field: 'quantityAvailable',
+        headerText: this.translationService.getTranslation('resources.fields.QuantityAvailable'),
+        width: 120,
+        type: 'number'
+      },
+      {
+        field: 'quantityReserved',
+        headerText: this.translationService.getTranslation('resources.fields.QuantityReserved'),
+        width: 120,
+        type: 'number'
+      },
+      {
+        field: 'location',
+        headerText: this.translationService.getTranslation('resources.fields.Location'),
+        width: 120,
+        type: 'string'
+      },
+      {
+        field: 'serialNumber',
+        headerText: this.translationService.getTranslation('resources.fields.SerialNumber'),
+        width: 130,
+        type: 'string'
+      },
+      {
+        field: 'barcode',
+        headerText: this.translationService.getTranslation('resources.fields.Barcode'),
+        width: 120,
+        type: 'string'
+      },
+      {
+        field: 'manufacturer',
+        headerText: this.translationService.getTranslation('resources.fields.Manufacturer'),
+        width: 130,
+        type: 'string'
+      },
+      {
+        field: 'model',
+        headerText: this.translationService.getTranslation('resources.fields.Model'),
+        width: 120,
+        type: 'string'
+      },
+      {
+        field: 'status',
+        headerText: this.translationService.getTranslation('resources.fields.Status'),
+        width: 100,
+        type: 'string'
+      },
+      {
+        field: 'condition',
+        headerText: this.translationService.getTranslation('resources.fields.Condition'),
+        width: 100,
+        type: 'string'
+      },
+      {
+        field: 'isActive',
+        headerText: this.translationService.getTranslation('resources.fields.IsActive'),
+        width: 90,
+        type: 'boolean',
+        displayAsCheckBox: true
+      },
+      {
+        field: 'purchaseDate',
+        headerText: this.translationService.getTranslation('resources.fields.PurchaseDate'),
+        width: 120,
+        type: 'date',
+        format: 'dd/MM/yyyy'
+      },
+      {
+        field: 'warrantyExpiry',
+        headerText: this.translationService.getTranslation('resources.fields.WarrantyExpiry'),
+        width: 130,
+        type: 'date',
+        format: 'dd/MM/yyyy'
       },
       {
         field: 'created',
-        headerText: this.translationService.getTranslation('addresses.fields.Created'),
+        headerText: this.translationService.getTranslation('resources.fields.Created'),
         width: 140,
         type: 'datetime',
         format: 'dd/MM/yyyy HH:mm',
         allowEditing: false
       },
       {
-        headerText: this.translationService.getTranslation('addresses.fields.Actions'),
+        headerText: this.translationService.getTranslation('resources.fields.Actions'),
         width: 120,
         commands: [
           {
@@ -236,7 +283,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
     const accessToken = this.authService.accessToken;
     
     this.dataManager = new DataManager({
-      url: `${baseUrl}/api/Address/UrlDatasource`,
+      url: `${baseUrl}/api/Resource/UrlDatasource`,
       adaptor: new UrlAdaptor(),
       crossDomain: true,
       headers: [
@@ -248,45 +295,45 @@ export class AddressesComponent implements OnInit, OnDestroy {
   }
 
   private setupSubscriptions(): void {
-    this.addressService.loading$
+    this.resourceService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
         this.loading = loading;
       });
 
-    this.addressService.selectedAddress$
+    this.resourceService.selectedResource$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(address => {
-        this.selectedAddress = address;
+      .subscribe(resource => {
+        this.selectedResource = resource;
       });
   }
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
       this.isEditing = false;
-      this.selectedAddress = null;
+      this.selectedResource = null;
     } else if (args.requestType === 'beginEdit') {
       this.isEditing = true;
-      this.selectedAddress = args.rowData;
+      this.selectedResource = args.rowData;
     } else if (args.requestType === 'save') {
       if (args.action === 'add') {
-        this.createAddress(args.data);
+        this.createResource(args.data);
       } else if (args.action === 'edit') {
-        this.updateAddress(args.data);
+        this.updateResource(args.data);
       }
     } else if (args.requestType === 'delete') {
-      this.deleteAddress(args.data[0]);
+      this.deleteResource(args.data[0]);
     }
   }
 
   onCommandClick(args: CommandClickEventArgs): void {
     if (args.commandColumn?.type === 'Edit') {
       this.isEditing = true;
-      this.selectedAddress = args.rowData as Address;
+      this.selectedResource = args.rowData as Resource;
       this.grid.startEdit();
     } else if (args.commandColumn?.type === 'Delete') {
-      if (confirm(this.translationService.getTranslation('addresses.messages.DeleteConfirm'))) {
-        this.deleteAddress(args.rowData as Address);
+      if (confirm(this.translationService.getTranslation('resources.messages.DeleteConfirm'))) {
+        this.deleteResource(args.rowData as Resource);
       }
     }
   }
@@ -302,27 +349,37 @@ export class AddressesComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createAddress(addressData: any): void {
-    const createRequest: AddressCreateRequest = {
-      name: addressData.name,
-      address1: addressData.address1,
-      address2: addressData.address2,
-      address3: addressData.address3,
-      city: addressData.city,
-      state: addressData.state,
-      zip: addressData.zip,
-      country: addressData.country,
-      longitude: addressData.longitude,
-      latitude: addressData.latitude,
-      description: addressData.description,
-      timeZone: addressData.timeZone,
-      comment: addressData.comment
+  private createResource(resourceData: any): void {
+    const createRequest: ResourceCreateRequest = {
+      name: resourceData.name,
+      description: resourceData.description,
+      resourceType: resourceData.resourceType,
+      category: resourceData.category,
+      unit: resourceData.unit,
+      unitPrice: resourceData.unitPrice,
+      quantityAvailable: resourceData.quantityAvailable,
+      quantityReserved: resourceData.quantityReserved,
+      minimumStock: resourceData.minimumStock,
+      maximumStock: resourceData.maximumStock,
+      location: resourceData.location,
+      serialNumber: resourceData.serialNumber,
+      barcode: resourceData.barcode,
+      manufacturer: resourceData.manufacturer,
+      model: resourceData.model,
+      specifications: resourceData.specifications,
+      purchaseDate: resourceData.purchaseDate,
+      warrantyExpiry: resourceData.warrantyExpiry,
+      condition: resourceData.condition,
+      status: resourceData.status,
+      isActive: resourceData.isActive,
+      notes: resourceData.notes,
+      supplierId: resourceData.supplierId
     };
 
-    this.addressService.createAddress(createRequest).subscribe({
-      next: (address) => {
+    this.resourceService.createResource(createRequest).subscribe({
+      next: (resource) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('addresses.messages.CreateSuccess'),
+          this.translationService.getTranslation('resources.messages.CreateSuccess'),
           '',
           MessageSeverity.success
         );
@@ -330,7 +387,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('addresses.messages.CreateError'),
+          this.translationService.getTranslation('resources.messages.CreateError'),
           error.message,
           MessageSeverity.error
         );
@@ -338,28 +395,38 @@ export class AddressesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateAddress(addressData: any): void {
-    const updateRequest: AddressUpdateRequest = {
-      id: addressData.id,
-      name: addressData.name,
-      address1: addressData.address1,
-      address2: addressData.address2,
-      address3: addressData.address3,
-      city: addressData.city,
-      state: addressData.state,
-      zip: addressData.zip,
-      country: addressData.country,
-      longitude: addressData.longitude,
-      latitude: addressData.latitude,
-      description: addressData.description,
-      timeZone: addressData.timeZone,
-      comment: addressData.comment
+  private updateResource(resourceData: any): void {
+    const updateRequest: ResourceUpdateRequest = {
+      id: resourceData.id,
+      name: resourceData.name,
+      description: resourceData.description,
+      resourceType: resourceData.resourceType,
+      category: resourceData.category,
+      unit: resourceData.unit,
+      unitPrice: resourceData.unitPrice,
+      quantityAvailable: resourceData.quantityAvailable,
+      quantityReserved: resourceData.quantityReserved,
+      minimumStock: resourceData.minimumStock,
+      maximumStock: resourceData.maximumStock,
+      location: resourceData.location,
+      serialNumber: resourceData.serialNumber,
+      barcode: resourceData.barcode,
+      manufacturer: resourceData.manufacturer,
+      model: resourceData.model,
+      specifications: resourceData.specifications,
+      purchaseDate: resourceData.purchaseDate,
+      warrantyExpiry: resourceData.warrantyExpiry,
+      condition: resourceData.condition,
+      status: resourceData.status,
+      isActive: resourceData.isActive,
+      notes: resourceData.notes,
+      supplierId: resourceData.supplierId
     };
 
-    this.addressService.updateAddress(addressData.id, updateRequest).subscribe({
+    this.resourceService.updateResource(resourceData.id, updateRequest).subscribe({
       next: () => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('addresses.messages.UpdateSuccess'),
+          this.translationService.getTranslation('resources.messages.UpdateSuccess'),
           '',
           MessageSeverity.success
         );
@@ -367,7 +434,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('addresses.messages.UpdateError'),
+          this.translationService.getTranslation('resources.messages.UpdateError'),
           error.message,
           MessageSeverity.error
         );
@@ -375,11 +442,11 @@ export class AddressesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private deleteAddress(address: Address): void {
-    this.addressService.deleteAddress(address.id).subscribe({
+  private deleteResource(resource: Resource): void {
+    this.resourceService.deleteResource(resource.id).subscribe({
       next: () => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('addresses.messages.DeleteSuccess'),
+          this.translationService.getTranslation('resources.messages.DeleteSuccess'),
           '',
           MessageSeverity.success
         );
@@ -387,7 +454,7 @@ export class AddressesComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.alertService.showMessage(
-          this.translationService.getTranslation('addresses.messages.DeleteError'),
+          this.translationService.getTranslation('resources.messages.DeleteError'),
           error.message,
           MessageSeverity.error
         );

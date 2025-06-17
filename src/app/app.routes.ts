@@ -88,6 +88,12 @@ export const routes: Routes = [
     data: { title: 'Address Management' }
   },
   {
+    path: 'management/resources',
+    loadComponent: () => import('./features/management/resources/resources.component').then(c => c.ResourcesComponent),
+    canActivate: [AuthGuard],
+    data: { title: 'Resource Management' }
+  },
+  {
     path: 'products',
     loadComponent: () => import('./components/products/products.component').then(c => c.ProductsComponent),
     canActivate: [AuthGuard],

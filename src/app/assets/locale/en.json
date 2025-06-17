@@ -109,6 +109,7 @@
     "GpsTrackers": "GPS Trackers",
     "NetworkOperators": "Network Operators",
     "Addresses": "Addresses",
+    "Resources": "Resources",
     "GpsTracker": "Gps-Trackers",
     "History": "History",
     "Home": "Home",
@@ -802,6 +803,72 @@
       "DeleteError": "Failed to delete address",
       "LoadError": "Failed to load addresses",
       "DeleteConfirm": "Are you sure you want to delete this address?",
+      "DeleteWarning": "This action cannot be undone"
+    },
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search",
+      "Refresh": "Refresh"
+    }
+  },
+  "resources": {
+    "management": {
+      "Title": "Resource Management",
+      "Description": "Manage resource inventory and asset information",
+      "Loading": "Loading resources...",
+      "NoData": "No resources found",
+      "TotalRecords": "Total Resources"
+    },
+    "fields": {
+      "ID": "ID",
+      "Name": "Name",
+      "Description": "Description", 
+      "ResourceType": "Resource Type",
+      "Category": "Category",
+      "Unit": "Unit",
+      "UnitPrice": "Unit Price",
+      "QuantityAvailable": "Available Qty",
+      "QuantityReserved": "Reserved Qty",
+      "MinimumStock": "Min Stock",
+      "MaximumStock": "Max Stock",
+      "Location": "Location",
+      "SerialNumber": "Serial Number",
+      "Barcode": "Barcode",
+      "Manufacturer": "Manufacturer",
+      "Model": "Model",
+      "Specifications": "Specifications",
+      "PurchaseDate": "Purchase Date",
+      "WarrantyExpiry": "Warranty Expiry",
+      "Condition": "Condition",
+      "Status": "Status",
+      "IsActive": "Active",
+      "Notes": "Notes",
+      "SupplierId": "Supplier ID",
+      "Created": "Created",
+      "Modified": "Modified",
+      "Actions": "Actions"
+    },
+    "validation": {
+      "NameRequired": "Name is required",
+      "ResourceTypeRequired": "Resource type is required",
+      "CategoryRequired": "Category is required",
+      "UnitPriceInvalid": "Unit price must be a valid number",
+      "QuantityInvalid": "Quantity must be a valid number",
+      "DateInvalid": "Please enter a valid date"
+    },
+    "messages": {
+      "CreateSuccess": "Resource created successfully",
+      "UpdateSuccess": "Resource updated successfully", 
+      "DeleteSuccess": "Resource deleted successfully",
+      "CreateError": "Failed to create resource",
+      "UpdateError": "Failed to update resource",
+      "DeleteError": "Failed to delete resource",
+      "LoadError": "Failed to load resources",
+      "DeleteConfirm": "Are you sure you want to delete this resource?",
       "DeleteWarning": "This action cannot be undone"
     },
     "toolbar": {

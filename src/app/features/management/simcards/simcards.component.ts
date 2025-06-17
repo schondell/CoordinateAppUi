@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
-import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService } from '@syncfusion/ej2-angular-grids';
+import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService, ResizeService, ColumnMenuService, ColumnChooserService } from '@syncfusion/ej2-angular-grids';
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
@@ -36,7 +36,10 @@ import { AuthService } from '../../../services/auth.service';
     SearchService,
     ExcelExportService,
     PdfExportService,
-    CommandColumnService
+    CommandColumnService,
+    ResizeService,
+    ColumnMenuService,
+    ColumnChooserService
   ],
   imports: [
     CommonModule,
