@@ -1,12 +1,18 @@
 export interface NetworkOperator {
-  id: number;
+  networkOperatorId: number;
+  id?: number; // Keep for backwards compatibility  
+  countryId?: number;
   name?: string;
   email?: string;
   phone?: string;
   contact?: string;
+  addressId?: number;
+  webUrl?: string;
+  imageUrl?: string;
   vatNo?: string;
   apn?: string;
-  webUrl?: string;
+  apnUser?: string;
+  apnUserPassword?: string;
   created?: Date;
   createdByUserId?: number;
   modified?: Date;
@@ -14,24 +20,34 @@ export interface NetworkOperator {
 }
 
 export interface NetworkOperatorCreateRequest {
+  countryId?: number;
   name?: string;
   email?: string;
   phone?: string;
   contact?: string;
+  addressId?: number;
+  webUrl?: string;
+  imageUrl?: string;
   vatNo?: string;
   apn?: string;
-  webUrl?: string;
+  apnUser?: string;
+  apnUserPassword?: string;
 }
 
 export interface NetworkOperatorUpdateRequest {
   id: number;
+  countryId?: number;
   name?: string;
   email?: string;
   phone?: string;
   contact?: string;
+  addressId?: number;
+  webUrl?: string;
+  imageUrl?: string;
   vatNo?: string;
   apn?: string;
-  webUrl?: string;
+  apnUser?: string;
+  apnUserPassword?: string;
 }
 
 export interface NetworkOperatorSearchResponse {

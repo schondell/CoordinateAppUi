@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService } from '@syncfusion/ej2-angular-grids';
+import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
@@ -14,6 +15,12 @@ import { Vehicle, VehicleCreateRequest, VehicleUpdateRequest } from '../../../mo
 import { VehicleService } from '../../../services/vehicle.service';
 import { AlertService, MessageSeverity } from '../../../services/alert.service';
 import { AppTranslationService } from '../../../services/app-translation.service';
+import { ReferenceDataService } from '../../../services/reference-data.service';
+import { Group } from '../../../models/group.model';
+import { Address } from '../../../models/address.model';
+import { GpsTracker } from '../../../models/gpstracker.model';
+import { ConfigurationService } from '../../../services/configuration.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-vehicles',
@@ -50,11 +57,14 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public vehicles: Vehicle[] = [];
+  public dataManager!: DataManager;
   public loading = false;
   public selectedVehicle: Vehicle | null = null;
   public isEditing = false;
   public showDialog = false;
+  public groups: Group[] = [];
+  public addresses: Address[] = [];
+  public gpsTrackers: GpsTracker[] = [];
   
   public editSettings = {
     allowEditing: true,
@@ -101,12 +111,16 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   constructor(
     private vehicleService: VehicleService,
     private alertService: AlertService,
-    private translationService: AppTranslationService
+    private translationService: AppTranslationService,
+    private referenceDataService: ReferenceDataService,
+    private configurationService: ConfigurationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.loadReferenceData();
     this.initializeColumns();
-    this.loadVehicles();
+    this.initializeDataManager();
     this.setupSubscriptions();
   }
 
@@ -115,8 +129,37 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private loadReferenceData(): void {
+    this.referenceDataService.getGroups()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(groups => {
+        this.groups = groups;
+      });
+
+    this.referenceDataService.getAddresses()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(addresses => {
+        this.addresses = addresses;
+      });
+
+    // For GPS trackers, we need to load them as they might not exist yet
+    this.referenceDataService.getSimCards()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        // GPS trackers will be loaded when needed
+      });
+  }
+
   private initializeColumns(): void {
     this.columns = [
+      {
+        field: 'id',
+        headerText: this.translationService.getTranslation('common.fields.ID'),
+        width: 80,
+        isPrimaryKey: true,
+        type: 'number',
+        allowEditing: false
+      },
       {
         field: 'name',
         headerText: this.translationService.getTranslation('vehicles.fields.Name'),
@@ -124,6 +167,12 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         isPrimaryKey: false,
         validationRules: { required: true },
         type: 'string'
+      },
+      {
+        field: 'groupId',
+        headerText: this.translationService.getTranslation('vehicles.fields.Group'),
+        width: 140,
+        type: 'number'
       },
       {
         field: 'licensePlateNumber',
@@ -167,7 +216,8 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         headerText: this.translationService.getTranslation('vehicles.fields.Created'),
         width: 140,
         type: 'datetime',
-        format: 'dd/MM/yyyy HH:mm'
+        format: 'dd/MM/yyyy HH:mm',
+        allowEditing: false
       },
       {
         headerText: this.translationService.getTranslation('vehicles.fields.Actions'),
@@ -192,13 +242,23 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private setupSubscriptions(): void {
-    this.vehicleService.vehicles$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(vehicles => {
-        this.vehicles = vehicles;
-      });
+  private initializeDataManager(): void {
+    const baseUrl = this.configurationService.baseUrl;
+    const accessToken = this.authService.accessToken;
+    
+    this.dataManager = new DataManager({
+      url: `${baseUrl}/api/Vehicle/UrlDatasource`,
+      adaptor: new UrlAdaptor(),
+      crossDomain: true,
+      headers: [
+        { 'Authorization': `Bearer ${accessToken}` },
+        { 'Content-Type': 'application/json' },
+        { 'Accept': 'application/json, text/plain, */*' }
+      ]
+    });
+  }
 
+  private setupSubscriptions(): void {
     this.vehicleService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
@@ -212,20 +272,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadVehicles(): void {
-    this.vehicleService.loadAllVehicles().subscribe({
-      next: () => {
-        console.log('Vehicles loaded successfully');
-      },
-      error: (error) => {
-        this.alertService.showMessage(
-          this.translationService.getTranslation('vehicles.messages.LoadError'),
-          error.message,
-          MessageSeverity.error
-        );
-      }
-    });
-  }
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
@@ -350,7 +396,9 @@ export class VehiclesComponent implements OnInit, OnDestroy {
   }
 
   refreshData(): void {
-    this.loadVehicles();
+    if (this.grid) {
+      this.grid.refresh();
+    }
   }
 
   exportToExcel(): void {

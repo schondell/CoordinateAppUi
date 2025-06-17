@@ -1,13 +1,23 @@
 export interface Vehicle {
   id: number;
   name?: string;
+  groupId?: number;
   licensePlateNumber?: string;
   vin?: string;
   make?: string;
   model?: string;
   vehicleYear?: number;
   isActive?: boolean;
-  tenantId?: number;
+  hasOBD?: boolean;
+  gpsTrackerId?: number;
+  adjustStartAddressToHome?: boolean;
+  adjustStartWithInDistance?: number;
+  adjustEndAddressToHome?: boolean;
+  adjustEndWithInDistance?: number;
+  vehicleType?: string;
+  odometer?: number;
+  comment?: string;
+  addressId?: number;
   created?: Date;
   createdByUserId?: number;
   modified?: Date;
@@ -16,23 +26,45 @@ export interface Vehicle {
 
 export interface VehicleCreateRequest {
   name?: string;
+  groupId?: number;
   licensePlateNumber?: string;
   vin?: string;
   make?: string;
   model?: string;
   vehicleYear?: number;
   isActive?: boolean;
+  hasOBD?: boolean;
+  gpsTrackerId?: number;
+  adjustStartAddressToHome?: boolean;
+  adjustStartWithInDistance?: number;
+  adjustEndAddressToHome?: boolean;
+  adjustEndWithInDistance?: number;
+  vehicleType?: string;
+  odometer?: number;
+  comment?: string;
+  addressId?: number;
 }
 
 export interface VehicleUpdateRequest {
   id: number;
   name?: string;
+  groupId?: number;
   licensePlateNumber?: string;
   vin?: string;
   make?: string;
   model?: string;
   vehicleYear?: number;
   isActive?: boolean;
+  hasOBD?: boolean;
+  gpsTrackerId?: number;
+  adjustStartAddressToHome?: boolean;
+  adjustStartWithInDistance?: number;
+  adjustEndAddressToHome?: boolean;
+  adjustEndWithInDistance?: number;
+  vehicleType?: string;
+  odometer?: number;
+  comment?: string;
+  addressId?: number;
 }
 
 export interface VehicleSearchResponse {

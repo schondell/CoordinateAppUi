@@ -4,7 +4,7 @@
     <div class="grid-container">
       <ejs-grid
         #grid
-        [dataSource]="gpsTrackers"
+        [dataSource]="dataManager"
         [allowPaging]="true"
         [allowSorting]="true"
         [allowFiltering]="true"
@@ -32,7 +32,7 @@
     <div *ngIf="loading" class="loading-overlay">
       <div class="loading-spinner">
         <div class="spinner"></div>
-        <p>Loading GPS trackers...</p>
+        <p>{{ 'gpsTrackers.management.Loading' | translate }}</p>
       </div>
     </div>
   </div>

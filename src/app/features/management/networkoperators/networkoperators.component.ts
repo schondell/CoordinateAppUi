@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService } from '@syncfusion/ej2-angular-grids';
+import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
@@ -14,6 +15,8 @@ import { NetworkOperator, NetworkOperatorCreateRequest, NetworkOperatorUpdateReq
 import { NetworkOperatorService } from '../../../services/networkoperator.service';
 import { AlertService, MessageSeverity } from '../../../services/alert.service';
 import { AppTranslationService } from '../../../services/app-translation.service';
+import { ConfigurationService } from '../../../services/configuration.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-networkoperators',
@@ -50,7 +53,7 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public networkOperators: NetworkOperator[] = [];
+  public dataManager!: DataManager;
   public loading = false;
   public selectedNetworkOperator: NetworkOperator | null = null;
   public isEditing = false;
@@ -101,12 +104,14 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
   constructor(
     private networkOperatorService: NetworkOperatorService,
     private alertService: AlertService,
-    private translationService: AppTranslationService
+    private translationService: AppTranslationService,
+    private configurationService: ConfigurationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.initializeColumns();
-    this.loadNetworkOperators();
+    this.initializeDataManager();
     this.setupSubscriptions();
   }
 
@@ -117,6 +122,22 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
 
   private initializeColumns(): void {
     this.columns = [
+      {
+        field: 'networkOperatorId',
+        headerText: this.translationService.getTranslation('common.fields.ID'),
+        width: 80,
+        isPrimaryKey: true,
+        type: 'number',
+        allowEditing: false
+      },
+      {
+        field: 'id',
+        headerText: 'Legacy ID',
+        width: 80,
+        type: 'number',
+        visible: false,
+        allowEditing: false
+      },
       {
         field: 'name',
         headerText: this.translationService.getTranslation('networkOperators.fields.Name'),
@@ -167,7 +188,8 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
         headerText: this.translationService.getTranslation('networkOperators.fields.Created'),
         width: 140,
         type: 'datetime',
-        format: 'dd/MM/yyyy HH:mm'
+        format: 'dd/MM/yyyy HH:mm',
+        allowEditing: false
       },
       {
         headerText: this.translationService.getTranslation('networkOperators.fields.Actions'),
@@ -192,13 +214,21 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private setupSubscriptions(): void {
-    this.networkOperatorService.networkOperators$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(networkOperators => {
-        this.networkOperators = networkOperators;
-      });
+  private initializeDataManager(): void {
+    const baseUrl = this.configurationService.baseUrl;
+    this.dataManager = new DataManager({
+      url: `${baseUrl}/api/NetworkOperator/UrlDatasource`,
+      adaptor: new UrlAdaptor(),
+      headers: [
+        { 'Authorization': `Bearer ${this.authService.accessToken}` },
+        { 'Content-Type': 'application/json' },
+        { 'Accept': 'application/json, text/plain, */*' }
+      ],
+      crossDomain: true
+    });
+  }
 
+  private setupSubscriptions(): void {
     this.networkOperatorService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
@@ -212,20 +242,6 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadNetworkOperators(): void {
-    this.networkOperatorService.loadAllNetworkOperators().subscribe({
-      next: () => {
-        console.log('Network operators loaded successfully');
-      },
-      error: (error) => {
-        this.alertService.showMessage(
-          this.translationService.getTranslation('networkOperators.messages.LoadError'),
-          error.message,
-          MessageSeverity.error
-        );
-      }
-    });
-  }
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
@@ -299,8 +315,9 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
   }
 
   private updateNetworkOperator(networkOperatorData: any): void {
+    const id = networkOperatorData.networkOperatorId || networkOperatorData.id;
     const updateRequest: NetworkOperatorUpdateRequest = {
-      id: networkOperatorData.id,
+      id: id,
       name: networkOperatorData.name,
       email: networkOperatorData.email,
       phone: networkOperatorData.phone,
@@ -310,7 +327,7 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
       webUrl: networkOperatorData.webUrl
     };
 
-    this.networkOperatorService.updateNetworkOperator(networkOperatorData.id, updateRequest).subscribe({
+    this.networkOperatorService.updateNetworkOperator(id, updateRequest).subscribe({
       next: () => {
         this.alertService.showMessage(
           this.translationService.getTranslation('networkOperators.messages.UpdateSuccess'),
@@ -330,7 +347,8 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
   }
 
   private deleteNetworkOperator(networkOperator: NetworkOperator): void {
-    this.networkOperatorService.deleteNetworkOperator(networkOperator.id).subscribe({
+    const id = networkOperator.networkOperatorId || networkOperator.id;
+    this.networkOperatorService.deleteNetworkOperator(id).subscribe({
       next: () => {
         this.alertService.showMessage(
           this.translationService.getTranslation('networkOperators.messages.DeleteSuccess'),
@@ -350,7 +368,9 @@ export class NetworkOperatorsComponent implements OnInit, OnDestroy {
   }
 
   refreshData(): void {
-    this.loadNetworkOperators();
+    if (this.grid) {
+      this.grid.refresh();
+    }
   }
 
   exportToExcel(): void {

@@ -354,6 +354,7 @@
       "TotalRecords": "Total {{count}} customers"
     },
     "fields": {
+      "Name": "Name",
       "Email": "Email",
       "Contact": "Contact Person",
       "Phone": "Phone Number",
@@ -454,12 +455,19 @@
     },
     "fields": {
       "Name": "Name",
+      "Group": "Group",
       "LicensePlateNumber": "License Plate Number",
       "VIN": "VIN",
       "Make": "Make",
       "Model": "Model",
       "VehicleYear": "Vehicle Year",
       "IsActive": "Active",
+      "HasOBD": "Has OBD",
+      "GpsTracker": "GPS Tracker",
+      "Address": "Address",
+      "VehicleType": "Vehicle Type",
+      "Odometer": "Odometer",
+      "Comment": "Comment",
       "Created": "Created Date",
       "Modified": "Modified Date",
       "Actions": "Actions"
@@ -521,9 +529,11 @@
     },
     "fields": {
       "Name": "Name",
+      "NetworkOperator": "Network Operator",
       "ICCID": "ICCID",
       "IMSI": "IMSI",
       "MobileNumber": "Mobile Number",
+      "PUK": "PUK",
       "Description": "Description",
       "IsActive": "Active",
       "Created": "Created Date",
@@ -631,6 +641,25 @@
       "PdfExport": "PDF Export",
       "Search": "Search",
       "Refresh": "Refresh"
+    }
+  },
+  "common": {
+    "toolbar": {
+      "Add": "Add",
+      "Edit": "Edit", 
+      "Delete": "Delete",
+      "Update": "Update",
+      "Cancel": "Cancel",
+      "ExcelExport": "Excel Export",
+      "PdfExport": "PDF Export",
+      "Search": "Search"
+    },
+    "messages": {
+      "Loading": "Loading...",
+      "NoData": "No data available"
+    },
+    "fields": {
+      "ID": "ID"
     }
   },
   "networkOperators": {

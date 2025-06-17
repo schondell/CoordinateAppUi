@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService } from '@syncfusion/ej2-angular-grids';
+import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
@@ -14,6 +15,10 @@ import { SimCard, SimCardCreateRequest, SimCardUpdateRequest } from '../../../mo
 import { SimCardService } from '../../../services/simcard.service';
 import { AlertService, MessageSeverity } from '../../../services/alert.service';
 import { AppTranslationService } from '../../../services/app-translation.service';
+import { ReferenceDataService } from '../../../services/reference-data.service';
+import { NetworkOperator } from '../../../models/networkoperator.model';
+import { ConfigurationService } from '../../../services/configuration.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-simcards',
@@ -50,11 +55,12 @@ export class SimCardsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public simCards: SimCard[] = [];
+  public dataManager!: DataManager;
   public loading = false;
   public selectedSimCard: SimCard | null = null;
   public isEditing = false;
   public showDialog = false;
+  public networkOperators: NetworkOperator[] = [];
   
   public editSettings = {
     allowEditing: true,
@@ -101,12 +107,17 @@ export class SimCardsComponent implements OnInit, OnDestroy {
   constructor(
     private simCardService: SimCardService,
     private alertService: AlertService,
-    private translationService: AppTranslationService
+    private translationService: AppTranslationService,
+    private referenceDataService: ReferenceDataService,
+    private configurationService: ConfigurationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.loadReferenceData();
     this.initializeColumns();
-    this.loadSimCards();
+    this.initializeDataManager();
+    this.testBackendEndpoint(); // Debug endpoint
     this.setupSubscriptions();
   }
 
@@ -115,8 +126,34 @@ export class SimCardsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private loadReferenceData(): void {
+    console.log('Loading NetworkOperators...');
+    this.referenceDataService.getNetworkOperators()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(operators => {
+        console.log('NetworkOperators loaded:', operators.length, operators);
+        this.networkOperators = operators;
+      });
+  }
+
   private initializeColumns(): void {
     this.columns = [
+      {
+        field: 'simCardId',
+        headerText: this.translationService.getTranslation('common.fields.ID'),
+        width: 80,
+        isPrimaryKey: true,
+        type: 'number',
+        allowEditing: false
+      },
+      {
+        field: 'id',
+        headerText: 'Legacy ID',
+        width: 80,
+        type: 'number',
+        visible: false,
+        allowEditing: false
+      },
       {
         field: 'name',
         headerText: this.translationService.getTranslation('simCards.fields.Name'),
@@ -124,6 +161,12 @@ export class SimCardsComponent implements OnInit, OnDestroy {
         isPrimaryKey: false,
         validationRules: { required: true },
         type: 'string'
+      },
+      {
+        field: 'networkOperatorId',
+        headerText: this.translationService.getTranslation('simCards.fields.NetworkOperator'),
+        width: 180,
+        type: 'number'
       },
       {
         field: 'iccid',
@@ -144,6 +187,12 @@ export class SimCardsComponent implements OnInit, OnDestroy {
         type: 'string'
       },
       {
+        field: 'puk',
+        headerText: this.translationService.getTranslation('simCards.fields.PUK'),
+        width: 120,
+        type: 'string'
+      },
+      {
         field: 'description',
         headerText: this.translationService.getTranslation('simCards.fields.Description'),
         width: 200,
@@ -161,7 +210,8 @@ export class SimCardsComponent implements OnInit, OnDestroy {
         headerText: this.translationService.getTranslation('simCards.fields.Created'),
         width: 140,
         type: 'datetime',
-        format: 'dd/MM/yyyy HH:mm'
+        format: 'dd/MM/yyyy HH:mm',
+        allowEditing: false
       },
       {
         headerText: this.translationService.getTranslation('simCards.fields.Actions'),
@@ -186,13 +236,73 @@ export class SimCardsComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private setupSubscriptions(): void {
-    this.simCardService.simCards$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(simCards => {
-        this.simCards = simCards;
-      });
 
+  private initializeDataManager(): void {
+    const baseUrl = this.configurationService.baseUrl;
+    const accessToken = this.authService.accessToken;
+    
+    console.log('🔧 DataManager Debug Info:', {
+      baseUrl: baseUrl,
+      endpoint: `${baseUrl}/api/SimCard/UrlDatasource`,
+      hasToken: !!accessToken,
+      tokenPrefix: accessToken ? accessToken.substring(0, 20) + '...' : 'none'
+    });
+    
+    // Production-ready DataManager with proper authentication
+    const headers: any[] = [];
+    if (accessToken) {
+      headers.push({ 'Authorization': `Bearer ${accessToken}` });
+      headers.push({ 'Content-Type': 'application/json' });
+      headers.push({ 'Accept': 'application/json' });
+    }
+    
+    this.dataManager = new DataManager({
+      url: `${baseUrl}/api/SimCard/UrlDatasource`,
+      adaptor: new UrlAdaptor(),
+      crossDomain: true,
+      headers: headers
+    });
+    
+    // Add error handling
+    this.dataManager.dataSource.offline = false;
+  }
+
+  private testBackendEndpoint(): void {
+    // Test if the endpoint exists and works
+    const baseUrl = this.configurationService.baseUrl;
+    console.log('🧪 Testing backend endpoint directly...');
+    
+    // Try the basic endpoint first
+    this.simCardService.loadAllSimCards().subscribe({
+      next: () => {
+        console.log('✅ Basic SimCard endpoint works');
+      },
+      error: (error) => {
+        console.error('❌ Basic SimCard endpoint failed:', error);
+      }
+    });
+    
+    // Try the DataManager endpoint directly
+    const testRequest = {
+      skip: 0,
+      take: 20,
+      requiresCounts: true,
+      sorted: [],
+      where: [],
+      search: []
+    };
+    
+    this.simCardService.getSimCardsForDataGrid(testRequest).subscribe({
+      next: (response) => {
+        console.log('✅ UrlDatasource endpoint works:', response);
+      },
+      error: (error) => {
+        console.error('❌ UrlDatasource endpoint failed:', error);
+      }
+    });
+  }
+
+  private setupSubscriptions(): void {
     this.simCardService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
@@ -206,20 +316,6 @@ export class SimCardsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadSimCards(): void {
-    this.simCardService.loadAllSimCards().subscribe({
-      next: () => {
-        console.log('SIM cards loaded successfully');
-      },
-      error: (error) => {
-        this.alertService.showMessage(
-          this.translationService.getTranslation('simCards.messages.LoadError'),
-          error.message,
-          MessageSeverity.error
-        );
-      }
-    });
-  }
 
   onActionBegin(args: any): void {
     if (args.requestType === 'add') {
@@ -265,9 +361,11 @@ export class SimCardsComponent implements OnInit, OnDestroy {
   private createSimCard(simCardData: any): void {
     const createRequest: SimCardCreateRequest = {
       name: simCardData.name,
+      networkOperatorId: simCardData.networkOperatorId,
       iccid: simCardData.iccid,
       imsi: simCardData.imsi,
       mobileNumber: simCardData.mobileNumber,
+      puk: simCardData.puk,
       description: simCardData.description,
       isActive: simCardData.isActive !== undefined ? simCardData.isActive : true
     };
@@ -292,17 +390,20 @@ export class SimCardsComponent implements OnInit, OnDestroy {
   }
 
   private updateSimCard(simCardData: any): void {
+    const id = simCardData.simCardId || simCardData.id;
     const updateRequest: SimCardUpdateRequest = {
-      id: simCardData.id,
+      id: id,
       name: simCardData.name,
+      networkOperatorId: simCardData.networkOperatorId,
       iccid: simCardData.iccid,
       imsi: simCardData.imsi,
       mobileNumber: simCardData.mobileNumber,
+      puk: simCardData.puk,
       description: simCardData.description,
       isActive: simCardData.isActive
     };
 
-    this.simCardService.updateSimCard(simCardData.id, updateRequest).subscribe({
+    this.simCardService.updateSimCard(id, updateRequest).subscribe({
       next: () => {
         this.alertService.showMessage(
           this.translationService.getTranslation('simCards.messages.UpdateSuccess'),
@@ -322,7 +423,8 @@ export class SimCardsComponent implements OnInit, OnDestroy {
   }
 
   private deleteSimCard(simCard: SimCard): void {
-    this.simCardService.deleteSimCard(simCard.id).subscribe({
+    const id = simCard.simCardId || simCard.id;
+    this.simCardService.deleteSimCard(id).subscribe({
       next: () => {
         this.alertService.showMessage(
           this.translationService.getTranslation('simCards.messages.DeleteSuccess'),
@@ -342,7 +444,9 @@ export class SimCardsComponent implements OnInit, OnDestroy {
   }
 
   refreshData(): void {
-    this.loadSimCards();
+    if (this.grid) {
+      this.grid.refresh();
+    }
   }
 
   exportToExcel(): void {

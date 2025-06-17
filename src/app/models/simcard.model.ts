@@ -1,12 +1,14 @@
 export interface SimCard {
-  id: number;
+  simCardId: number;
+  id?: number; // Keep for backwards compatibility
   name?: string;
   iccid?: string;
   imsi?: string;
   mobileNumber?: string;
+  puk?: string;
   description?: string;
+  networkOperatorId?: number;
   isActive?: boolean;
-  tenantId?: number;
   created?: Date;
   createdByUserId?: number;
   modified?: Date;
@@ -18,7 +20,9 @@ export interface SimCardCreateRequest {
   iccid?: string;
   imsi?: string;
   mobileNumber?: string;
+  puk?: string;
   description?: string;
+  networkOperatorId?: number;
   isActive?: boolean;
 }
 
@@ -28,7 +32,9 @@ export interface SimCardUpdateRequest {
   iccid?: string;
   imsi?: string;
   mobileNumber?: string;
+  puk?: string;
   description?: string;
+  networkOperatorId?: number;
   isActive?: boolean;
 }
 

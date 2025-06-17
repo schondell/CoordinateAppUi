@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GridComponent, GridModule, EditService, ToolbarService, PageService, SortService, FilterService, SearchService, ExcelExportService, PdfExportService, CommandClickEventArgs, CommandColumnService } from '@syncfusion/ej2-angular-grids';
+import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DialogModule } from '@syncfusion/ej2-angular-popups';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
@@ -15,6 +16,8 @@ import { WorkOrder, WorkOrderCreateRequest, WorkOrderUpdateRequest } from '../..
 import { WorkOrderService } from '../../services/workorder.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { AppTranslationService } from '../../services/app-translation.service';
+import { ConfigurationService } from '../../services/configuration.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-workorders',
@@ -54,7 +57,7 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  public workOrders: WorkOrder[] = [];
+  public dataManager!: DataManager;
   public loading = false;
   public selectedWorkOrder: any = {};
   public isEditing = false;
@@ -106,12 +109,14 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   constructor(
     private workOrderService: WorkOrderService,
     private alertService: AlertService,
-    private translationService: AppTranslationService
+    private translationService: AppTranslationService,
+    private configurationService: ConfigurationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.initializeColumns();
-    this.loadWorkOrders();
+    this.initializeDataManager();
     this.setupSubscriptions();
   }
 
@@ -124,10 +129,11 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     this.columns = [
       {
         field: 'id',
-        headerText: 'ID',
+        headerText: this.translationService.getTranslation('common.fields.ID'),
         width: 80,
         isPrimaryKey: true,
-        type: 'number'
+        type: 'number',
+        allowEditing: false
       },
       {
         field: 'title',
@@ -161,7 +167,8 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
         headerText: this.translationService.getTranslation('workOrders.fields.Created'),
         width: 140,
         type: 'datetime',
-        format: 'dd/MM/yyyy HH:mm'
+        format: 'dd/MM/yyyy HH:mm',
+        allowEditing: false
       },
       {
         headerText: this.translationService.getTranslation('workOrders.fields.Actions'),
@@ -186,13 +193,21 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
     ];
   }
 
-  private setupSubscriptions(): void {
-    this.workOrderService.workOrders$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(workOrders => {
-        this.workOrders = workOrders;
-      });
+  private initializeDataManager(): void {
+    const baseUrl = this.configurationService.baseUrl;
+    this.dataManager = new DataManager({
+      url: `${baseUrl}/api/WorkOrder/UrlDatasource`,
+      adaptor: new UrlAdaptor(),
+      headers: [
+        { 'Authorization': `Bearer ${this.authService.accessToken}` },
+        { 'Content-Type': 'application/json' },
+        { 'Accept': 'application/json, text/plain, */*' }
+      ],
+      crossDomain: true
+    });
+  }
 
+  private setupSubscriptions(): void {
     this.workOrderService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
@@ -208,20 +223,6 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadWorkOrders(): void {
-    this.workOrderService.loadAllWorkOrders().subscribe({
-      next: () => {
-        console.log('Work orders loaded successfully');
-      },
-      error: (error) => {
-        this.alertService.showMessage(
-          this.translationService.getTranslation('workOrders.messages.LoadError'),
-          error.message,
-          MessageSeverity.error
-        );
-      }
-    });
-  }
 
 
   onActionBegin(args: any): void {
@@ -371,7 +372,9 @@ export class WorkOrdersComponent implements OnInit, OnDestroy {
   }
 
   refreshData(): void {
-    this.loadWorkOrders();
+    if (this.grid) {
+      this.grid.refresh();
+    }
   }
 
   exportToExcel(): void {

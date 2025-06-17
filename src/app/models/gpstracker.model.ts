@@ -1,11 +1,14 @@
 export interface GpsTracker {
   id: number;
+  vehicleId?: number;
   name?: string;
   trackerIdentification?: string;
   imeNumber?: string;
+  gpsTrackerTypeId?: number;
+  mobileSettingId?: number;
   trackerPassword?: string;
+  simCardId?: number;
   isActive?: boolean;
-  tenantId?: number;
   created?: Date;
   createdByUserId?: number;
   modified?: Date;
@@ -13,19 +16,27 @@ export interface GpsTracker {
 }
 
 export interface GpsTrackerCreateRequest {
+  vehicleId?: number;
   name?: string;
   trackerIdentification?: string;
   imeNumber?: string;
+  gpsTrackerTypeId?: number;
+  mobileSettingId?: number;
   trackerPassword?: string;
+  simCardId?: number;
   isActive?: boolean;
 }
 
 export interface GpsTrackerUpdateRequest {
   id: number;
+  vehicleId?: number;
   name?: string;
   trackerIdentification?: string;
   imeNumber?: string;
+  gpsTrackerTypeId?: number;
+  mobileSettingId?: number;
   trackerPassword?: string;
+  simCardId?: number;
   isActive?: boolean;
 }
 
