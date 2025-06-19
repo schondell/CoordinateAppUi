@@ -96,7 +96,7 @@ export class SignalrService {
         })
         .catch(err => {
           console.error('Error starting SignalR connection:', err);
-          // Try to reconnect after a delay if connection fails
+          // Try to reconnect after a delay if the connection fails
           setTimeout(() => {
             if (this.authService.isLoggedIn) {
               console.log('Retrying SignalR connection...');

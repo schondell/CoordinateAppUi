@@ -69,15 +69,14 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
   }
 
   private updateVehicleCard(data: { vehicleId: number; vehicleSummary: VehicleSummary }) {
-    if (data && data.vehicleSummary) {  // Check if data and vehicleSummary are not null or undefined
-      // Check if the deviceTimestamp is a new day in the user's timezone
-      const deviceTimestamp = data.vehicleSummary.deviceTimestamp;
+    if (data && data.vehicleSummary) {
+      const vehicleSummary = data.vehicleSummary;
+      const deviceTimestamp = vehicleSummary.deviceTimestamp;
       const newTimestamp = deviceTimestamp ? new Date(deviceTimestamp) : null;
       const lastVertex = this.vertices.length > 0 ? this.vertices[this.vertices.length - 1] : null;
       let shouldReset = false;
       if (lastVertex && this.vehicle && this.vehicle.deviceTimestamp && newTimestamp) {
         const lastTimestamp = new Date(this.vehicle.deviceTimestamp);
-        // Compare the local date parts (year, month, day)
         if (
           newTimestamp.getFullYear() !== lastTimestamp.getFullYear() ||
           newTimestamp.getMonth() !== lastTimestamp.getMonth() ||
@@ -87,58 +86,77 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
         }
       }
       if (shouldReset) {
-        // Clear all markers and vertices
         this.vertices = [];
         this.markerOptions = {};
       }
 
-      console.log(`Vehicle Make is: ${data.vehicleSummary.make}`);
-      console.log(`Vehicle Model is: ${data.vehicleSummary.model}`);
-      console.log(`Vehicle Year is: ${data.vehicleSummary.modelYear}`);
+      // Log updated and new properties
+      console.log(`Vehicle Make is: ${vehicleSummary.make}`);
+      console.log(`Vehicle Model is: ${vehicleSummary.model}`);
+      console.log(`Vehicle Year is: ${vehicleSummary.modelYear}`);
+      console.log(`Vehicle polyLineRoute: ${vehicleSummary.polyLineRoute}`);
+      console.log(`Vehicle alarms:`, vehicleSummary.alarms);
 
-      this.name = data.vehicleSummary.name;
-      this.speed = formatNumber(data.vehicleSummary.speed, this.currentLocale, "1.0-0");
-      this.distance = formatNumber(this.toKilometers(data.vehicleSummary.currentTripMileage), this.currentLocale, "1.0-0");
+      // Always use Number() to ensure lat/lng are numbers
+      const lat = Number(vehicleSummary.latitude);
+      const lng = Number(vehicleSummary.longitude);
+      this.name = vehicleSummary.name;
+      this.speed = formatNumber(vehicleSummary.speed, this.currentLocale, "1.0-0");
+      this.distance = formatNumber(this.toKilometers(vehicleSummary.currentTripMileage), this.currentLocale, "1.0-0");
       this.timeStamp = deviceTimestamp ? formatDate(deviceTimestamp, "HH:MM", this.currentLocale, this.userTimezone) : '';
 
       // update the markerOptions position
-      const lat = data.vehicleSummary.latitude || 0;
-      const lng = data.vehicleSummary.longitude || 0;
-      
-      console.log(`Vehicle ${data.vehicleSummary.name} coordinates: lat=${lat}, lng=${lng}`);
-      
+      console.log(`Vehicle ${vehicleSummary.name} coordinates: lat=${lat}, lng=${lng}`);
       this.markerOptions = {
-        ...this.markerOptions, // spread to preserve other properties
+        ...this.markerOptions,
         position: {
           lat: lat,
           lng: lng
         },
-        title: data.vehicleSummary.name,
+        title: vehicleSummary.name,
       };
-
-      // Update the center
       this.center = {
         lat: lat,
         lng: lng,
       };
 
-      // Only add new position if it's for today's date
+      // Only add a new position if it's for today's date and coordinates are valid
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      
-      if (newTimestamp >= today && newTimestamp < tomorrow) {
-        // Add the new position to vertices array for polyline
+      if (newTimestamp >= today && newTimestamp < tomorrow && !isNaN(lat) && !isNaN(lng)) {
         const newVertex = {
-          lat: data.vehicleSummary.latitude,
-          lng: data.vehicleSummary.longitude
+          lat: lat,
+          lng: lng
         };
         this.vertices = [...this.vertices, newVertex];
+      } else if (isNaN(lat) || isNaN(lng)) {
+        console.error('Invalid coordinates for vehicle:', vehicleSummary.name, vehicleSummary.latitude, vehicleSummary.longitude, vehicleSummary);
+      }
+
+      // If polyLineRoute is present, decode and update vertices
+      if (vehicleSummary.polyLineRoute && vehicleSummary.polyLineRoute.trim() !== '') {
+        try {
+          const decodedPath = google.maps.geometry.encoding.decodePath(vehicleSummary.polyLineRoute);
+          this.vertices = decodedPath.map(point => ({
+            lat: point.lat(),
+            lng: point.lng()
+          }));
+          console.log(`Updated vertices from polyLineRoute for vehicle ${vehicleSummary.name}`);
+        } catch (error) {
+          console.error(`Error decoding polyLineRoute for vehicle ${vehicleSummary.name}:`, error);
+        }
+      }
+
+      // Optionally, handle alarms (e.g., display, log, or process)
+      if (vehicleSummary.alarms && vehicleSummary.alarms.length > 0) {
+        // Example: log the first alarm
+        console.log('First alarm:', vehicleSummary.alarms[0]);
       }
 
       this.status = "Idling";
-      if (data.vehicleSummary.speed > 1) {
+      if (vehicleSummary.speed > 1) {
         this.status = "Driving";
       }
     } else {

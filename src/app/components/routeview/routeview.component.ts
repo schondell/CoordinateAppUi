@@ -143,30 +143,48 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     const summary = data.vehicleSummary;
-    
-    // Create new position object
-    const newPosition = { lat: summary.latitude, lng: summary.longitude };
-    
-    // Create a new array for this vehicle's path to ensure reference change
-    const currentPath = [...this.verticesArray[vehicleIndex]];
-    currentPath.push(newPosition);
-    
-    // Update the vertices array with a completely new array structure
-    const newVerticesArray = [...this.verticesArray];
-    newVerticesArray[vehicleIndex] = currentPath;
-    this.verticesArray = newVerticesArray;
-    
+
+    // If polyLineRoute is present and not empty, decode and use it to update the path
+    if (summary.polyLineRoute && summary.polyLineRoute.trim() !== '') {
+      try {
+        const decodedPath = google.maps.geometry.encoding.decodePath(summary.polyLineRoute);
+        this.verticesArray[vehicleIndex] = decodedPath.map(point => ({
+          lat: point.lat(),
+          lng: point.lng()
+        }));
+        console.log(`Updated path from polyLineRoute for vehicle ${summary.name}`);
+      } catch (error) {
+        console.error(`Error decoding polyLineRoute for vehicle ${summary.name}:`, error);
+        // Fallback to appending new position
+        const newPosition = { lat: summary.latitude, lng: summary.longitude };
+        const currentPath = [...this.verticesArray[vehicleIndex]];
+        currentPath.push(newPosition);
+        this.verticesArray[vehicleIndex] = currentPath;
+      }
+    } else {
+      // No polyLineRoute, append new position as before
+      const newPosition = { lat: summary.latitude, lng: summary.longitude };
+      const currentPath = [...this.verticesArray[vehicleIndex]];
+      currentPath.push(newPosition);
+      this.verticesArray[vehicleIndex] = currentPath;
+    }
+
+    // Optionally, log alarms if present
+    if (summary.alarms && summary.alarms.length > 0) {
+      console.log(`Alarms for vehicle ${summary.name}:`, summary.alarms);
+    }
+
     // Update the vehicle paths for polyline rendering (only paths with 2+ points)
     this.updateVehiclePaths();
-    
+
     // Update marker for this vehicle
     const newMarkers = [...this.markers];
     newMarkers[vehicleIndex] = {
-      position: newPosition,
+      position: { lat: summary.latitude, lng: summary.longitude },
       title: summary.name
     };
     this.markers = newMarkers;
-    
+
     // Minimal change detection
     this.cd.markForCheck();
   }
