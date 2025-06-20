@@ -13,16 +13,19 @@ export class VehicleSummary {
   modelYear: number;
   make: string;
   polyLineRoute: string;
+
+  // Current position properties (from last known position)
+  currentLatitude: number;
+  currentLongitude: number;
+  currentSpeed: number;
+  currentHeading: number;
+
   alarms: SinoCastelObd2AlarmTableEntity[];
   sinoCastelObd2AlarmId: string;
   deviceIdentity: string;
   messageTypeStrong: number;
   description: string;
-  longitude: number;
-  latitude: number;
   geoHash: string;
-  speed: number;
-  heading: number;
   latestAccOnTime: Date;
   totalTripMileage: number;
   currentTripMileage: number;

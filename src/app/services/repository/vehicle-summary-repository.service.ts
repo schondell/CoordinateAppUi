@@ -46,10 +46,10 @@ export class VehicleSummaryRepositoryService extends EndpointBase {
     // Map properties from first alarm if available
     if (apiResponse.alarms && apiResponse.alarms.length > 0) {
       const firstAlarm = apiResponse.alarms[0];
-      vehicle.latitude = firstAlarm.latitude;
-      vehicle.longitude = firstAlarm.longitude;
-      vehicle.speed = firstAlarm.speed;
-      vehicle.heading = firstAlarm.heading;
+      vehicle.currentLatitude = firstAlarm.latitude;
+      vehicle.currentLongitude = firstAlarm.longitude;
+      vehicle.currentSpeed = firstAlarm.speed;
+      vehicle.currentHeading = firstAlarm.heading;
       vehicle.description = firstAlarm.description;
       vehicle.deviceTimestamp = new Date(firstAlarm.deviceTimestamp);
       vehicle.currentTripMileage = firstAlarm.currentTripMileage;
@@ -67,7 +67,7 @@ export class VehicleSummaryRepositoryService extends EndpointBase {
       vehicle.month = firstAlarm.month;
       vehicle.year = firstAlarm.year;
       
-      console.log(`Mapped vehicle ${vehicle.name}: lat=${vehicle.latitude}, lng=${vehicle.longitude}`);
+      console.log(`Mapped vehicle ${vehicle.name}: lat=${vehicle.currentLatitude}, lng=${vehicle.currentLongitude}`);
     } else {
       console.log(`No alarms found for vehicle ${vehicle.name}`);
     }

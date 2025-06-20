@@ -89,10 +89,18 @@ export class VehicleMapComponent implements OnInit, AfterViewInit {
   updatePathSegment(encodedSegment: string) {
     try {
       const path = polyline.decode(encodedSegment);
-      const googlePath = path.map(point => ({
-        lat: point[0],
-        lng: point[1]
-      }));
+      const googlePath = path
+        .filter(point => {
+          const lat = Number(point[0]);
+          const lng = Number(point[1]);
+          const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+          const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+          return isValidLat && isValidLng;
+        })
+        .map(point => ({
+          lat: Number(point[0]),
+          lng: Number(point[1])
+        }));
 
       if (this.drivePath) {
         // Append to existing path
@@ -116,12 +124,20 @@ export class VehicleMapComponent implements OnInit, AfterViewInit {
         this.drivePath.setMap(null);
       }
 
-      // Decode the polyline
+      // Decode the polyline and filter out invalid coordinates
       const path = polyline.decode(encodedPath);
-      const googlePath = path.map(point => ({
-        lat: point[0],
-        lng: point[1]
-      }));
+      const googlePath = path
+        .filter(point => {
+          const lat = Number(point[0]);
+          const lng = Number(point[1]);
+          const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+          const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+          return isValidLat && isValidLng;
+        })
+        .map(point => ({
+          lat: Number(point[0]),
+          lng: Number(point[1])
+        }));
 
       // Create new polyline
       this.drivePath = new google.maps.Polyline({
@@ -154,8 +170,20 @@ export class VehicleMapComponent implements OnInit, AfterViewInit {
   addMarker(position: google.maps.LatLngLiteral, title: string) {
     if (!this.googleMap?.googleMap) return;
     
+    // Validate coordinates before creating marker
+    const lat = Number(position.lat);
+    const lng = Number(position.lng);
+    const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+    const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+    
+    if (!isValidLat || !isValidLng) {
+      console.warn(`Invalid coordinates for marker ${title}:`, 
+        'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
+      return;
+    }
+    
     const marker = new google.maps.Marker({
-      position,
+      position: { lat, lng },
       map: this.googleMap.googleMap,
       title
     });
@@ -179,10 +207,22 @@ export class VehicleMapComponent implements OnInit, AfterViewInit {
   updateEvent(event: SinoCastelObd2AlarmDto2) {
     if (!this.mapLoaded || !this.googleMap?.googleMap || !event) return;
     
+    // Validate coordinates before using them
+    const lat = Number(event.Latitude);
+    const lng = Number(event.Longitude);
+    const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+    const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+    
+    if (!isValidLat || !isValidLng) {
+      console.warn(`Invalid coordinates for event ${event.Alarm}:`, 
+        'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
+      return;
+    }
+    
     // Add event marker to map
     const position = {
-      lat: event.Latitude,
-      lng: event.Longitude
+      lat: lat,
+      lng: lng
     };
     
     const marker = new google.maps.Marker({
@@ -202,7 +242,7 @@ export class VehicleMapComponent implements OnInit, AfterViewInit {
       const infoContent = `
         <div>
           <h3>${event.Alarm}</h3>
-          <p>Timestamp: ${event.Time}</p>
+          <p>Timestamp: ${event.deviceTimestamp}</p>
         </div>
       `;
       const infoWindow = new google.maps.InfoWindow({

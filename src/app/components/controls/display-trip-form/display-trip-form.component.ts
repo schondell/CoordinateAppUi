@@ -109,8 +109,21 @@ export class DisplayTripFormComponent implements OnInit, OnDestroy, OnChanges {
 
   private decodeRoute(encodedPath: string): google.maps.LatLngLiteral[] {
     if (!encodedPath) return [];
-    const path = google.maps.geometry.encoding.decodePath(encodedPath);
-    return path.map((latLng) => ({ lat: latLng.lat(), lng: latLng.lng() }));
+    try {
+      const path = google.maps.geometry.encoding.decodePath(encodedPath);
+      return path
+        .filter(latLng => {
+          const lat = latLng.lat();
+          const lng = latLng.lng();
+          const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+          const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+          return isValidLat && isValidLng;
+        })
+        .map((latLng) => ({ lat: latLng.lat(), lng: latLng.lng() }));
+    } catch (error) {
+      console.error('Error decoding route:', error);
+      return [];
+    }
   }
 
   private extendBounds(route: google.maps.LatLngLiteral[]): void {

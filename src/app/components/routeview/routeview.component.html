@@ -6,10 +6,12 @@
   [options]="options"
 >
   <!-- Draw a polyline for each vehicle's path with different colors -->
-  <map-polyline *ngFor="let path of vehiclePaths; let i = index"
-    [path]="path"
-    [options]="getPolylineOptions(i)">
-  </map-polyline>
+  <ng-container *ngFor="let path of vehiclePaths; let i = index">
+    <map-polyline *ngIf="path.length >= 2"
+      [path]="path"
+      [options]="getPolylineOptions(i)">
+    </map-polyline>
+  </ng-container>
   <!-- Draw a marker for each vehicle at its latest position -->
   <map-marker *ngFor="let marker of vehicleMarkersArray" [options]="marker"></map-marker>
 </google-map>

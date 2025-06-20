@@ -53,7 +53,7 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
     rotateControl: false, // disable rotate control button
   };
 
-  center: google.maps.LatLngLiteral;
+  center: google.maps.LatLngLiteral = { lat: 0, lng: 0 }; // Default center
   markerOptions: google.maps.MarkerOptions = {};
   vertices: google.maps.LatLngLiteral[]  = [];
   polylineOptions: google.maps.PolylineOptions = {
@@ -97,42 +97,50 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
       console.log(`Vehicle polyLineRoute: ${vehicleSummary.polyLineRoute}`);
       console.log(`Vehicle alarms:`, vehicleSummary.alarms);
 
-      // Always use Number() to ensure lat/lng are numbers
-      const lat = Number(vehicleSummary.latitude);
-      const lng = Number(vehicleSummary.longitude);
+      const lat = Number(vehicleSummary.currentLatitude);
+      const lng = Number(vehicleSummary.currentLongitude);
+      
+      // Validate coordinates are valid numbers and within valid ranges
+      const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+      const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+      
       this.name = vehicleSummary.name;
-      this.speed = formatNumber(vehicleSummary.speed, this.currentLocale, "1.0-0");
+      this.speed = formatNumber(vehicleSummary.currentSpeed, this.currentLocale, "1.0-0");
       this.distance = formatNumber(this.toKilometers(vehicleSummary.currentTripMileage), this.currentLocale, "1.0-0");
       this.timeStamp = deviceTimestamp ? formatDate(deviceTimestamp, "HH:MM", this.currentLocale, this.userTimezone) : '';
 
-      // update the markerOptions position
-      console.log(`Vehicle ${vehicleSummary.name} coordinates: lat=${lat}, lng=${lng}`);
-      this.markerOptions = {
-        ...this.markerOptions,
-        position: {
+      // update the markerOptions position only if coordinates are valid
+      if (isValidLat && isValidLng) {
+        console.log(`Vehicle ${vehicleSummary.name} coordinates: lat=${lat}, lng=${lng}`);
+        this.markerOptions = {
+          ...this.markerOptions,
+          position: {
+            lat: lat,
+            lng: lng
+          },
+          title: vehicleSummary.name,
+        };
+        this.center = {
           lat: lat,
-          lng: lng
-        },
-        title: vehicleSummary.name,
-      };
-      this.center = {
-        lat: lat,
-        lng: lng,
-      };
+          lng: lng,
+        };
+      } else {
+        console.warn(`Invalid coordinates for vehicle ${vehicleSummary.name}:`, 
+          'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
+        // Don't update marker position with invalid coordinates
+      }
 
       // Only add a new position if it's for today's date and coordinates are valid
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      if (newTimestamp >= today && newTimestamp < tomorrow && !isNaN(lat) && !isNaN(lng)) {
+      if (newTimestamp >= today && newTimestamp < tomorrow && isValidLat && isValidLng) {
         const newVertex = {
           lat: lat,
           lng: lng
         };
         this.vertices = [...this.vertices, newVertex];
-      } else if (isNaN(lat) || isNaN(lng)) {
-        console.error('Invalid coordinates for vehicle:', vehicleSummary.name, vehicleSummary.latitude, vehicleSummary.longitude, vehicleSummary);
       }
 
       // If polyLineRoute is present, decode and update vertices
@@ -156,7 +164,8 @@ export class VehicleCardComponent implements OnInit, OnDestroy  {
       }
 
       this.status = "Idling";
-      if (vehicleSummary.speed > 1) {
+      const currentSpeed = vehicleSummary.currentSpeed;
+      if (currentSpeed > 1) {
         this.status = "Driving";
       }
     } else {

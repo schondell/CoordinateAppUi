@@ -4,7 +4,7 @@ import { GoogleMapsModule, GoogleMap } from '@angular/google-maps';
 import { VehicleSummaryRepositoryService } from '../../services/repository/vehicle-summary-repository.service';
 import { SignalrService } from '../../signalr.service';
 import { VehicleSummary } from '../../models/vehicle-summary';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { VehicleCardComponent } from '../../vehicle-card/vehicle-card.component';
 import { shareReplay } from 'rxjs/operators';
 
@@ -44,6 +44,7 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   private signalRSubscription: Subscription;
 
   vehicleComponents$: Observable<VehicleSummary[]>;
+  private vehicleSubject = new BehaviorSubject<VehicleSummary[]>([]);
 
   // Instead of a Map, use an array of arrays for vehicle paths
   verticesArray: google.maps.LatLngLiteral[][] = [];
@@ -61,25 +62,74 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.vehicleComponents$ = this.vehicleSummaryRepositoryService.getAllVehicleSummaries().pipe(
-        shareReplay(1)
-    );
+    // Set up the observable to use our BehaviorSubject
+    this.vehicleComponents$ = this.vehicleSubject.asObservable();
+
+    // Load initial vehicles from repository
+    this.vehicleSummaryRepositoryService.getAllVehicleSummaries().subscribe({
+      next: initialVehicles => {
+        this.vehicleSubject.next(initialVehicles);
+      },
+      error: err => {
+        console.error('Error loading initial vehicles:', err);
+      }
+    });
 
     this.vehicleComponentsSubscription = this.vehicleComponents$.subscribe({
       next: vehicleSummaries => {
         // Initialize an empty array for each vehicle
         this.verticesArray = vehicleSummaries.map(() => []);
         this.vehiclePaths = []; // Reset vehicle paths
+        this.markers = []; // Reset markers array
         this.vehicleIdList = vehicleSummaries.map(v => v.vehicleId); // Ensure mapping is set
+        console.log(`Processing ${vehicleSummaries.length} vehicles:`, vehicleSummaries.map(v => `${v.name} (ID: ${v.vehicleId})`));
+        
+        // Check device identities to verify they're different
+        console.log('Device identities:');
+        vehicleSummaries.forEach((v, i) => {
+          console.log(`  Vehicle ${v.name} (ID: ${v.vehicleId}): deviceIdentity = "${v.deviceIdentity}"`);
+        });
+        
+        // Check if polyLineRoute data is different between vehicles
+        const polylineRoutes = vehicleSummaries.map(v => v.polyLineRoute);
+        const uniqueRoutes = [...new Set(polylineRoutes)];
+        if (uniqueRoutes.length < vehicleSummaries.length) {
+          console.warn(`WARNING: Found ${uniqueRoutes.length} unique polyline routes for ${vehicleSummaries.length} vehicles - this may cause cross-vehicle lines!`);
+          vehicleSummaries.forEach((v, i) => {
+            console.log(`  Vehicle ${v.name} (ID: ${v.vehicleId}): polyLineRoute length = ${v.polyLineRoute?.length || 0}`);
+          });
+        }
+        
+        // Check if device identities are unique
+        const deviceIdentities = vehicleSummaries.map(v => v.deviceIdentity);
+        const uniqueDeviceIds = [...new Set(deviceIdentities)];
+        if (uniqueDeviceIds.length < vehicleSummaries.length) {
+          console.error(`PROBLEM: Found ${uniqueDeviceIds.length} unique device identities for ${vehicleSummaries.length} vehicles!`);
+          console.error('This means your simulators are using the same deviceId, causing them to be treated as one vehicle.');
+          console.error('Device identities:', deviceIdentities);
+        }
+        
         vehicleSummaries.forEach((summary, idx) => {
-          const marker: google.maps.MarkerOptions = {
-            position: {
-              lat: summary.latitude,
-              lng: summary.longitude
-            },
-            title: summary.name
-          };
-          this.markers.push(marker);
+          const lat = Number(summary.currentLatitude);
+          const lng = Number(summary.currentLongitude);
+          
+          // Validate coordinates are valid numbers and within valid ranges
+          const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+          const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+          
+          if (isValidLat && isValidLng) {
+            const marker: google.maps.MarkerOptions = {
+              position: {
+                lat: lat,
+                lng: lng
+              },
+              title: summary.name
+            };
+            this.markers[idx] = marker;
+          } else {
+            console.warn(`Invalid coordinates for vehicle ${summary.name} in routeview:`, 
+              'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
+          }
           
           // Initialize path from backend polyline if available
           if (summary.polyLineRoute && summary.polyLineRoute.trim() !== '') {
@@ -89,24 +139,47 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
                 lat: point.lat(),
                 lng: point.lng()
               }));
-              console.log(`Initialized ${decodedPath.length} points from backend polyline for vehicle ${summary.name}`);
+              console.log(`Vehicle ${summary.name} (ID: ${summary.vehicleId}) at index ${idx}:`);
+              console.log(`  - Initialized ${decodedPath.length} points from backend polyline`);
+              console.log(`  - First point: lat=${decodedPath[0]?.lat()}, lng=${decodedPath[0]?.lng()}`);
+              console.log(`  - Last point: lat=${decodedPath[decodedPath.length-1]?.lat()}, lng=${decodedPath[decodedPath.length-1]?.lng()}`);
             } catch (error) {
               console.error(`Error decoding backend polyline for vehicle ${summary.name}:`, error);
               // Fallback to current position
-              if (summary.latitude && summary.longitude) {
+              const lat = Number(summary.currentLatitude);
+              const lng = Number(summary.currentLongitude);
+              
+              // Validate coordinates before using them
+              const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+              const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+              
+              if (isValidLat && isValidLng) {
                 this.verticesArray[idx].push({
-                  lat: summary.latitude,
-                  lng: summary.longitude
+                  lat,
+                  lng
                 });
+              } else {
+                console.warn(`Invalid coordinates for vehicle ${summary.name} polyline fallback:`, 
+                  'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
               }
             }
           } else {
             // Initialize with the current position as first point in path
-            if (summary.latitude && summary.longitude) {
+            const lat = Number(summary.currentLatitude);
+            const lng = Number(summary.currentLongitude);
+            
+            // Validate coordinates before using them
+            const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+            const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+            
+            if (isValidLat && isValidLng) {
               this.verticesArray[idx].push({
-                lat: summary.latitude,
-                lng: summary.longitude
+                lat,
+                lng
               });
+            } else {
+              console.warn(`Invalid coordinates for vehicle ${summary.name} path initialization:`, 
+                'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
             }
           }
         });
@@ -130,9 +203,84 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.signalRSubscription = this.signalRService.onDataReceived.subscribe(
         (data: { vehicleId: number; vehicleSummary: VehicleSummary }) => {
-          this.updateVehiclePath(data);
+          this.handleVehicleUpdate(data);
         }
     );
+  }
+
+  // New method to handle vehicle updates and detect new vehicles
+  private handleVehicleUpdate(data: { vehicleId: number; vehicleSummary: VehicleSummary }) {
+    const vehicleIndex = this.getVehicleIndexById(data.vehicleId);
+    
+    if (vehicleIndex === -1) {
+      // This is a new vehicle - add it dynamically
+      console.log(`New vehicle detected: ${data.vehicleSummary.name} (ID: ${data.vehicleId})`);
+      this.addNewVehicleCard(data.vehicleSummary);
+    } else {
+      // Existing vehicle - update its path
+      this.updateVehiclePath(data);
+    }
+  }
+
+  // Method to dynamically add a new vehicle card
+  private addNewVehicleCard(vehicleSummary: VehicleSummary) {
+    const currentVehicles = this.vehicleSubject.value;
+    
+    // Check if vehicle already exists (double-check to prevent duplicates)
+    if (currentVehicles.some(v => v.vehicleId === vehicleSummary.vehicleId)) {
+      console.log(`Vehicle ${vehicleSummary.name} (ID: ${vehicleSummary.vehicleId}) already exists, skipping add`);
+      return;
+    }
+    
+    const updatedVehicles = [...currentVehicles, vehicleSummary];
+    
+    // Update the BehaviorSubject with the new vehicle list
+    this.vehicleSubject.next(updatedVehicles);
+    
+    console.log(`Added new vehicle card for ${vehicleSummary.name} (ID: ${vehicleSummary.vehicleId})`);
+  }
+
+  // Initialize a new vehicle's marker and path
+  private initializeNewVehicle(summary: VehicleSummary, index: number) {
+    const lat = Number(summary.currentLatitude);
+    const lng = Number(summary.currentLongitude);
+    
+    // Validate coordinates
+    const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+    const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+    
+    if (isValidLat && isValidLng) {
+      // Initialize marker
+      this.markers[index] = {
+        position: { lat, lng },
+        title: summary.name
+      };
+      
+      // Initialize path from backend polyline if available
+      if (summary.polyLineRoute && summary.polyLineRoute.trim() !== '') {
+        try {
+          const decodedPath = google.maps.geometry.encoding.decodePath(summary.polyLineRoute);
+          this.verticesArray[index] = decodedPath.map(point => ({
+            lat: point.lat(),
+            lng: point.lng()
+          }));
+          console.log(`Initialized ${decodedPath.length} points from polyline for new vehicle ${summary.name}`);
+        } catch (error) {
+          console.error(`Error decoding polyline for new vehicle ${summary.name}:`, error);
+          // Fallback to current position
+          this.verticesArray[index] = [{ lat, lng }];
+        }
+      } else {
+        // Initialize with current position
+        this.verticesArray[index] = [{ lat, lng }];
+      }
+      
+      // Update vehicle paths and fit map
+      this.updateVehiclePaths();
+      this.fitMapToAllPolylines();
+    } else {
+      console.warn(`Invalid coordinates for new vehicle ${summary.name}:`, { lat, lng });
+    }
   }
 
   // New method for updating the path for a vehicle by index
@@ -143,6 +291,7 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     const summary = data.vehicleSummary;
+    console.log(`Updating path for vehicle ${summary.name} (ID: ${data.vehicleId}) at index ${vehicleIndex}`);
 
     // If polyLineRoute is present and not empty, decode and use it to update the path
     if (summary.polyLineRoute && summary.polyLineRoute.trim() !== '') {
@@ -152,21 +301,43 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
           lat: point.lat(),
           lng: point.lng()
         }));
-        console.log(`Updated path from polyLineRoute for vehicle ${summary.name}`);
+        console.log(`Updated path from polyLineRoute for vehicle ${summary.name} (ID: ${summary.vehicleId}) at index ${vehicleIndex}: ${decodedPath.length} points`);
       } catch (error) {
         console.error(`Error decoding polyLineRoute for vehicle ${summary.name}:`, error);
-        // Fallback to appending new position
-        const newPosition = { lat: summary.latitude, lng: summary.longitude };
+        const lat = Number(summary.currentLatitude);
+        const lng = Number(summary.currentLongitude);
+        
+        // Validate coordinates before using them
+        const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+        const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+        
+        if (isValidLat && isValidLng) {
+          const newPosition = { lat, lng };
+          const currentPath = [...this.verticesArray[vehicleIndex]];
+          currentPath.push(newPosition);
+          this.verticesArray[vehicleIndex] = currentPath;
+        } else {
+          console.warn(`Invalid coordinates for vehicle ${summary.name} in updateVehiclePath fallback:`, 
+            'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
+        }
+      }
+    } else {
+      const lat = Number(summary.currentLatitude);
+      const lng = Number(summary.currentLongitude);
+      
+      // Validate coordinates before using them
+      const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+      const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+      
+      if (isValidLat && isValidLng) {
+        const newPosition = { lat, lng };
         const currentPath = [...this.verticesArray[vehicleIndex]];
         currentPath.push(newPosition);
         this.verticesArray[vehicleIndex] = currentPath;
+      } else {
+        console.warn(`Invalid coordinates for vehicle ${summary.name} in updateVehiclePath:`, 
+          'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
       }
-    } else {
-      // No polyLineRoute, append new position as before
-      const newPosition = { lat: summary.latitude, lng: summary.longitude };
-      const currentPath = [...this.verticesArray[vehicleIndex]];
-      currentPath.push(newPosition);
-      this.verticesArray[vehicleIndex] = currentPath;
     }
 
     // Optionally, log alarms if present
@@ -178,12 +349,24 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateVehiclePaths();
 
     // Update marker for this vehicle
-    const newMarkers = [...this.markers];
-    newMarkers[vehicleIndex] = {
-      position: { lat: summary.latitude, lng: summary.longitude },
-      title: summary.name
-    };
-    this.markers = newMarkers;
+    const lat = Number(summary.currentLatitude);
+    const lng = Number(summary.currentLongitude);
+    
+    // Validate coordinates before updating marker
+    const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+    const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+    
+    if (isValidLat && isValidLng) {
+      const newMarkers = [...this.markers];
+      newMarkers[vehicleIndex] = {
+        position: { lat, lng },
+        title: summary.name
+      };
+      this.markers = newMarkers;
+    } else {
+      console.warn(`Invalid coordinates for vehicle ${summary.name} marker update:`, 
+        'lat:', lat, 'lng:', lng, 'isValidLat:', isValidLat, 'isValidLng:', isValidLng);
+    }
 
     // Minimal change detection
     this.cd.markForCheck();
@@ -191,11 +374,24 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
   
   // Update the vehicle paths array for polyline rendering
   private updateVehiclePaths() {
-    // Only update if there are meaningful changes
-    const newPaths = this.verticesArray.filter(path => path.length >= 2);
-    if (newPaths.length !== this.vehiclePaths.length || 
-        newPaths.some((path, index) => path.length !== this.vehiclePaths[index]?.length)) {
-      this.vehiclePaths = newPaths.map(path => [...path]);
+    // Maintain index alignment by keeping empty arrays for vehicles with insufficient points
+    const newPaths = this.verticesArray.map(path => path.length >= 2 ? [...path] : []);
+    
+    // Check if we need to update (compare lengths and content)
+    const needsUpdate = newPaths.length !== this.vehiclePaths.length || 
+        newPaths.some((path, index) => path.length !== this.vehiclePaths[index]?.length);
+    
+    if (needsUpdate) {
+      this.vehiclePaths = newPaths;
+      console.log(`Updated vehicle paths: ${this.vehiclePaths.filter(p => p.length >= 2).length} valid paths out of ${this.vehiclePaths.length} vehicles`);
+      
+      // Log details for each path
+      this.vehiclePaths.forEach((path, index) => {
+        if (path.length >= 2) {
+          const vehicleName = this.vehicleIdList[index] ? `Vehicle ID ${this.vehicleIdList[index]}` : `Index ${index}`;
+          console.log(`  ${vehicleName}: ${path.length} points, from (${path[0].lat.toFixed(4)}, ${path[0].lng.toFixed(4)}) to (${path[path.length-1].lat.toFixed(4)}, ${path[path.length-1].lng.toFixed(4)})`);
+        }
+      });
     }
   }
 
@@ -287,6 +483,9 @@ export class RouteviewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (this.signalRSubscription) {
       this.signalRSubscription.unsubscribe();
+    }
+    if (this.vehicleSubject) {
+      this.vehicleSubject.complete();
     }
   }
 }

@@ -2,7 +2,7 @@ import {Component, OnInit, Inject, ViewChild} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VehicleTripLogFullDto } from 'src/app/models/generatedtypes';
 import { IRouteResponse } from 'src/app/models/IRouteInput';
-import polyline from '@mapbox/polyline';
+import * as polyline from '@mapbox/polyline';
 import { TripHistoryEntry } from 'src/app/models/VehicleTripLogFullDto2';
 import {GoogleMap} from "@angular/google-maps";
 
@@ -118,11 +118,37 @@ class VehicleTripLogFullDtoExtended extends VehicleTripLogFullDto {
     this.suggestedRouteArray = [];
     this.actualRouteArray = [];
 
-    const suggestedRoute = polyline.decode(obj.suggestedRoute);
-    this.suggestedRouteArray = suggestedRoute.map(latLng => ({ lat: latLng[0], lng: latLng[1] }));
+    try {
+      const suggestedRoute = polyline.decode(obj.suggestedRoute);
+      this.suggestedRouteArray = suggestedRoute
+        .filter(latLng => {
+          const lat = Number(latLng[0]);
+          const lng = Number(latLng[1]);
+          const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+          const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+          return isValidLat && isValidLng;
+        })
+        .map(latLng => ({ lat: latLng[0], lng: latLng[1] }));
+    } catch (error) {
+      console.error('Error decoding suggested route:', error);
+      this.suggestedRouteArray = [];
+    }
 
-    const actualRoute = polyline.decode(obj.actualRoute);
-    this.actualRouteArray = actualRoute.map(latLng => ({ lat: latLng[0], lng: latLng[1] }));
+    try {
+      const actualRoute = polyline.decode(obj.actualRoute);
+      this.actualRouteArray = actualRoute
+        .filter(latLng => {
+          const lat = Number(latLng[0]);
+          const lng = Number(latLng[1]);
+          const isValidLat = !isNaN(lat) && lat >= -90 && lat <= 90 && lat !== 0;
+          const isValidLng = !isNaN(lng) && lng >= -180 && lng <= 180 && lng !== 0;
+          return isValidLat && isValidLng;
+        })
+        .map(latLng => ({ lat: latLng[0], lng: latLng[1] }));
+    } catch (error) {
+      console.error('Error decoding actual route:', error);
+      this.actualRouteArray = [];
+    }
     }
 }
 
